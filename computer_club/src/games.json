@@ -1,0 +1,21 @@
+{
+    "pc": [
+      {"name": "DOTA 2", "icon": "dota2.png"},
+      {"name": "CS:GO", "icon": "csgo.png"},
+      {"name": "Genshin Impact", "icon": "genshin.png"},
+      {"name": "Rust", "icon": "rust.png"},
+      {"name": "Warzone", "icon": "warzone.png"},
+      {"name": "Valorant", "icon": "valorant.png"},
+      {"name": "PUBG", "icon": "pubg.png"},
+      {"name": "Fortnite", "icon": "fortnite.png"}
+    ],
+    "console": [
+        {"name": "DOTA 2", "icon": "dota2.png"},
+        {"name": "CS:GO", "icon": "csgo.png"},
+        {"name": "Genshin Impact", "icon": "genshin.png"},
+        {"name": "Rust", "icon": "rust.png"},
+        {"name": "Warzone", "icon": "warzone.png"}
+        
+    ]
+  }
+  

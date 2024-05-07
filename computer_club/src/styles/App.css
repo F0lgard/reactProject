@@ -1,0 +1,296 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#root {
+    font-family: "Montserrat Alternates", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: #ffffff;
+}
+
+.App {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    position: relative;
+    height: 60px;
+    background-color: #FF0000;
+    border: 2px solid transparent;
+    border-radius: 40px;
+    padding: 0 40px; /* Додайте відступи по боках, якщо потрібно */
+    box-sizing: border-box;
+    width: auto; /* Ширина кнопки буде визначатися її вмістом */
+    display: inline-flex; /* Зробіть кнопку блоковою для вирахування ширини */
+    align-items: center; /* Вирівняйте текст по вертикалі */
+    justify-content: center; /* Вирівняйте текст по горизонталі */
+    font-family: "Montserrat Alternates", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    color: #fff;
+    font-size: 20px;
+    transition: border-color 0.3s ease, border-width 0.3s ease, background-color 0.3s ease;
+    flex-shrink: 0;
+}
+
+button:hover {
+    border-color: #ffffff; /* Колір межі при наведенні */
+}
+button:active {
+    background-color: #d70000;
+}
+
+.disabledbtn {
+    opacity: 0.5; /* Зменшити прозорість для відображення відключеного стану */
+    cursor: not-allowed; /* Заборонити курсор при наведенні */
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Задаємо високий значення z-index, щоб хедер завжди був над іншими елементами */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 160px;
+    column-gap: 20px;
+    font-size: 20px;
+}
+
+.logo {
+    flex-shrink: 0;
+}
+
+/* .navigation {
+    margin-left: -100px;
+} */
+
+.navigation ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    column-gap: 35px;
+    row-gap: 10px;
+    justify-content: space-around;
+}
+
+/* .navigation ul li {
+
+} */
+
+.navigation ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    column-gap: 14px;
+}
+
+/* .button-login {
+    position: relative;
+    width: 162px;
+    height: 60px;
+    background-color: #FF0000;
+    border: 2px solid transparent; 
+    border-radius: 40px;
+    box-sizing: border-box;
+} */
+
+.welcome-bck {
+    width: 100%;
+    height: 705px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding: 248px 160px 55px 160px;
+    column-gap: 20px;
+
+    background-image: url('../img/vladislav-bychkov-vSCEykFLOd0-unsplash\ 3.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.text-comp-club {
+    font-size: 64px;
+    color: #ffffff;
+    margin: 0;
+}
+
+.text-cyber-zone {
+    font-family: "Quantico", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 64px;
+  color: #FF0000;
+  margin: 0;
+  margin-top: -5px;
+  margin-left: -1px;
+}
+
+.text-welcome-to-club {
+    font-size: 32px;
+    color: #ffffff;
+    margin: 0;
+}
+
+.button-zabronuvatu {
+    align-self: center;
+    margin-top: auto;
+}
+
+.zone-section {
+    background-color: #09111C;
+    color: #ffffff;
+    font-size: 20px;
+}   
+
+
+.slider-div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    column-gap: 27px;
+    row-gap: 12px;
+    height: 700px;
+    padding: 110px 160px;
+    align-content: flex-start;
+    font-family: "Montserrat", sans-serif;
+}
+
+.slider-zone-img {
+    height: 480px;
+    min-width: 380px;
+    border: 2px solid #ffffff;
+    flex-shrink: 0;
+}
+
+.slider-zone-name {
+    color: #FF0000;
+    font-size: 48px;
+}
+
+.slider-punkt {
+    color: #ffffff;
+}
+
+.slider-div-ul {
+    display: flex;
+}
+
+.slider-ul {
+    display: flex;
+    flex-direction: column; /* Змініть напрямок на колонки */
+    flex-wrap: wrap;
+}
+
+.slider-ul li {
+    display: flex; /* Зробіть li елементи flex контейнерами */
+    justify-content: start; /* Розподіліть простір між елементами */
+    margin-bottom: 4px;
+}
+
+.slider-ul strong {
+    color: #CCCCD4;
+    padding-right: 70px;
+}
+
+.slider-ul span {
+    color: #ffffff;
+}
+
+.modal {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal_content {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 40px 10px;
+    border-radius: 12px;
+    background-color:#ffffff;
+    width: 450px;
+    transform: scale(0.5);
+    transition: 0.4s all;
+    
+}
+
+.modal_content.active {
+    transform: scale(1);
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-name {
+    color: #000000;
+    font-size: 40px;
+    align-self: center;
+}
+
+.modal-button {
+    align-self: center;
+    margin: 15px 0 10px;
+    height: 50px;
+    padding: 0 60px;
+}
+
+.modal-button:hover {
+    border-color: #09111C; /* Колір межі при наведенні */
+}
+
+
+.modal-section-a {
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.modal-a {
+    text-decoration: none;
+    color: #9b9b9b;
+    font-size: 16px;
+}
+
+.modal-a:hover {
+    color: #11998e;
+}
+
+table {
+    color:#000000;
+    
+}

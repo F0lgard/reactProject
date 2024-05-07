@@ -1,0 +1,43 @@
+[
+      {
+        "image": "zone1.png",
+        "zoneName": "Pro Zone",
+        "pc": [
+          { "name": "Процессор", "value": "Intel Core i7-10700K" },
+          { "name": "Відеокарта", "value": "NVIDIA GeForce RTX 3070" },
+          { "name": "Оперативка", "value": "Kingston 16 ГБ DDR40" }
+          
+        ],
+        "peripherals": [
+          { "name": "Монітор", "value": "ASUS VG248QE 24\" 144Hz GM" },
+          { "name": "Навушники", "value": "HyperX Cloud II Gaming Headset" },
+          { "name": "Мишка", "value": "Logitech G502 HERO" },
+          { "name": "Клавіатура", "value": "Razer BlackWidow Elite" },
+          { "name": "Крісло", "value": "DXRacer Racing Series" }
+        ]
+      },
+      {
+        "image": "zone2.png",
+        "zoneName": "VIP Zone",
+        "pc": [
+          { "name": "Процессор", "value": "AMD Ryzen 9 5900X" },
+          { "name": "Відеокарта", "value": "AMD Radeon RX 6800 XT" }
+        ],
+        "peripherals": [
+          { "name": "Монітор", "value": "LG UltraGear 27GN950-B 27\" 4K UHD Nano IPS" }
+        ]
+      },
+      {
+        "image": "zone1.png",
+        "zoneName": "PlayStation",
+        "pc": [
+          { "name": "Процессор", "value": "Intel Core i9-11900K" },
+          { "name": "Відеокарта", "value": "NVIDIA GeForce RTX 3080 Ti" }
+        ],
+        "peripherals": [
+          { "name": "Монітор", "value": "Samsung Odyssey G7 32\" 240Hz" }
+        ]
+      }
+    ]
+  
+  
