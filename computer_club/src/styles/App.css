@@ -102,6 +102,13 @@ button:active {
     column-gap: 14px;
 }
 
+.user-info {
+    display: flex;
+    align-items:center;
+    gap: 10px;
+}
+
+
 /* .button-login {
     position: relative;
     width: 162px;

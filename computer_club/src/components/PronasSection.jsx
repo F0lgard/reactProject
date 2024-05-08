@@ -3,15 +3,15 @@ import '../styles/Pronas.css';
 export default function PronasSection() {
 
     return(
-        <div className='pronas-section' id='about'>
+    <div className='pronas-section' id='about'>
     <h2 className='pronas-section-name'>Про нас</h2>
     <div className="content-wrapper">
         <div className="text-wrapper">
             <p className='pronas-section-text'>Комп'ютерний клуб <span className='red-text'>"CyberZone"</span> - це <span className='red-text'>сучасне</span> місце для <span className='red-text'>геймерів</span> та любителів технологій. 
             Ми пропонуємо <span className='red-text'>широкий</span> асортимент послуг для тих, 
             хто цінує <span className='red-text'>якість</span> і <span className='red-text'>комфорт</span> у своїй грі.</p>
-            <p className='pronas-section-text'>Ми <span className='red-text'>прагнемо</span> забезпечити нашим клієнтам 
-            <span className='red-text'>найкращий</span> ігровий досвід, створюючи для них <span className='red-text'>комфортне</span> та 
+            <p className='pronas-section-text'>Ми <span className='red-text'>прагнемо</span> забезпечити нашим клієнтам  
+            <span className='red-text'> найкращий</span> ігровий досвід, створюючи для них <span className='red-text'>комфортне</span> та 
             технологічно-збалансоване середовище для <span className='red-text'>розваг</span> та <span className='red-text'>спілкування</span>.</p>
             <div className='logo-wrapper'>
                 <a href='https://web.telegram.org/' target='_blank' rel="noreferrer"><img src={require('../img/Telegram.png')} className='logo-pronas' alt='telegram logo' width='60px' height='60px'/></a>

@@ -1,4 +1,4 @@
-//import React, { useState } from 'react';
+import React from 'react';
 import './styles/Normalize.css';
 import './styles/App.css';
 import Header from "./components/Header";
@@ -8,19 +8,23 @@ import PricesSection from './components/PricesSection';
 import Footer from './components/Footer';
 import GamesSection from './components/GamesSection';
 import PronasSection from './components/PronasSection';
+import TurnirSection from './components/TurnirSection';
+import { AuthProvider } from './components/AuthContext'; // Імпортуємо AuthProvider з файлу AuthContext.js
 
 function App() {
-
   return (
-    <div className="App">
-    <Header/> 
-    <WelcomeSection/>
-    <ZoneSection/>
-    <PricesSection/>
-    <GamesSection/>
-    <PronasSection/>
-    <Footer/>
-    </div>
+    <AuthProvider>
+      <div className="App">
+        <Header />
+        <WelcomeSection/>
+        <ZoneSection/>
+        <PricesSection/>
+        <GamesSection/>
+        <PronasSection/>
+        <TurnirSection />
+        <Footer/>
+      </div>
+    </AuthProvider>
   );
 }
 
