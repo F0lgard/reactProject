@@ -5,8 +5,15 @@ import RegistrationModal from "./RegistrationModal";
 import Input from './Input';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import { useEffect } from 'react';
 
 export default function Header() {
+    useEffect(() => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        const username = localStorage.getItem('username');
+        setIsAuthenticated(isAuthenticated);
+        setUsername(username);
+    }, []);
     const [loginModalActive, setLoginModalActive] = useState(false);
     const [registrationModalActive, setRegistrationModalActive] = useState(false);
     const [login, setLogin] = useState('');
@@ -32,20 +39,27 @@ export default function Header() {
     
         try {
             const response = await axios.post('http://localhost:3001/login', { login, password });
-            alert('Ви успішно авторизувалися:');
+            const { username } = response.data; // Отримання імені користувача з відповіді сервера
+            alert(`Ви успішно авторизувалися, ${username}!`);
             setLoginModalActive(false);
-            setIsAuthenticated(true);
-            // Отримання інформації про користувача після авторизації
-            setUsername(response.data.username); // Припустимо, що сервер повертає ім'я користувача
+            setIsAuthenticated(true); // Встановлення стану авторизації в компоненті
+            localStorage.setItem('isAuthenticated', true); // Збереження стану авторизації в localStorage
+            localStorage.setItem('username', username); // Збереження імені користувача в localStorage
+            setUsername(username); // Оновлення стану змінної username
         } catch (error) {
             alert(`Помилка під час авторизації: ${error.message}`);
         }
     };
+    
+    
+    
 
     const handleLogout = () => {
-        setIsAuthenticated(false);
-        setUsername(''); // Скидання ім'я користувача
+        setIsAuthenticated(false); // Встановлення стану авторизації в компоненті
+        localStorage.removeItem('isAuthenticated'); // Видалення збереженого стану авторизації з localStorage
+        localStorage.removeItem('username'); // Видалення збереженого імені користувача з localStorage
     };
+    
     
     return (
         <div>

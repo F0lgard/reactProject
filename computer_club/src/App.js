@@ -10,6 +10,7 @@ import GamesSection from './components/GamesSection';
 import PronasSection from './components/PronasSection';
 import TurnirSection from './components/TurnirSection';
 import { AuthProvider } from './components/AuthContext'; // Імпортуємо AuthProvider з файлу AuthContext.js
+import ScrollToTopButton from './components/ScrollToTopButton';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <WelcomeSection/>
         <ZoneSection/>
         <PricesSection/>
+        <ScrollToTopButton/>
         <GamesSection/>
         <PronasSection/>
         <TurnirSection />
