@@ -81,7 +81,7 @@ export default function Header() {
                 {/* Відображення імені користувача та кнопки Вийти */}
                 {isAuthenticated ? (
                     <div className="user-info">
-                        <a href='/'>
+                        <a href='/' className='a-user-info'>
                             <img src={require('../img/Account.png')} alt='account' width='35px' height='35px'/>
                         </a>
                         <span className="username">{username}</span>

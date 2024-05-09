@@ -22,7 +22,7 @@ export default function TurnirSection() {
             {!isAuthenticated && (
                 <div className='turnir-overlay'>
                     {/* <Button className="turnir-button-dis">Ввійти</Button> */}
-                    <h3 className='desabled-tip'>Для доступу до цієї функції, вам потрібно авторизуватися</h3>
+                    <h3 className='desabled-tip'>Для доступу до турнірної сітки, вам потрібно авторизуватися</h3>
                 </div>
             )}
         </div>

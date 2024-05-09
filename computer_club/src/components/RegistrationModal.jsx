@@ -116,11 +116,11 @@ const RegistrationModal = ({ active, setActive }) => {
       <>
         <p className="modal-name">РЕЄСТРАЦІЯ</p>
         <form className="modal-form" method='POST'>
-          {(usernameDirty && usernameError) && <span style={{color: 'red'}}>{usernameError}</span>}
+          {(usernameDirty && usernameError) && <span style={{color: 'red', fontSize: '16px'}}>{usernameError}</span>}
           <Input label="Username" name="username" type="input" id="username" value={username} onChange={handleUsernameChange} onBlur={event => blurHandler(event)}/>
-          {(emailDirty && emailError) && <span style={{color: 'red'}}>{emailError}</span>}
+          {(emailDirty && emailError) && <span style={{color: 'red', fontSize: '16px'}}>{emailError}</span>}
           <Input label="Email" name="email" type="email" id="email" value={email} onChange={handleEmailChange} onBlur={event => blurHandler(event)}/>
-          {(passwordDirty && passwordError) && <span style={{color: 'red'}}>{passwordError}</span>}
+          {(passwordDirty && passwordError) && <span style={{color: 'red', fontSize: '16px'}}>{passwordError}</span>}
           <Input label="Password" name="password" type="password" id="password" value={password} onChange={handlePasswordChange} onBlur={event => blurHandler(event)}/>
           <Button className="modal-button" onClick={handleRegistration} disabled={!formValid}>Зареєструватися</Button>
         </form>

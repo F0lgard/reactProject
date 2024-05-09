@@ -108,6 +108,10 @@ button:active {
     gap: 10px;
 }
 
+.a-user-info {
+    display: flex;
+    flex-shrink: 0;
+}
 
 /* .button-login {
     position: relative;
