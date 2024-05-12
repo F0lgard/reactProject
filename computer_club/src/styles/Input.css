@@ -1,9 +1,9 @@
 :root {
-    --primary: #11998e;
-    --secondary: #38ef7d;
-    --black: #000000;
-    --gray: #9b9b9b;
-  }
+  --primary: #11998e;
+  --secondary: #38ef7d;
+  --black: #000000;
+  --gray: #9b9b9b;
+}
 
 /* .modal-form {
  
@@ -24,7 +24,7 @@
   outline: 0;
   font-size: 20px;
   color: var(--black);
-  padding: 15px 0 15px;
+  padding: 25px 0 15px;
   background: transparent;
   transition: border-color 0.2s;
 
@@ -57,22 +57,25 @@
     transition: 0.2s;
     font-size: 1rem;
     color: var(--primary);
-    font-weight:700;    
+    font-weight: 700;
   }
-  padding-bottom: 5px;  
+  padding-bottom: 5px;
   font-weight: 700;
   border-width: 3px;
-  border-image: linear-gradient(to right, var(--primary),var(--secondary));
+  border-image: linear-gradient(to right, var(--primary), var(--secondary));
   border-image-slice: 1;
 }
 /* reset input */
-.form__field{
-  &:required,&:invalid { box-shadow:none; }
+.form__field {
+  &:required,
+  &:invalid {
+    box-shadow: none;
+  }
 }
 /* demo */
 
 .empty {
-  color: #FF0000;
+  color: #ff0000;
 }
 
 .form__field:focus {
@@ -82,7 +85,7 @@
     display: block;
     transition: 0.2s;
     font-size: 1rem;
-    color: #FF0000;
-    font-weight:700;    
+    color: #ff0000;
+    font-weight: 700;
   }
 }
