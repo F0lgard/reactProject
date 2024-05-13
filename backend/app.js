@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("users", userSchema);
 
 const turnirSchema = new mongoose.Schema({
-  teams: [String],
+  pairs: [{ team1: String, team2: String }],
   turnirName: String,
   uniqueCode: String,
 });
@@ -96,15 +96,15 @@ app.post("/login", async (req, res) => {
 // const Turnir = require("./models/Turnir");
 
 app.post("/createTurnir", async (req, res) => {
-  const { teams, turnirName } = req.body;
-
+  const { pairs, turnirName } = req.body; // Зміна з teams на pairs
+  console.log(pairs);
   try {
     const uniqueCode = shortid.generate();
-    const newTurnir = new Turnir({ teams, turnirName, uniqueCode });
+    const newTurnir = new Turnir({ pairs, turnirName, uniqueCode }); // Зміна з teams на pairs
     await newTurnir.save();
     res.status(200).json({ uniqueCode });
   } catch (error) {
-    console.error("Помилка при створенні турніру:", error); // Додайте цей рядок для логування помилки
+    console.error("Помилка при створенні турніру:", error);
     res.status(500).json({ message: "Помилка сервера" });
   }
 });
@@ -123,6 +123,16 @@ app.post("/findTurnir", async (req, res) => {
     }
   } catch (error) {
     console.error("Помилка при пошуку турніру:", error);
+    res.status(500).json({ message: "Помилка сервера" });
+  }
+});
+
+app.get("/turnirs", async (req, res) => {
+  try {
+    const turnirs = await Turnir.find();
+    res.status(200).json(turnirs);
+  } catch (error) {
+    console.error("Помилка завантаження турнірів:", error);
     res.status(500).json({ message: "Помилка сервера" });
   }
 });

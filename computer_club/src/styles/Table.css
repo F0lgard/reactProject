@@ -1,61 +1,61 @@
 .prices-section {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 800px;
-    background-color: #09111C;
-    color: #ffffff;
-    font-size: 20px;
-    padding: 100px 160px 0;
-    font-family: "Montserrat", sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 800px;
+  background-color: #09111c;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 100px 160px 0;
+  font-family: "Montserrat", sans-serif;
 }
 
 .prices-section-name {
-    font-size: 48px;
-    text-align: center;
-    margin-bottom: 50px;
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
-table {
-    display:flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    color: #ffffff;
-    border-collapse: collapse;
+.table-price {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: #ffffff;
+  border-collapse: collapse;
 }
 
-tr {
-    display: flex;
+.table-price tr {
+  display: flex;
 }
 
-th, td {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 108px;
-    max-height: 108px;
-    min-width: 183px;
-    max-width: 380px;
-    flex-wrap: wrap;
-    border: 2px solid #ffffff;
-    padding: 30px 40px;
-    text-align: center;
-    margin: 8px 13px;
-
+.table-price th,
+.table-price td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 108px;
+  max-height: 108px;
+  min-width: 183px;
+  max-width: 380px;
+  flex-wrap: wrap;
+  border: 2px solid #ffffff;
+  padding: 30px 40px;
+  text-align: center;
+  margin: 8px 13px;
 }
 
-th {
-    color:#ff0000;
+.table-price th {
+  color: #ff0000;
 }
 
 .table-zone {
-    width: 380px;
-    font-size: 32px;
-    color: #ff0000;
-    padding: 30px;
-    text-align: center;
+  width: 380px;
+  font-size: 32px;
+  color: #ff0000;
+  padding: 30px;
+  text-align: center;
 }
 
 .zonu {
-    color: #ffffff;
+  color: #ffffff;
 }
