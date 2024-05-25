@@ -1,38 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import Modal from "./Modal";
 import RegistrationModal from "./RegistrationModal";
 import Input from "./Input";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
-import { useEffect } from "react";
 
 export default function Header() {
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-    const username = localStorage.getItem("username");
-    setIsAuthenticated(isAuthenticated);
-    setUsername(username);
-  }, []);
+  const { isAuthenticated, setIsAuthenticated, user, setUser } = useAuth();
   const [loginModalActive, setLoginModalActive] = useState(false);
   const [registrationModalActive, setRegistrationModalActive] = useState(false);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
-  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const storedIsAuthenticated =
+      localStorage.getItem("isAuthenticated") === "true";
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setIsAuthenticated(storedIsAuthenticated);
+    setUser(storedUser);
+  }, [setIsAuthenticated, setUser]);
 
   const handleRegistrationLinkClick = () => {
     setLoginModalActive(false);
     setRegistrationModalActive(true);
   };
 
-  function handleLoginChange(event) {
+  const handleLoginChange = (event) => {
     setLogin(event.target.value);
-  }
+  };
 
-  function handlePasswordChange(event) {
+  const handlePasswordChange = (event) => {
     setPassword(event.target.value);
-  }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,13 +42,13 @@ export default function Header() {
         login,
         password,
       });
-      const { username } = response.data; // Отримання імені користувача з відповіді сервера
-      alert(`Ви успішно авторизувалися, ${username}!`);
+      const userData = response.data; // Отримання даних користувача з відповіді сервера
+      alert(`Ви успішно авторизувалися, ${userData.username}!`);
       setLoginModalActive(false);
       setIsAuthenticated(true); // Встановлення стану авторизації в компоненті
       localStorage.setItem("isAuthenticated", true); // Збереження стану авторизації в localStorage
-      localStorage.setItem("username", username); // Збереження імені користувача в localStorage
-      setUsername(username); // Оновлення стану змінної username
+      localStorage.setItem("user", JSON.stringify(userData)); // Збереження даних користувача в localStorage
+      setUser(userData); // Оновлення стану змінної user
     } catch (error) {
       alert(`Помилка під час авторизації: ${error.message}`);
     }
@@ -56,8 +56,9 @@ export default function Header() {
 
   const handleLogout = () => {
     setIsAuthenticated(false); // Встановлення стану авторизації в компоненті
+    setUser(null); // Очищення даних користувача
     localStorage.removeItem("isAuthenticated"); // Видалення збереженого стану авторизації з localStorage
-    localStorage.removeItem("username"); // Видалення збереженого імені користувача з localStorage
+    localStorage.removeItem("user"); // Видалення збережених даних користувача з localStorage
   };
 
   return (
@@ -93,7 +94,7 @@ export default function Header() {
           </ul>
         </nav>
         {/* Відображення імені користувача та кнопки Вийти */}
-        {isAuthenticated ? (
+        {isAuthenticated && user ? (
           <div className="user-info">
             <a href="/" className="a-user-info">
               <img
@@ -103,7 +104,7 @@ export default function Header() {
                 height="35px"
               />
             </a>
-            <span className="username">{username}</span>
+            <span className="username">{user.username}</span>
             <Button className="button-logout" onClick={handleLogout}>
               Вийти
             </Button>

@@ -40,7 +40,17 @@ const turnirSchema = new mongoose.Schema({
 
 const Turnir = mongoose.model("Turnir", turnirSchema);
 
-module.exports = Turnir;
+// Створення схеми для бронювань
+const bookingSchema = new mongoose.Schema({
+  zone: String,
+  hours: Number,
+  price: Number,
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  createdAt: { type: Date, default: Date.now },
+});
+
+// Створення моделі для бронювань
+const Booking = mongoose.model("Booking", bookingSchema);
 
 // Додавання middleware для обробки JSON-даних
 app.use(bodyParser.json());
@@ -93,14 +103,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// const Turnir = require("./models/Turnir");
-
 app.post("/createTurnir", async (req, res) => {
-  const { pairs, turnirName } = req.body; // Зміна з teams на pairs
+  const { pairs, turnirName } = req.body;
   console.log(pairs);
   try {
     const uniqueCode = shortid.generate();
-    const newTurnir = new Turnir({ pairs, turnirName, uniqueCode }); // Зміна з teams на pairs
+    const newTurnir = new Turnir({ pairs, turnirName, uniqueCode });
     await newTurnir.save();
     res.status(200).json({ uniqueCode });
   } catch (error) {
@@ -117,7 +125,8 @@ app.post("/findTurnir", async (req, res) => {
 
     if (turnirData) {
       res.status(200).json({ turnirData });
-      console.log("turnit find");
+      console.log("turnir found");
+      console.log(turnirData);
     } else {
       res.status(404).json({ message: "Турнір не знайдено" });
     }
@@ -134,6 +143,21 @@ app.get("/turnirs", async (req, res) => {
   } catch (error) {
     console.error("Помилка завантаження турнірів:", error);
     res.status(500).json({ message: "Помилка сервера" });
+  }
+});
+
+app.post("/bookings", async (req, res) => {
+  const { zone, hours, price, userId } = req.body;
+
+  console.log("Received booking data:", req.body); // Додаємо логування для перевірки
+
+  try {
+    const newBooking = new Booking({ zone, hours, price, userId });
+    await newBooking.save();
+    res.status(200).json({ message: "Booking created successfully" });
+  } catch (error) {
+    console.error("Error creating booking:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

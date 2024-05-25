@@ -59,3 +59,12 @@
 .zonu {
   color: #ffffff;
 }
+
+.price-cell.selected {
+  background-color: #f0f0f0; /* Зміна фону для активної комірки */
+  border: 2px solid #000; /* Зміна обрамлення для активної комірки */
+}
+
+.modal-content {
+  color: #000;
+}
