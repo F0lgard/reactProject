@@ -1,0 +1,84 @@
+/* Додайте ці стилі у ваш CSS файл або створіть новий файл */
+
+.profile-modal {
+  display: flex;
+  flex-direction: row;
+  color: #000;
+  min-width: 50vw;
+  max-width: 75vw;
+}
+
+.user-info-wrap {
+  display: flex;
+  flex-direction: column;
+  max-width: 310px;
+}
+
+.user-profile {
+  color: #000000;
+  font-size: 40px;
+  align-self: start;
+  font-family: "Montserrat Alternates", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  padding-bottom: 24px;
+}
+
+.user-icon {
+  flex-shrink: 0;
+  margin-block: 10px;
+}
+
+.highlight {
+  background-color: red !important;
+  color: white !important;
+}
+
+.bookingselected {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin-top: auto;
+}
+
+.booking-details-container {
+  overflow-y: scroll;
+  max-height: 400px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.booking-details-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.booking-details-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-details {
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  width: auto;
+  margin-bottom: 10px;
+}
+
+.booking-details h3 {
+  margin-top: 0;
+}
+
+.show-all-bookings {
+  margin-top: auto;
+  padding: 10px;
+  background-color: #006edc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.show-all-bookings:hover {
+  background-color: #005bb5;
+}

@@ -4,13 +4,17 @@ import "../styles/Table.css";
 import Modal from "./Modal";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
+import ProfileModal from "./ProfileModal";
 
 export default function PricesSection() {
   const { isAuthenticated, user } = useAuth();
   const [selectedCell, setSelectedCell] = useState(null);
   const [bronModalActive, setBronModalActive] = useState(false);
+  const [authNotification, setAuthNotification] = useState(false);
+  const [profileModalActive, setProfileModalActive] = useState(false);
 
   const handleCellClick = (zone, hours, price) => {
+    console.log(`Selected Zone: ${zone}, Hours: ${hours}, Price: ${price}`);
     setSelectedCell({ zone, hours, price });
   };
 
@@ -24,7 +28,7 @@ export default function PricesSection() {
       userId: user._id,
     };
 
-    // console.log("Booking data:", bookingData); // Додаємо логування для перевірки
+    console.log("Booking data:", bookingData); // Додаємо логування для перевірки
 
     try {
       const response = await axios.post(
@@ -34,9 +38,26 @@ export default function PricesSection() {
 
       console.log("Booking successful:", response.data);
       setBronModalActive(false);
+      // Оновлення бронювань в профілі
+      if (profileModalActive) {
+        setProfileModalActive(false);
+        setProfileModalActive(true);
+      }
     } catch (error) {
       console.error("Error booking:", error);
     }
+  };
+
+  const handleReserveClick = () => {
+    if (isAuthenticated) {
+      setBronModalActive(true);
+    } else {
+      setAuthNotification(true);
+    }
+  };
+
+  const closeAuthNotification = () => {
+    setAuthNotification(false);
   };
 
   return (
@@ -66,13 +87,18 @@ export default function PricesSection() {
                   className={`price-cell ${
                     selectedCell &&
                     selectedCell.zone === row.zone &&
-                    selectedCell.hours === colIndex + 1
+                    selectedCell.hours ===
+                      (colIndex === 0 ? 1 : colIndex * 2 + 1)
                       ? "selected"
                       : ""
                   }`}
                   onClick={() =>
                     price !== null &&
-                    handleCellClick(row.zone, colIndex + 1, price)
+                    handleCellClick(
+                      row.zone,
+                      colIndex === 0 ? 1 : colIndex * 2 + 1,
+                      price
+                    )
                   }
                 >
                   {price !== null ? `${price}₴` : "------"}
@@ -82,30 +108,55 @@ export default function PricesSection() {
           ))}
         </tbody>
       </table>
-      {isAuthenticated && (
-        <Button
-          className="button-zabronuvatu"
-          disabled={!selectedCell}
-          onClick={() => setBronModalActive(true)}
-        >
-          Забронювати
-        </Button>
-      )}
+      <Button
+        className="button-zabronuvatu"
+        disabled={!selectedCell}
+        onClick={handleReserveClick}
+      >
+        Забронювати
+      </Button>
       {bronModalActive && (
         <Modal active={bronModalActive} setActive={setBronModalActive}>
-          <div className="modal-content">
-            <h3>Підтвердження бронювання</h3>
+          <div className="modal-content-bron">
+            <h3 className="modal-name-bron">Підтвердження бронювання</h3>
             {selectedCell && (
               <>
-                <p>Зона: {selectedCell.zone}</p>
-                <p>Кількість годин: {selectedCell.hours}</p>
-                <p>Ціна: {selectedCell.price}₴</p>
-                <Button onClick={handleReserve}>Підтвердити бронювання</Button>
+                <p>
+                  Зона: <span className="red-text">{selectedCell.zone}</span>
+                </p>
+                <p>
+                  Кількість годин:{" "}
+                  <span className="red-text">{selectedCell.hours}</span>
+                </p>
+                <p>
+                  Ціна: <span className="red-text">{selectedCell.price}₴</span>
+                </p>
+                <Button onClick={handleReserve} className="modal-button-bron">
+                  Підтвердити
+                </Button>
               </>
             )}
           </div>
         </Modal>
       )}
+      {authNotification && (
+        <Modal active={authNotification} setActive={setAuthNotification}>
+          <div className="modal-content-auth">
+            <h3>Не має доступу</h3>
+            <p>Будь ласка, авторизуйтесь, щоб зробити бронювання.</p>
+            <Button
+              onClick={closeAuthNotification}
+              className="modal-button-auth"
+            >
+              Закрити
+            </Button>
+          </div>
+        </Modal>
+      )}
+      <ProfileModal
+        active={profileModalActive}
+        setActive={setProfileModalActive}
+      />
     </div>
   );
 }

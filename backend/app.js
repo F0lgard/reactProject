@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const shortid = require("shortid");
+const WebSocket = require("ws");
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
+app.use(bodyParser.json());
 
 // Підключення до бази даних MongoDB
 mongoose.connect("mongodb://localhost:27017/computerClub", {
@@ -40,36 +42,53 @@ const turnirSchema = new mongoose.Schema({
 
 const Turnir = mongoose.model("Turnir", turnirSchema);
 
-// Створення схеми для бронювань
-const bookingSchema = new mongoose.Schema({
+const BookingSchema = new mongoose.Schema({
   zone: String,
   hours: Number,
   price: Number,
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  userId: mongoose.Schema.Types.ObjectId,
+  date: Date,
   createdAt: { type: Date, default: Date.now },
 });
 
-// Створення моделі для бронювань
-const Booking = mongoose.model("Booking", bookingSchema);
+const Booking = mongoose.model("Booking", BookingSchema);
 
-// Додавання middleware для обробки JSON-даних
-app.use(bodyParser.json());
+// WebSocket сервер
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on("connection", (ws) => {
+  console.log("New client connected");
+  ws.on("message", (message) => {
+    console.log(`Received message => ${message}`);
+  });
+  ws.on("close", () => {
+    console.log("Client disconnected");
+  });
+});
+
+const notifyClients = (data) => {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
+};
+
+const onNewBooking = (booking) => {
+  notifyClients({ type: "NEW_BOOKING", booking });
+};
 
 // Обробник POST-запиту для створення нового користувача
 app.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Перевірка, чи користувач з таким ім'ям користувача або електронною адресою вже існує
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
       return res.status(400).send("User already exists");
     }
 
-    // Створення нового екземпляра користувача
     const newUser = new User({ username, email, password });
-
-    // Збереження нового користувача в базі даних
     await newUser.save();
     console.log("User registered successfully:", newUser);
     res.status(200).send("User registered successfully");
@@ -83,21 +102,16 @@ app.post("/login", async (req, res) => {
   const { login, password } = req.body;
 
   try {
-    // Знайдіть користувача за ім'ям користувача
     const user = await User.findOne({ username: login });
 
-    // Перевірте, чи користувач існує та чи правильний пароль
     if (user && password === user.password) {
-      // Якщо авторизація успішна, поверніть користувача зі статусом 200
       res.status(200).json(user);
     } else {
-      // Якщо ім'я користувача або пароль неправильні, поверніть статус 401 (Unauthorized)
       res
         .status(401)
         .json({ message: "Неправильне ім'я користувача або пароль" });
     }
   } catch (error) {
-    // Обробляємо помилку
     console.error("Помилка при авторизації:", error);
     res.status(500).json({ message: "Помилка сервера" });
   }
@@ -146,17 +160,32 @@ app.get("/turnirs", async (req, res) => {
   }
 });
 
+// Обробник POST-запиту для створення нового бронювання
 app.post("/bookings", async (req, res) => {
   const { zone, hours, price, userId } = req.body;
-
-  console.log("Received booking data:", req.body); // Додаємо логування для перевірки
+  const date = new Date();
 
   try {
-    const newBooking = new Booking({ zone, hours, price, userId });
+    const newBooking = new Booking({ zone, hours, price, userId, date });
     await newBooking.save();
+    onNewBooking(newBooking); // Викликаємо функцію для повідомлення клієнтів
     res.status(200).json({ message: "Booking created successfully" });
   } catch (error) {
     console.error("Error creating booking:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Обробник GET-запиту для отримання бронювань користувача
+app.get("/bookings/user/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const bookings = await Booking.find({ userId });
+    console.log(bookings);
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
     res.status(500).json({ message: "Server error" });
   }
 });

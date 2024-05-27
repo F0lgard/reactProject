@@ -246,6 +246,7 @@ button:active {
 .modal.active {
   opacity: 1;
   pointer-events: all;
+  z-index: 1000;
 }
 
 .modal_content {
@@ -254,7 +255,7 @@ button:active {
   padding: 30px 40px 10px;
   border-radius: 12px;
   background-color: #ffffff;
-  width: 450px;
+  width: auto;
   transform: scale(0.5);
   transition: 0.4s all;
 }
@@ -302,4 +303,10 @@ button:active {
 
 table {
   color: #000000;
+}
+
+.vxid-modal {
+  display: flex;
+  flex-direction: column;
+  width: 340px;
 }

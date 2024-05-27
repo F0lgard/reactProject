@@ -42,6 +42,8 @@
   padding: 30px 40px;
   text-align: center;
   margin: 8px 13px;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-radius 0.3s ease;
 }
 
 .table-price th {
@@ -60,11 +62,62 @@
   color: #ffffff;
 }
 
-.price-cell.selected {
-  background-color: #f0f0f0; /* Зміна фону для активної комірки */
-  border: 2px solid #000; /* Зміна обрамлення для активної комірки */
+.price-cell {
+  cursor: pointer; /* Зміна курсора при наведенні */
 }
 
-.modal-content {
+.price-cell.selected {
+  color: #fff;
+  background-color: #ff0000; /* Зміна фону для активної комірки */
+  border-radius: 10px; /* Зміна обрамлення для активної комірки */
+}
+
+.modal-content-bron {
   color: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-name-bron {
+  color: #000000;
+  font-size: 24px;
+  align-self: center;
+  font-family: "Montserrat Alternates", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  padding-bottom: 24px;
+}
+
+.modal-button-bron {
+  align-self: center;
+  height: 60px;
+  padding: 0 60px;
+}
+
+.modal-button-bron:hover {
+  border: 2px solid #000;
+}
+
+.modal-content-auth {
+  text-align: center;
+  color: #000;
+  max-width: 350px;
+}
+
+.modal-content-auth h3 {
+  font-size: 30px;
+  color: #ff0000;
+}
+
+.modal-button-auth {
+  padding: 0 20px;
+  background-color: #006edc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-button-auth:hover {
+  background-color: #005bb5;
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import Modal from "./Modal";
 import RegistrationModal from "./RegistrationModal";
+import ProfileModal from "./ProfileModal"; // Імпортуйте ProfileModal
 import Input from "./Input";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
@@ -10,6 +11,7 @@ export default function Header() {
   const { isAuthenticated, setIsAuthenticated, user, setUser } = useAuth();
   const [loginModalActive, setLoginModalActive] = useState(false);
   const [registrationModalActive, setRegistrationModalActive] = useState(false);
+  const [profileModalActive, setProfileModalActive] = useState(false); // Додайте стан для профілю
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
@@ -96,7 +98,11 @@ export default function Header() {
         {/* Відображення імені користувача та кнопки Вийти */}
         {isAuthenticated && user ? (
           <div className="user-info">
-            <a href="/" className="a-user-info">
+            <a
+              href="#"
+              className="a-user-info"
+              onClick={() => setProfileModalActive(true)} // Додайте обробник для відкриття модального вікна
+            >
               <img
                 src={require("../img/Account.png")}
                 alt="account"
@@ -118,7 +124,7 @@ export default function Header() {
           </Button>
         )}
         <Modal active={loginModalActive} setActive={setLoginModalActive}>
-          <>
+          <div className="vxid-modal">
             <p className="modal-name">ВХІД</p>
             <form className="modal-form" method="POST">
               <Input
@@ -151,11 +157,15 @@ export default function Header() {
                 Реєстрація
               </a>
             </div>
-          </>
+          </div>
         </Modal>
         <RegistrationModal
           active={registrationModalActive}
           setActive={setRegistrationModalActive}
+        />
+        <ProfileModal
+          active={profileModalActive} // Активний стан для ProfileModal
+          setActive={setProfileModalActive} // Метод для закриття ProfileModal
         />
       </header>
     </div>
