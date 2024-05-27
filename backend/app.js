@@ -34,8 +34,14 @@ const userSchema = new mongoose.Schema({
 // Створення моделі користувача на основі схеми
 const User = mongoose.model("users", userSchema);
 
+// Створення схеми турніру
 const turnirSchema = new mongoose.Schema({
-  pairs: [{ team1: String, team2: String }],
+  pairs: [
+    {
+      team1: String,
+      team2: String,
+    },
+  ],
   turnirName: String,
   uniqueCode: String,
 });
@@ -119,7 +125,6 @@ app.post("/login", async (req, res) => {
 
 app.post("/createTurnir", async (req, res) => {
   const { pairs, turnirName } = req.body;
-  console.log(pairs);
   try {
     const uniqueCode = shortid.generate();
     const newTurnir = new Turnir({ pairs, turnirName, uniqueCode });
@@ -138,7 +143,8 @@ app.post("/findTurnir", async (req, res) => {
     const turnirData = await Turnir.findOne({ uniqueCode });
 
     if (turnirData) {
-      res.status(200).json({ turnirData });
+      const { pairs, turnirName, uniqueCode } = turnirData;
+      res.status(200).json({ turnirData: { pairs, turnirName, uniqueCode } });
       console.log("turnir found");
       console.log(turnirData);
     } else {
@@ -182,7 +188,6 @@ app.get("/bookings/user/:userId", async (req, res) => {
 
   try {
     const bookings = await Booking.find({ userId });
-    console.log(bookings);
     res.status(200).json(bookings);
   } catch (error) {
     console.error("Error fetching bookings:", error);

@@ -12,16 +12,16 @@ import "swiper/css/bundle";
 SwiperCore.use([Pagination]);
 
 const generateTournamentBracket = (teams) => {
-  if (teams.length <= 1) return [teams];
+  if (teams.length <= 1) return [];
 
   const pairs = [];
   for (let i = 0; i < teams.length; i += 2) {
     const team1 = teams[i];
     const team2 = teams[i + 1] || "BYE"; // Якщо непарна кількість команд
-    pairs.push([team1, team2]);
+    pairs.push({ team1, team2 });
   }
 
-  return [pairs];
+  return pairs;
 };
 
 const TurnirInput = ({
@@ -92,64 +92,56 @@ const TurnirInput = ({
   </div>
 );
 
-const TurnirBracket = ({ turnirs, handleWinnerSelect }) => (
-  <div className="turnir-swiper-section">
-    <div className="text-wrap-slider-turnir">
-      <h3>
-        Назва турніру: <span className="red-text">{turnirs[0].turnirName}</span>
-      </h3>
-      <p>
-        Унікальний код турніру:{" "}
-        <span className="red-text">{turnirs[0].uniqueCode}</span>
-      </p>
-    </div>
-    <div className="wrap-table-turnir">
-      {turnirs[0].pairs.map((round, roundIndex) => (
-        <div key={roundIndex} className="turnir-round">
-          {round.map(
-            (pair, matchIndex) =>
-              pair && (
-                <div
-                  key={`${roundIndex}-${matchIndex}`}
-                  className="table-para-teams"
+const TurnirBracket = ({ turnirs, handleWinnerSelect }) => {
+  const currentTurnir = turnirs[0];
+
+  return (
+    <div className="turnir-swiper-section">
+      <div className="text-wrap-slider-turnir">
+        <h3>
+          Назва турніру:{" "}
+          <span className="red-text">{currentTurnir.turnirName}</span>
+        </h3>
+        <p>
+          Унікальний код турніру:{" "}
+          <span className="red-text">{currentTurnir.uniqueCode}</span>
+        </p>
+      </div>
+      <div className="wrap-table-turnir">
+        {currentTurnir.pairs &&
+          Array.isArray(currentTurnir.pairs) &&
+          currentTurnir.pairs.map((pair, matchIndex) => (
+            <div key={matchIndex} className="table-para-teams">
+              <div className="table-one-team">
+                {pair.team1 || `Team ${matchIndex * 2 + 1}`}
+              </div>
+              <div className="table-one-team table-winner-team">
+                <select
+                  onChange={(e) =>
+                    handleWinnerSelect(0, 0, matchIndex, e.target.value)
+                  }
+                  value={pair.winner || ""}
                 >
-                  <div className="table-one-team">
-                    {pair[0] || `Team ${matchIndex * 2 + 1}`}
-                  </div>
-                  <div className="table-one-team table-winner-team">
-                    <select
-                      onChange={(e) =>
-                        handleWinnerSelect(
-                          0,
-                          roundIndex,
-                          matchIndex,
-                          e.target.value
-                        )
-                      }
-                      value={pair[2] || ""}
-                    >
-                      <option value="" disabled>
-                        Winner
-                      </option>
-                      <option value={pair[0] || `Team ${matchIndex * 2 + 1}`}>
-                        {pair[0] || `Team ${matchIndex * 2 + 1}`}
-                      </option>
-                      <option value={pair[1] || `Team ${matchIndex * 2 + 2}`}>
-                        {pair[1] || `Team ${matchIndex * 2 + 2}`}
-                      </option>
-                    </select>
-                  </div>
-                  <div className="table-one-team">
-                    {pair[1] || `Team ${matchIndex * 2 + 2}`}
-                  </div>
-                </div>
-              )
-          )}
-        </div>
-      ))}
+                  <option value="" disabled>
+                    Winner
+                  </option>
+                  <option value={pair.team1 || `Team ${matchIndex * 2 + 1}`}>
+                    {pair.team1 || `Team ${matchIndex * 2 + 1}`}
+                  </option>
+                  <option value={pair.team2 || `Team ${matchIndex * 2 + 2}`}>
+                    {pair.team2 || `Team ${matchIndex * 2 + 2}`}
+                  </option>
+                </select>
+              </div>
+              <div className="table-one-team">
+                {pair.team2 || `Team ${matchIndex * 2 + 2}`}
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function TurnirSection() {
   const { isAuthenticated } = useAuth();
@@ -182,7 +174,6 @@ export default function TurnirSection() {
     }
   };
 
-  // Оновлений handleFindTurnir
   const handleFindTurnir = async () => {
     if (turnirUnikNum.trim() === "") {
       alert("Будь ласка, введіть унікальний номер турніру");
@@ -194,14 +185,19 @@ export default function TurnirSection() {
       });
       const turnirData = response.data.turnirData;
       const { pairs, turnirName, uniqueCode } = turnirData;
-      // Оновлення стану turnirs з використанням функції обновлення стану
+
+      console.log("Received pairs from server:", pairs);
+
+      if (!pairs || !Array.isArray(pairs) || pairs.length === 0) {
+        throw new Error("Некоректна структура даних для пар турніру");
+      }
+
       setTurnirs((prevTurnirs) => [
         ...prevTurnirs,
         { pairs, turnirName, uniqueCode },
       ]);
-      // Додавання нового слайда після успішного знаходження турніру
-      const swiperInstance = document.querySelector(".swiper-container").swiper;
-      swiperInstance.slideNext();
+
+      setCreatedTurnir(true);
     } catch (error) {
       alert(`Помилка при пошуку турніру: ${error.message}`);
     }
@@ -211,26 +207,9 @@ export default function TurnirSection() {
     const updatedTurnirs = turnirs.map((turnir, index) => {
       if (index !== turnirIndex) return turnir;
 
-      const updatedPairs = turnir.pairs.map((round, rIndex) => {
-        if (rIndex < roundIndex) return round;
-
-        if (rIndex === roundIndex) {
-          const updatedRound = round.map((match, mIndex) => {
-            if (mIndex !== matchIndex) return match;
-            return [match[0], match[1], winner];
-          });
-          return updatedRound;
-        }
-
-        // Обчислити пари для наступного раунду
-        const prevRound = updatedPairs[rIndex - 1];
-        const nextRound = prevRound.reduce((acc, match, index) => {
-          if (index % 2 === 0) {
-            acc.push([match[2] || "", prevRound[index + 1]?.[2] || ""]);
-          }
-          return acc;
-        }, []);
-        return nextRound;
+      const updatedPairs = turnir.pairs.map((match, mIndex) => {
+        if (mIndex !== matchIndex) return match;
+        return { ...match, winner };
       });
 
       return { ...turnir, pairs: updatedPairs };
@@ -279,14 +258,14 @@ export default function TurnirSection() {
             handleFindTurnir={handleFindTurnir}
           />
         </SwiperSlide>
-        {createdTurnir && turnirs.length > 0 && (
-          <SwiperSlide>
+        {turnirs.map((turnir, index) => (
+          <SwiperSlide key={index}>
             <TurnirBracket
-              turnirs={turnirs}
+              turnirs={[turnir]}
               handleWinnerSelect={handleWinnerSelect}
             />
           </SwiperSlide>
-        )}
+        ))}
       </Swiper>
       {createdTurnir && (
         <Button onClick={handleSaveTournament} className="btn-save">
