@@ -18,7 +18,7 @@ const generateTournamentBracket = (teams) => {
   for (let i = 0; i < teams.length; i += 2) {
     const team1 = teams[i];
     const team2 = teams[i + 1] || "BYE"; // Якщо непарна кількість команд
-    pairs.push({ team1, team2 });
+    pairs.push({ team1, team2, winner: "" });
   }
 
   return pairs;
@@ -92,7 +92,11 @@ const TurnirInput = ({
   </div>
 );
 
-const TurnirBracket = ({ turnirs, handleWinnerSelect }) => {
+const TurnirBracket = ({
+  turnirs,
+  handleWinnerSelect,
+  handleSaveTournament,
+}) => {
   const currentTurnir = turnirs[0];
 
   return (
@@ -116,22 +120,22 @@ const TurnirBracket = ({ turnirs, handleWinnerSelect }) => {
                 {pair.team1 || `Team ${matchIndex * 2 + 1}`}
               </div>
               <div className="table-one-team table-winner-team">
-                <select
-                  onChange={(e) =>
-                    handleWinnerSelect(0, 0, matchIndex, e.target.value)
-                  }
-                  value={pair.winner || ""}
-                >
-                  <option value="" disabled>
-                    Winner
-                  </option>
-                  <option value={pair.team1 || `Team ${matchIndex * 2 + 1}`}>
-                    {pair.team1 || `Team ${matchIndex * 2 + 1}`}
-                  </option>
-                  <option value={pair.team2 || `Team ${matchIndex * 2 + 2}`}>
-                    {pair.team2 || `Team ${matchIndex * 2 + 2}`}
-                  </option>
-                </select>
+                {pair.winner ? (
+                  <span>{pair.winner}</span>
+                ) : (
+                  <select
+                    onChange={(e) =>
+                      handleWinnerSelect(0, 0, matchIndex, e.target.value)
+                    }
+                    value={pair.winner}
+                  >
+                    <option value="" disabled>
+                      Winner
+                    </option>
+                    <option value={pair.team1}>{pair.team1}</option>
+                    <option value={pair.team2}>{pair.team2}</option>
+                  </select>
+                )}
               </div>
               <div className="table-one-team">
                 {pair.team2 || `Team ${matchIndex * 2 + 2}`}
@@ -139,6 +143,9 @@ const TurnirBracket = ({ turnirs, handleWinnerSelect }) => {
             </div>
           ))}
       </div>
+      <Button onClick={handleSaveTournament} className="btn-save">
+        Зберегти зміни
+      </Button>
     </div>
   );
 };
@@ -221,7 +228,7 @@ export default function TurnirSection() {
   const handleSaveTournament = async () => {
     try {
       await axios.post("http://localhost:3001/updateTurnir", {
-        turnirs: turnirs[0],
+        turnir: turnirs[0],
       });
       alert("Турнір успішно збережено!");
     } catch (error) {
@@ -263,15 +270,11 @@ export default function TurnirSection() {
             <TurnirBracket
               turnirs={[turnir]}
               handleWinnerSelect={handleWinnerSelect}
+              handleSaveTournament={handleSaveTournament}
             />
           </SwiperSlide>
         ))}
       </Swiper>
-      {createdTurnir && (
-        <Button onClick={handleSaveTournament} className="btn-save">
-          Зберегти турнір
-        </Button>
-      )}
       {!isAuthenticated && (
         <div className="turnir-overlay">
           <h3 className="desabled-tip">

@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const shortid = require("shortid");
 const WebSocket = require("ws");
+const bcrypt = require("bcrypt");
 
 const app = express();
 const port = 3001;
@@ -40,21 +41,24 @@ const turnirSchema = new mongoose.Schema({
     {
       team1: String,
       team2: String,
+      winner: String, // Додаємо поле для переможця
     },
   ],
   turnirName: String,
   uniqueCode: String,
+  createdAt: { type: Date, default: Date.now, index: { expires: "7d" } }, // Додаємо поле createdAt з TTL індексом
 });
 
 const Turnir = mongoose.model("Turnir", turnirSchema);
 
+// Створення схеми бронювання
 const BookingSchema = new mongoose.Schema({
   zone: String,
   hours: Number,
   price: Number,
   userId: mongoose.Schema.Types.ObjectId,
   date: Date,
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now, index: { expires: "3d" } }, // Додаємо поле createdAt з TTL індексом
 });
 
 const Booking = mongoose.model("Booking", BookingSchema);
@@ -94,7 +98,8 @@ app.post("/register", async (req, res) => {
       return res.status(400).send("User already exists");
     }
 
-    const newUser = new User({ username, email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
     console.log("User registered successfully:", newUser);
     res.status(200).send("User registered successfully");
@@ -110,7 +115,7 @@ app.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ username: login });
 
-    if (user && password === user.password) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       res.status(200).json(user);
     } else {
       res
@@ -156,12 +161,23 @@ app.post("/findTurnir", async (req, res) => {
   }
 });
 
-app.get("/turnirs", async (req, res) => {
+app.post("/updateTurnir", async (req, res) => {
+  const { turnir } = req.body;
+
   try {
-    const turnirs = await Turnir.find();
-    res.status(200).json(turnirs);
+    const updatedTurnir = await Turnir.findOneAndUpdate(
+      { uniqueCode: turnir.uniqueCode },
+      { pairs: turnir.pairs },
+      { new: true }
+    );
+
+    if (updatedTurnir) {
+      res.status(200).json({ message: "Турнір успішно оновлено" });
+    } else {
+      res.status(404).json({ message: "Турнір не знайдено" });
+    }
   } catch (error) {
-    console.error("Помилка завантаження турнірів:", error);
+    console.error("Помилка при оновленні турніру:", error);
     res.status(500).json({ message: "Помилка сервера" });
   }
 });
@@ -195,13 +211,36 @@ app.get("/bookings/user/:userId", async (req, res) => {
   }
 });
 
-// Додайте обробник помилок для всіх інших запитів
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Щось пішло не так на сервері!");
+// Обробник POST-запиту для зміни пароля
+app.post("/change-password", async (req, res) => {
+  const { userId, currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (user && (await bcrypt.compare(currentPassword, user.password))) {
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedNewPassword;
+      await user.save();
+      res
+        .status(200)
+        .json({ success: true, message: "Пароль успішно змінено" });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, message: "Неправильний поточний пароль" });
+    }
+  } catch (error) {
+    console.error("Помилка при зміні пароля:", error);
+    res.status(500).json({ success: false, message: "Помилка сервера" });
+  }
 });
 
-// Прослуховування порту сервера
+// Додайте обробник помилок для всіх інших запитів
+app.use((req, res) => {
+  res.status(404).send("Not Found");
+});
+
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}/`);
 });

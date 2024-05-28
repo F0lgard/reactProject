@@ -3,15 +3,18 @@ import Button from "./Button";
 import "../styles/Table.css";
 import Modal from "./Modal";
 import { useAuth } from "./AuthContext";
+import { useBookings } from "./BookingsContext"; // імпорт контексту бронювань
 import axios from "axios";
 import ProfileModal from "./ProfileModal";
 
 export default function PricesSection() {
   const { isAuthenticated, user } = useAuth();
+  const { bookings, addBooking } = useBookings(); // використання контексту бронювань
   const [selectedCell, setSelectedCell] = useState(null);
   const [bronModalActive, setBronModalActive] = useState(false);
   const [authNotification, setAuthNotification] = useState(false);
   const [profileModalActive, setProfileModalActive] = useState(false);
+  const [bookingError, setBookingError] = useState("");
 
   const handleCellClick = (zone, hours, price) => {
     console.log(`Selected Zone: ${zone}, Hours: ${hours}, Price: ${price}`);
@@ -26,9 +29,26 @@ export default function PricesSection() {
       hours: selectedCell.hours,
       price: selectedCell.price,
       userId: user._id,
+      date: new Date().toISOString().split("T")[0], // бронювання на поточну дату
     };
 
-    console.log("Booking data:", bookingData); // Додаємо логування для перевірки
+    console.log("Booking data:", bookingData);
+
+    const userBookingsForDay = bookings.filter(
+      (booking) =>
+        booking.userId === user._id &&
+        new Date(booking.date).toISOString().split("T")[0] === bookingData.date
+    );
+
+    const totalHoursForDay = userBookingsForDay.reduce(
+      (total, booking) => total + booking.hours,
+      0
+    );
+
+    if (totalHoursForDay + bookingData.hours > 10) {
+      setBookingError("Ви не можете забронювати більше ніж 10 годин на день.");
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -37,8 +57,8 @@ export default function PricesSection() {
       );
 
       console.log("Booking successful:", response.data);
+      addBooking(response.data); // додавання нового бронювання в контекст
       setBronModalActive(false);
-      // Оновлення бронювань в профілі
       if (profileModalActive) {
         setProfileModalActive(false);
         setProfileModalActive(true);
@@ -134,6 +154,7 @@ export default function PricesSection() {
                 <Button onClick={handleReserve} className="modal-button-bron">
                   Підтвердити
                 </Button>
+                {bookingError && <p className="error-text">{bookingError}</p>}
               </>
             )}
           </div>

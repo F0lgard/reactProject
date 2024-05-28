@@ -6,6 +6,7 @@ import "react-calendar/dist/Calendar.css";
 import "../styles/Profile.css";
 import "../styles/CalendarOverrides.css";
 import axios from "axios";
+import ChangePasswordForm from "./ChangePasswordForm";
 
 const ProfileModal = ({ active, setActive }) => {
   const { user } = useAuth();
@@ -13,6 +14,8 @@ const ProfileModal = ({ active, setActive }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedBookings, setSelectedBookings] = useState([]);
   const [showAllBookingsMode, setShowAllBookingsMode] = useState(false);
+  const [isPasswordChangeFormOpen, setIsPasswordChangeFormOpen] =
+    useState(false);
 
   const fetchBookings = useCallback(async () => {
     try {
@@ -81,6 +84,14 @@ const ProfileModal = ({ active, setActive }) => {
     return null;
   };
 
+  const handleOpenChangePasswordForm = () => {
+    setIsPasswordChangeFormOpen(true);
+  };
+
+  const handleCloseChangePasswordForm = () => {
+    setIsPasswordChangeFormOpen(false);
+  };
+
   return (
     <Modal active={active} setActive={setActive}>
       <h2 className="user-profile">Профіль користувача</h2>
@@ -99,9 +110,12 @@ const ProfileModal = ({ active, setActive }) => {
           <p>
             Email: <span className="red-text">{user?.email}</span>
           </p>
-          <p>
-            Пароль: <span className="red-text">{user?.password}</span>
-          </p>
+          <a
+            onClick={handleOpenChangePasswordForm}
+            className="change-password-a"
+          >
+            Змінити пароль
+          </a>
           <button
             onClick={handleShowAllBookingsClick}
             className="show-all-bookings"
@@ -109,6 +123,12 @@ const ProfileModal = ({ active, setActive }) => {
             Показати всі бронювання
           </button>
         </div>
+        {isPasswordChangeFormOpen && (
+          <ChangePasswordForm
+            user={user}
+            setActive={handleCloseChangePasswordForm}
+          />
+        )}
         <div className="calendar-container">
           <Calendar
             onClickDay={handleDateClick}

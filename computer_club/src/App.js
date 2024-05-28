@@ -11,21 +11,24 @@ import PronasSection from "./components/PronasSection";
 import TurnirSection from "./components/TurnirSection";
 import { AuthProvider } from "./components/AuthContext"; // Імпортуємо AuthProvider з файлу AuthContext.js
 import ScrollToTopButton from "./components/ScrollToTopButton";
+import { BookingsProvider } from "./components/BookingsContext";
 
 function App() {
   return (
     <AuthProvider>
-      <div className="App">
-        <Header />
-        <WelcomeSection />
-        <ZoneSection />
-        <PricesSection />
-        <ScrollToTopButton />
-        <GamesSection />
-        <PronasSection />
-        <TurnirSection />
-        <Footer />
-      </div>
+      <BookingsProvider>
+        <div className="App">
+          <Header />
+          <WelcomeSection />
+          <ZoneSection />
+          <PricesSection />
+          <ScrollToTopButton />
+          <GamesSection />
+          <PronasSection />
+          <TurnirSection />
+          <Footer />
+        </div>
+      </BookingsProvider>
     </AuthProvider>
   );
 }
