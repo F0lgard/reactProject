@@ -14,6 +14,7 @@ export default function Header() {
   const [profileModalActive, setProfileModalActive] = useState(false); // Додайте стан для профілю
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const storedIsAuthenticated =
@@ -45,14 +46,22 @@ export default function Header() {
         password,
       });
       const userData = response.data; // Отримання даних користувача з відповіді сервера
-      alert(`Ви успішно авторизувалися, ${userData.username}!`);
+
       setLoginModalActive(false);
       setIsAuthenticated(true); // Встановлення стану авторизації в компоненті
       localStorage.setItem("isAuthenticated", true); // Збереження стану авторизації в localStorage
       localStorage.setItem("user", JSON.stringify(userData)); // Збереження даних користувача в localStorage
       setUser(userData); // Оновлення стану змінної user
+      setError(""); // Очищення помилок
     } catch (error) {
-      alert(`Помилка під час авторизації: ${error.message}`);
+      // Визначення конкретної помилки
+      if (error.response && error.response.status === 401) {
+        setError("Невірний логін або пароль.");
+      } else if (error.response && error.response.status === 404) {
+        setError("Користувача не знайдено.");
+      } else {
+        setError("Сталася помилка під час авторизації.");
+      }
     }
   };
 
@@ -128,11 +137,12 @@ export default function Header() {
             <p className="modal-name">ВХІД</p>
             <form className="modal-form" method="POST">
               <Input
-                label="Login"
+                label="Login or Email"
                 type="input"
                 id="login"
                 value={login}
                 onChange={handleLoginChange}
+                placeholder="Example: Nick or email@example.com"
               />
               <Input
                 label="Password"
@@ -140,7 +150,9 @@ export default function Header() {
                 id="password"
                 value={password}
                 onChange={handlePasswordChange}
+                placeholder="Example: Qwerty123"
               />
+              {error && <p className="error-message">{error}</p>}
               <button className="modal-button" onClick={handleLogin}>
                 Ввійти
               </button>

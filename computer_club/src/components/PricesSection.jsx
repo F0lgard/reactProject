@@ -1,20 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import "../styles/Table.css";
 import Modal from "./Modal";
 import { useAuth } from "./AuthContext";
-import { useBookings } from "./BookingsContext"; // імпорт контексту бронювань
+import { useBookings } from "./BookingsContext";
 import axios from "axios";
 import ProfileModal from "./ProfileModal";
 
 export default function PricesSection() {
   const { isAuthenticated, user } = useAuth();
-  const { bookings, addBooking } = useBookings(); // використання контексту бронювань
+  const { bookings, addBooking } = useBookings();
   const [selectedCell, setSelectedCell] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  });
   const [bronModalActive, setBronModalActive] = useState(false);
   const [authNotification, setAuthNotification] = useState(false);
   const [profileModalActive, setProfileModalActive] = useState(false);
   const [bookingError, setBookingError] = useState("");
+
+  useEffect(() => {
+    const today = new Date();
+    const todayString = today.toISOString().split("T")[0];
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + 3);
+    const maxDateString = maxDate.toISOString().split("T")[0];
+
+    if (
+      new Date(selectedDate) < new Date(todayString) ||
+      new Date(selectedDate) > new Date(maxDateString)
+    ) {
+      setSelectedDate(todayString);
+    }
+  }, [selectedDate]);
 
   const handleCellClick = (zone, hours, price) => {
     console.log(`Selected Zone: ${zone}, Hours: ${hours}, Price: ${price}`);
@@ -22,14 +41,33 @@ export default function PricesSection() {
   };
 
   const handleReserve = async () => {
-    if (!selectedCell) return;
+    if (!selectedCell || !selectedDate) {
+      setBookingError("Будь ласка, виберіть дату.");
+      return;
+    }
+
+    const today = new Date();
+    const todayString = today.toISOString().split("T")[0];
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + 3);
+    const maxDateString = maxDate.toISOString().split("T")[0];
+
+    if (
+      new Date(selectedDate) < new Date(todayString) ||
+      new Date(selectedDate) > new Date(maxDateString)
+    ) {
+      setBookingError(
+        "Ви не можете забронювати на минуле число або більше ніж на 3 дні вперед."
+      );
+      return;
+    }
 
     const bookingData = {
       zone: selectedCell.zone,
       hours: selectedCell.hours,
       price: selectedCell.price,
       userId: user._id,
-      date: new Date().toISOString().split("T")[0], // бронювання на поточну дату
+      date: selectedDate,
     };
 
     console.log("Booking data:", bookingData);
@@ -57,7 +95,7 @@ export default function PricesSection() {
       );
 
       console.log("Booking successful:", response.data);
-      addBooking(response.data); // додавання нового бронювання в контекст
+      addBooking(response.data.booking);
       setBronModalActive(false);
       if (profileModalActive) {
         setProfileModalActive(false);
@@ -150,6 +188,21 @@ export default function PricesSection() {
                 </p>
                 <p>
                   Ціна: <span className="red-text">{selectedCell.price}₴</span>
+                </p>
+                <p>
+                  Виберіть дату:
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    required
+                    min={new Date().toISOString().split("T")[0]}
+                    max={
+                      new Date(new Date().setDate(new Date().getDate() + 3))
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                  />
                 </p>
                 <Button onClick={handleReserve} className="modal-button-bron">
                   Підтвердити

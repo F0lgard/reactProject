@@ -38,7 +38,7 @@ const ProfileModal = ({ active, setActive }) => {
   }, [user, fetchBookings]);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080");
+    const ws = new WebSocket("ws://localhost:8000");
     ws.onopen = () => {
       console.log("WebSocket Client Connected");
     };
@@ -143,7 +143,11 @@ const ProfileModal = ({ active, setActive }) => {
                 {selectedBookings.map((booking) => (
                   <div key={booking._id} className="booking-details">
                     <p>
-                      Дата: {new Date(booking.createdAt).toLocaleDateString()}
+                      Дата бронювання:{" "}
+                      {new Date(booking.createdAt).toLocaleDateString()}
+                    </p>
+                    <p>
+                      Обрана дата: {new Date(booking.date).toLocaleDateString()}
                     </p>
                     <p>Зона: {booking.zone}</p>
                     <p>Кількість годин: {booking.hours}</p>
@@ -159,7 +163,11 @@ const ProfileModal = ({ active, setActive }) => {
                 {selectedBookings.map((booking) => (
                   <div key={booking._id} className="booking-details">
                     <p>
-                      Дата: {new Date(booking.createdAt).toLocaleDateString()}
+                      Дата бронювання:{" "}
+                      {new Date(booking.createdAt).toLocaleDateString()}
+                    </p>
+                    <p>
+                      Обрана дата: {new Date(booking.date).toLocaleDateString()}
                     </p>
                     <p>Зона: {booking.zone}</p>
                     <p>Кількість годин: {booking.hours}</p>

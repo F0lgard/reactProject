@@ -1,0 +1,28 @@
+{
+  "folders": [
+	{
+		"path": "../../СКБД/lab5"
+	},
+	{
+		"path": "../../СКБД/lab7"
+	},
+	{
+		"path": "../../СКБД/lab8_postgre"
+	},
+	{
+		"path": ".."
+	},
+	{
+		"path": "../../СКБД/lab9"
+	},
+	{
+		"path": "../../СКБД/lab10-11"
+	},
+	{
+		"path": "../../СКБД/lab10php"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "lab5_mongo"
+  }
+}

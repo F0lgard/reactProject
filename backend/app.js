@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const shortid = require("shortid");
 const WebSocket = require("ws");
-const bcrypt = require("bcrypt");
 
 const app = express();
 const port = 3001;
@@ -64,7 +63,7 @@ const BookingSchema = new mongoose.Schema({
 const Booking = mongoose.model("Booking", BookingSchema);
 
 // WebSocket сервер
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: 8000 });
 
 wss.on("connection", (ws) => {
   console.log("New client connected");
@@ -98,8 +97,7 @@ app.post("/register", async (req, res) => {
       return res.status(400).send("User already exists");
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({ username, email, password });
     await newUser.save();
     console.log("User registered successfully:", newUser);
     res.status(200).send("User registered successfully");
@@ -109,18 +107,23 @@ app.post("/register", async (req, res) => {
   }
 });
 
+// Обробник POST-запиту для входу користувача
 app.post("/login", async (req, res) => {
   const { login, password } = req.body;
 
   try {
-    const user = await User.findOne({ username: login });
+    const user = await User.findOne({
+      $or: [{ username: login }, { email: login }],
+    });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (!user) {
+      return res.status(401).json({ message: "Неправильний логін або емейл" });
+    }
+
+    if (user.password === password) {
       res.status(200).json(user);
     } else {
-      res
-        .status(401)
-        .json({ message: "Неправильне ім'я користувача або пароль" });
+      res.status(401).json({ message: "Неправильний пароль" });
     }
   } catch (error) {
     console.error("Помилка при авторизації:", error);
@@ -128,6 +131,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// Обробник POST-запиту для створення нового турніру
 app.post("/createTurnir", async (req, res) => {
   const { pairs, turnirName } = req.body;
   try {
@@ -141,6 +145,7 @@ app.post("/createTurnir", async (req, res) => {
   }
 });
 
+// Обробник POST-запиту для пошуку турніру за унікальним кодом
 app.post("/findTurnir", async (req, res) => {
   const { uniqueCode } = req.body;
 
@@ -161,6 +166,7 @@ app.post("/findTurnir", async (req, res) => {
   }
 });
 
+// Обробник POST-запиту для оновлення турніру
 app.post("/updateTurnir", async (req, res) => {
   const { turnir } = req.body;
 
@@ -184,14 +190,15 @@ app.post("/updateTurnir", async (req, res) => {
 
 // Обробник POST-запиту для створення нового бронювання
 app.post("/bookings", async (req, res) => {
-  const { zone, hours, price, userId } = req.body;
-  const date = new Date();
+  const { zone, hours, price, userId, date } = req.body;
 
   try {
     const newBooking = new Booking({ zone, hours, price, userId, date });
     await newBooking.save();
     onNewBooking(newBooking); // Викликаємо функцію для повідомлення клієнтів
-    res.status(200).json({ message: "Booking created successfully" });
+    res
+      .status(200)
+      .json({ message: "Booking created successfully", booking: newBooking });
   } catch (error) {
     console.error("Error creating booking:", error);
     res.status(500).json({ message: "Server error" });
@@ -218,9 +225,8 @@ app.post("/change-password", async (req, res) => {
   try {
     const user = await User.findById(userId);
 
-    if (user && (await bcrypt.compare(currentPassword, user.password))) {
-      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-      user.password = hashedNewPassword;
+    if (user && user.password === currentPassword) {
+      user.password = newPassword;
       await user.save();
       res
         .status(200)
@@ -233,6 +239,40 @@ app.post("/change-password", async (req, res) => {
   } catch (error) {
     console.error("Помилка при зміні пароля:", error);
     res.status(500).json({ success: false, message: "Помилка сервера" });
+  }
+});
+
+// Обробник POST-запиту для перевірки унікальності користувацького імені
+app.post("/check-username", async (req, res) => {
+  const { username } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(200).json({ exists: true });
+    } else {
+      return res.status(200).json({ exists: false });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Failed to check username");
+  }
+});
+
+// Обробник POST-запиту для перевірки унікальності емейлу
+app.post("/check-email", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(200).json({ exists: true });
+    } else {
+      return res.status(200).json({ exists: false });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Failed to check email");
   }
 });
 

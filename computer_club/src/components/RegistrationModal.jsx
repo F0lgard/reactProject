@@ -1,9 +1,9 @@
-// RegistrationModal.jsx
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import Input from "./Input";
 import Button from "./Button";
 import axios from "axios";
+import debounce from "lodash/debounce";
 
 const RegistrationModal = ({ active, setActive }) => {
   const [username, setUsername] = useState("");
@@ -20,6 +20,7 @@ const RegistrationModal = ({ active, setActive }) => {
     "Пароль не можe бути пустим"
   );
   const [formValid, setFormValid] = useState(false);
+
   useEffect(() => {
     if (usernameError || emailError || passwordError) {
       setFormValid(false);
@@ -27,6 +28,7 @@ const RegistrationModal = ({ active, setActive }) => {
       setFormValid(true);
     }
   }, [usernameError, emailError, passwordError]);
+
   const blurHandler = (event) => {
     switch (event.target.name) {
       case "username":
@@ -41,22 +43,55 @@ const RegistrationModal = ({ active, setActive }) => {
     }
   };
 
+  const checkUsernameExists = debounce(async (username) => {
+    if (username) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/check-username",
+          { username }
+        );
+        if (response.data.exists) {
+          setUsernameError("Нікнейм вже зайнятий");
+        }
+      } catch (error) {
+        console.error("Error checking username:", error);
+      }
+    }
+  }, 500);
+
+  const checkEmailExists = debounce(async (email) => {
+    if (email) {
+      try {
+        const response = await axios.post("http://localhost:3001/check-email", {
+          email,
+        });
+        if (response.data.exists) {
+          setEmailError("Емейл вже зайнятий");
+        }
+      } catch (error) {
+        console.error("Error checking email:", error);
+      }
+    }
+  }, 500);
+
   const handleUsernameChange = (event) => {
     const username = event.target.value;
     setUsername(username);
-    const reUsername = /^[a-zA-Z0-9_-]{3,16}$/; // Регулярний вираз для валідації користувацького імені
+    const reUsername = /^[a-zA-Z0-9_-]{3,16}$/;
     if (username.length < 3 || username.length > 16) {
       setUsernameError("Нікнейм має містити від 3 до 16 символів");
     } else if (!reUsername.test(username)) {
       setUsernameError("Нікнейм містить некоректні символи");
     } else {
       setUsernameError("");
+      checkUsernameExists(username);
     }
   };
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-    const reEmail = String(event.target.value)
+    const email = event.target.value;
+    setEmail(email);
+    const reEmail = String(email)
       .toLowerCase()
       .match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -65,12 +100,12 @@ const RegistrationModal = ({ active, setActive }) => {
       setEmailError("Некоректний емейл");
     } else {
       setEmailError("");
+      checkEmailExists(email);
     }
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
-
     if (event.target.value.length < 8) {
       setPasswordError("Ваш пароль повинен містити щонайменше 8 символів");
     } else if (event.target.value.search(/[a-z]/i) < 0) {
@@ -83,7 +118,7 @@ const RegistrationModal = ({ active, setActive }) => {
   };
 
   const handleRegistration = async (event) => {
-    event.preventDefault(); // Зупиняємо стандартну поведінку форми
+    event.preventDefault();
     try {
       const response = await axios.post("http://localhost:3001/register", {
         username,
@@ -91,11 +126,9 @@ const RegistrationModal = ({ active, setActive }) => {
         password,
       });
       alert("Registration successful:");
-      // Додаткові дії після успішної реєстрації, наприклад, перенаправлення на іншу сторінку
     } catch (error) {
       alert("Registration failed:");
       console.log(error);
-      // alert(error.response.data);
     }
   };
 
@@ -136,6 +169,7 @@ const RegistrationModal = ({ active, setActive }) => {
             value={username}
             onChange={handleUsernameChange}
             onBlur={(event) => blurHandler(event)}
+            placeholder="Example: Nick"
           />
           {emailDirty && emailError && (
             <span style={{ color: "red", fontSize: "16px" }}>{emailError}</span>
@@ -148,6 +182,7 @@ const RegistrationModal = ({ active, setActive }) => {
             value={email}
             onChange={handleEmailChange}
             onBlur={(event) => blurHandler(event)}
+            placeholder="Example: Nick@gmail.com"
           />
           {passwordDirty && passwordError && (
             <span style={{ color: "red", fontSize: "16px" }}>
@@ -162,6 +197,7 @@ const RegistrationModal = ({ active, setActive }) => {
             value={password}
             onChange={handlePasswordChange}
             onBlur={(event) => blurHandler(event)}
+            placeholder="Example: Qwerty123"
           />
           <Button
             className="modal-button"
