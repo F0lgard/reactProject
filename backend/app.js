@@ -25,15 +25,33 @@ db.once("open", () => {
 });
 
 // Створення схеми користувача
-const userSchema = new mongoose.Schema({
-  username: String,
-  email: String,
-  password: String,
-});
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
+  },
+  { timestamps: true }
+);
 
 // Створення моделі користувача на основі схеми
-const User = mongoose.model("users", userSchema);
-
+const User = mongoose.model("User", userSchema);
 // Створення схеми турніру
 const turnirSchema = new mongoose.Schema({
   pairs: [
@@ -56,6 +74,7 @@ const BookingSchema = new mongoose.Schema({
   hours: Number,
   price: Number,
   userId: mongoose.Schema.Types.ObjectId,
+  userEmail: String, // Додаємо поле для зберігання емейлу користувача
   date: Date,
   createdAt: { type: Date, default: Date.now, index: { expires: "3d" } }, // Додаємо поле createdAt з TTL індексом
 });
@@ -89,7 +108,7 @@ const onNewBooking = (booking) => {
 
 // Обробник POST-запиту для створення нового користувача
 app.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body; // Додано поле ролі
 
   try {
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
@@ -97,7 +116,7 @@ app.post("/register", async (req, res) => {
       return res.status(400).send("User already exists");
     }
 
-    const newUser = new User({ username, email, password });
+    const newUser = new User({ username, email, password, role }); // Додано поле ролі
     await newUser.save();
     console.log("User registered successfully:", newUser);
     res.status(200).send("User registered successfully");
@@ -188,12 +207,22 @@ app.post("/updateTurnir", async (req, res) => {
   }
 });
 
-// Обробник POST-запиту для створення нового бронювання
 app.post("/bookings", async (req, res) => {
   const { zone, hours, price, userId, date } = req.body;
 
   try {
-    const newBooking = new Booking({ zone, hours, price, userId, date });
+    const user = await User.findById(userId); // Знаходимо користувача за userId
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const newBooking = new Booking({
+      zone,
+      hours,
+      price,
+      userId,
+      userEmail: user.email, // Зберігаємо емейл користувача
+      date,
+    });
     await newBooking.save();
     onNewBooking(newBooking); // Викликаємо функцію для повідомлення клієнтів
     res
@@ -201,6 +230,17 @@ app.post("/bookings", async (req, res) => {
       .json({ message: "Booking created successfully", booking: newBooking });
   } catch (error) {
     console.error("Error creating booking:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Обробник GET-запиту для отримання всіх бронювань
+app.get("/bookings", async (req, res) => {
+  try {
+    const bookings = await Booking.find();
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
     res.status(500).json({ message: "Server error" });
   }
 });

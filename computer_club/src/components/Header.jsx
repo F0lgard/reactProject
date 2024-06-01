@@ -1,8 +1,10 @@
+// components/Header.js
+
 import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import Modal from "./Modal";
 import RegistrationModal from "./RegistrationModal";
-import ProfileModal from "./ProfileModal"; // Імпортуйте ProfileModal
+import ProfileModal from "./ProfileModal";
 import Input from "./Input";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
@@ -11,7 +13,7 @@ export default function Header() {
   const { isAuthenticated, setIsAuthenticated, user, setUser } = useAuth();
   const [loginModalActive, setLoginModalActive] = useState(false);
   const [registrationModalActive, setRegistrationModalActive] = useState(false);
-  const [profileModalActive, setProfileModalActive] = useState(false); // Додайте стан для профілю
+  const [profileModalActive, setProfileModalActive] = useState(false);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -45,16 +47,15 @@ export default function Header() {
         login,
         password,
       });
-      const userData = response.data; // Отримання даних користувача з відповіді сервера
+      const userData = response.data;
 
       setLoginModalActive(false);
-      setIsAuthenticated(true); // Встановлення стану авторизації в компоненті
-      localStorage.setItem("isAuthenticated", true); // Збереження стану авторизації в localStorage
-      localStorage.setItem("user", JSON.stringify(userData)); // Збереження даних користувача в localStorage
-      setUser(userData); // Оновлення стану змінної user
-      setError(""); // Очищення помилок
+      setIsAuthenticated(true);
+      localStorage.setItem("isAuthenticated", true);
+      localStorage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
+      setError("");
     } catch (error) {
-      // Визначення конкретної помилки
       if (error.response && error.response.status === 401) {
         setError("Невірний логін або пароль.");
       } else if (error.response && error.response.status === 404) {
@@ -66,10 +67,10 @@ export default function Header() {
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false); // Встановлення стану авторизації в компоненті
-    setUser(null); // Очищення даних користувача
-    localStorage.removeItem("isAuthenticated"); // Видалення збереженого стану авторизації з localStorage
-    localStorage.removeItem("user"); // Видалення збережених даних користувача з localStorage
+    setIsAuthenticated(false);
+    setUser(null);
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("user");
   };
 
   return (
@@ -104,13 +105,12 @@ export default function Header() {
             </li>
           </ul>
         </nav>
-        {/* Відображення імені користувача та кнопки Вийти */}
         {isAuthenticated && user ? (
           <div className="user-info">
             <a
               href="#"
               className="a-user-info"
-              onClick={() => setProfileModalActive(true)} // Додайте обробник для відкриття модального вікна
+              onClick={() => setProfileModalActive(true)}
             >
               <img
                 src={require("../img/Account.png")}
@@ -176,8 +176,8 @@ export default function Header() {
           setActive={setRegistrationModalActive}
         />
         <ProfileModal
-          active={profileModalActive} // Активний стан для ProfileModal
-          setActive={setProfileModalActive} // Метод для закриття ProfileModal
+          active={profileModalActive}
+          setActive={setProfileModalActive}
         />
       </header>
     </div>

@@ -39,7 +39,8 @@
 .bookingselected {
   display: flex;
   flex-direction: column;
-  width: 250px;
+  min-width: 250px;
+  max-width: 350px;
   margin-top: auto;
 }
 

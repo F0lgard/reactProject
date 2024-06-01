@@ -18,10 +18,16 @@ const ProfileModal = ({ active, setActive }) => {
     useState(false);
 
   const fetchBookings = useCallback(async () => {
+    if (!user) return; // Add this check
     try {
-      const response = await axios.get(
-        `http://localhost:3001/bookings/user/${user._id}`
-      );
+      let response;
+      if (user.role === "admin") {
+        response = await axios.get("http://localhost:3001/bookings");
+      } else {
+        response = await axios.get(
+          `http://localhost:3001/bookings/user/${user._id}`
+        );
+      }
       const sortedBookings = response.data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
@@ -92,6 +98,10 @@ const ProfileModal = ({ active, setActive }) => {
     setIsPasswordChangeFormOpen(false);
   };
 
+  if (!user) {
+    return null; // Return null or a loader if user is not available
+  }
+
   return (
     <Modal active={active} setActive={setActive}>
       <h2 className="user-profile">Профіль користувача</h2>
@@ -109,6 +119,9 @@ const ProfileModal = ({ active, setActive }) => {
           </p>
           <p>
             Email: <span className="red-text">{user?.email}</span>
+          </p>
+          <p>
+            Role: <span className="red-text">{user?.role}</span>
           </p>
           <a
             onClick={handleOpenChangePasswordForm}
@@ -144,14 +157,32 @@ const ProfileModal = ({ active, setActive }) => {
                   <div key={booking._id} className="booking-details">
                     <p>
                       Дата бронювання:{" "}
-                      {new Date(booking.createdAt).toLocaleDateString()}
+                      <span className="red-text">
+                        {new Date(booking.createdAt).toLocaleDateString()}
+                      </span>
                     </p>
                     <p>
-                      Обрана дата: {new Date(booking.date).toLocaleDateString()}
+                      Обрана дата:{" "}
+                      <span className="red-text">
+                        {new Date(booking.date).toLocaleDateString()}
+                      </span>
                     </p>
-                    <p>Зона: {booking.zone}</p>
-                    <p>Кількість годин: {booking.hours}</p>
-                    <p>Ціна: {booking.price}₴</p>
+                    <p>
+                      Зона: <span className="red-text">{booking.zone}</span>
+                    </p>
+                    <p>
+                      Кількість годин:{" "}
+                      <span className="red-text">{booking.hours}</span>
+                    </p>
+                    <p>
+                      Ціна: <span className="red-text">{booking.price}₴</span>
+                    </p>
+                    {user.role === "admin" && (
+                      <p>
+                        Емейл користувача:{" "}
+                        <span className="red-text">{booking.userEmail}</span>
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -164,14 +195,32 @@ const ProfileModal = ({ active, setActive }) => {
                   <div key={booking._id} className="booking-details">
                     <p>
                       Дата бронювання:{" "}
-                      {new Date(booking.createdAt).toLocaleDateString()}
+                      <span className="red-text">
+                        {new Date(booking.createdAt).toLocaleDateString()}
+                      </span>
                     </p>
                     <p>
-                      Обрана дата: {new Date(booking.date).toLocaleDateString()}
+                      Обрана дата:{" "}
+                      <span className="red-text">
+                        {new Date(booking.date).toLocaleDateString()}
+                      </span>
                     </p>
-                    <p>Зона: {booking.zone}</p>
-                    <p>Кількість годин: {booking.hours}</p>
-                    <p>Ціна: {booking.price}₴</p>
+                    <p>
+                      Зона: <span className="red-text">{booking.zone}</span>
+                    </p>
+                    <p>
+                      Кількість годин:{" "}
+                      <span className="red-text">{booking.hours}</span>
+                    </p>
+                    <p>
+                      Ціна: <span className="red-text">{booking.price}₴</span>
+                    </p>
+                    {user.role === "admin" && (
+                      <p>
+                        Емейл користувача:{" "}
+                        <span className="red-text">{booking.userEmail}</span>
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
