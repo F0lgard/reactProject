@@ -61,11 +61,21 @@
 }
 
 .booking-details {
+  display: flex;
+  flex-direction: column;
   padding: 10px;
   border: 2px solid #ddd;
   border-radius: 10px;
   width: auto;
   margin-bottom: 10px;
+  position: relative; /* Add this line */
+}
+
+.delete-icon {
+  position: absolute; /* Add this line */
+  top: 10px; /* Adjust the position as needed */
+  right: 10px; /* Adjust the position as needed */
+  cursor: pointer;
 }
 
 .booking-details h3 {

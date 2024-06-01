@@ -258,6 +258,31 @@ app.get("/bookings/user/:userId", async (req, res) => {
   }
 });
 
+// Обробник DELETE-запиту для видалення бронювання
+app.delete("/bookings/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log("Received delete request for booking ID:", id); // Log the received ID
+
+  try {
+    const deletedBooking = await Booking.findByIdAndDelete(id);
+
+    if (!deletedBooking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    notifyClients({ type: "DELETE_BOOKING", booking: deletedBooking });
+    res
+      .status(200)
+      .json({
+        message: "Booking deleted successfully",
+        booking: deletedBooking,
+      });
+  } catch (error) {
+    console.error("Error deleting booking:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Обробник POST-запиту для зміни пароля
 app.post("/change-password", async (req, res) => {
   const { userId, currentPassword, newPassword } = req.body;

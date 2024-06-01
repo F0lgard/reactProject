@@ -18,7 +18,7 @@ const ProfileModal = ({ active, setActive }) => {
     useState(false);
 
   const fetchBookings = useCallback(async () => {
-    if (!user) return; // Add this check
+    if (!user) return;
     try {
       let response;
       if (user.role === "admin") {
@@ -52,6 +52,10 @@ const ProfileModal = ({ active, setActive }) => {
       const data = JSON.parse(message.data);
       if (data.type === "NEW_BOOKING") {
         setBookings((prevBookings) => [data.booking, ...prevBookings]);
+      } else if (data.type === "DELETE_BOOKING") {
+        setBookings((prevBookings) =>
+          prevBookings.filter((booking) => booking._id !== data.booking._id)
+        );
       }
     };
     ws.onclose = () => {
@@ -76,6 +80,26 @@ const ProfileModal = ({ active, setActive }) => {
     setSelectedDate(null);
     setSelectedBookings(bookings);
     setShowAllBookingsMode(true);
+  };
+
+  const handleDeleteBooking = async (bookingId) => {
+    try {
+      await axios.delete(`http://localhost:3001/bookings/${bookingId}`);
+      setBookings((prevBookings) =>
+        prevBookings.filter((booking) => booking._id !== bookingId)
+      );
+      if (selectedDate) {
+        setSelectedBookings((prevSelectedBookings) =>
+          prevSelectedBookings.filter((booking) => booking._id !== bookingId)
+        );
+      } else {
+        setSelectedBookings((prevSelectedBookings) =>
+          prevSelectedBookings.filter((booking) => booking._id !== bookingId)
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting booking:", error);
+    }
   };
 
   const tileClassName = ({ date, view }) => {
@@ -178,10 +202,20 @@ const ProfileModal = ({ active, setActive }) => {
                       Ціна: <span className="red-text">{booking.price}₴</span>
                     </p>
                     {user.role === "admin" && (
-                      <p>
-                        Емейл користувача:{" "}
-                        <span className="red-text">{booking.userEmail}</span>
-                      </p>
+                      <>
+                        <p>
+                          Емейл користувача:{" "}
+                          <span className="red-text">{booking.userEmail}</span>
+                        </p>
+                        <img
+                          src={require("../img/trashcan.png")}
+                          alt="account"
+                          width="35px"
+                          height="35px"
+                          className="delete-icon"
+                          onClick={() => handleDeleteBooking(booking._id)}
+                        />
+                      </>
                     )}
                   </div>
                 ))}
@@ -193,6 +227,16 @@ const ProfileModal = ({ active, setActive }) => {
               <div className="booking-details-list">
                 {selectedBookings.map((booking) => (
                   <div key={booking._id} className="booking-details">
+                    {user.role === "admin" && (
+                      <img
+                        src={require("../img/trashcan.png")}
+                        alt="delete"
+                        width="35px"
+                        height="35px"
+                        className="delete-icon"
+                        onClick={() => handleDeleteBooking(booking._id)}
+                      />
+                    )}
                     <p>
                       Дата бронювання:{" "}
                       <span className="red-text">
@@ -226,9 +270,9 @@ const ProfileModal = ({ active, setActive }) => {
               </div>
             </div>
           ) : (
-            <p className="selected-date">
-              Виберіть дату, щоб переглянути деталі бронювання.
-            </p>
+            <div className="booking-details-container">
+              <h3>Виберіть дату для перегляду бронювань</h3>
+            </div>
           )}
         </div>
       </div>
