@@ -5,21 +5,22 @@ import Button from "./Button";
 import axios from "axios";
 import debounce from "lodash/debounce";
 
-const RegistrationModal = ({ active, setActive }) => {
+const RegistrationModal = ({ active, setActive, setLoginActive }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [usernameDirty, setUsernameDirty] = useState(false);
   const [emailDirty, setEmailDirty] = useState(false);
   const [passwordDirty, setPasswordDirty] = useState(false);
-  const [emailError, setEmailError] = useState("Емейл не можe бути пустим");
+  const [emailError, setEmailError] = useState("Емейл не може бути пустим");
   const [usernameError, setUsernameError] = useState(
-    "Нікнейм не можe бути пустим"
+    "Нікнейм не може бути пустим"
   );
   const [passwordError, setPasswordError] = useState(
-    "Пароль не можe бути пустим"
+    "Пароль не може бути пустим"
   );
   const [formValid, setFormValid] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false); // Додано стейт для успішної реєстрації
 
   useEffect(() => {
     if (usernameError || emailError || passwordError) {
@@ -125,9 +126,9 @@ const RegistrationModal = ({ active, setActive }) => {
         email,
         password,
       });
-      alert("Registration successful:");
+      setRegistrationSuccess(true); // Позначити реєстрацію як успішну
     } catch (error) {
-      alert("Registration failed:");
+      alert("Помилка реєстрації");
       console.log(error);
     }
   };
@@ -143,6 +144,11 @@ const RegistrationModal = ({ active, setActive }) => {
     setUsernameError("Нікнейм не може бути пустим");
     setPasswordError("Пароль не може бути пустим");
     setFormValid(false);
+    setRegistrationSuccess(false); // Забути про успішну реєстрацію при закритті модального вікна
+    setActive(false);
+    if (setLoginActive) {
+      setLoginActive(true);
+    }
   };
 
   return (
@@ -154,59 +160,73 @@ const RegistrationModal = ({ active, setActive }) => {
       }}
     >
       <div className="vxid-modal">
-        <p className="modal-name">РЕЄСТРАЦІЯ</p>
-        <form className="modal-form" method="POST">
-          {usernameDirty && usernameError && (
-            <span style={{ color: "red", fontSize: "16px" }}>
-              {usernameError}
-            </span>
-          )}
-          <Input
-            label="Username"
-            name="username"
-            type="input"
-            id="username"
-            value={username}
-            onChange={handleUsernameChange}
-            onBlur={(event) => blurHandler(event)}
-            placeholder="Example: Nick"
-          />
-          {emailDirty && emailError && (
-            <span style={{ color: "red", fontSize: "16px" }}>{emailError}</span>
-          )}
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-            onBlur={(event) => blurHandler(event)}
-            placeholder="Example: Nick@gmail.com"
-          />
-          {passwordDirty && passwordError && (
-            <span style={{ color: "red", fontSize: "16px" }}>
-              {passwordError}
-            </span>
-          )}
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-            onBlur={(event) => blurHandler(event)}
-            placeholder="Example: Qwerty123"
-          />
-          <Button
-            className="modal-button"
-            onClick={handleRegistration}
-            disabled={!formValid}
-          >
-            Зареєструватися
-          </Button>
-        </form>
+        {registrationSuccess ? ( // Перевірка на успішну реєстрацію
+          <>
+            <p className="modal-name">ВІТІАЄМО</p>
+            <p className="vxid-modal register-succses">
+              Реєстрація пройшла успішно
+            </p>
+            <Button onClick={handleModalClose} className="success-modal-Button">
+              Закрити
+            </Button>
+          </>
+        ) : (
+          <form className="modal-form" method="POST">
+            <p className="modal-name">РЕЄСТРАЦІЯ</p>
+            {usernameDirty && usernameError && (
+              <span style={{ color: "red", fontSize: "16px" }}>
+                {usernameError}
+              </span>
+            )}
+            <Input
+              label="Username"
+              name="username"
+              type="input"
+              id="username"
+              value={username}
+              onChange={handleUsernameChange}
+              onBlur={(event) => blurHandler(event)}
+              placeholder="Example: Nick"
+            />
+            {emailDirty && emailError && (
+              <span style={{ color: "red", fontSize: "16px" }}>
+                {emailError}
+              </span>
+            )}
+            <Input
+              label="Email"
+              name="email"
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange}
+              onBlur={(event) => blurHandler(event)}
+              placeholder="Example: Nick@gmail.com"
+            />
+            {passwordDirty && passwordError && (
+              <span style={{ color: "red", fontSize: "16px" }}>
+                {passwordError}
+              </span>
+            )}
+            <Input
+              label="Password"
+              name="password"
+              type="password"
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+              onBlur={(event) => blurHandler(event)}
+              placeholder="Example: Qwerty123"
+            />
+            <Button
+              className="modal-button"
+              onClick={handleRegistration}
+              disabled={!formValid}
+            >
+              Зареєструватися
+            </Button>
+          </form>
+        )}
       </div>
     </Modal>
   );

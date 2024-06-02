@@ -121,3 +121,7 @@
 .modal-button-auth:hover {
   background-color: #005bb5;
 }
+
+.modal-button-auth:active {
+  background-color: #004895;
+}
