@@ -1,0 +1,38 @@
+/* src/components/Reviews/ReviewItem.css */
+.review-item {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  max-width: 100%;
+  width: auto;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.username {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.review-rating {
+  margin-bottom: 10px;
+}
+
+.review-rating p {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ff9900; /* Оранжевий для рейтингу */
+}
+
+.review-text p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}

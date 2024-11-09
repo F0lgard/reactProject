@@ -1,0 +1,63 @@
+/* src/components/Reviews/ReviewForm.css */
+.review-form {
+  background-color: #09111c;
+  width: 100%;
+  margin: 20px auto;
+}
+
+.review-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 15px;
+  min-height: 80px;
+  color: black;
+}
+
+.review-form .rating-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.review-form .rating-label {
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.review-form .rating-select {
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.review-form .submit-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.review-form button:hover {
+  background-color: #0056b3;
+}
+
+.review-form .submit-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.review-form .error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}

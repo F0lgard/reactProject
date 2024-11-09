@@ -73,6 +73,17 @@ export default function Header() {
     localStorage.removeItem("user");
   };
 
+  const [avatar, setAvatar] = useState(
+    user?.avatar || "http://localhost:3001/uploads/usericon.png"
+  ); // Дефолтне фото
+
+  useEffect(() => {
+    // Оновлюємо аватар, коли user.avatar змінюється або стає доступним
+    if (user?.avatar) {
+      setAvatar(user.avatar);
+    }
+  }, [user]);
+
   return (
     <div>
       <header className="header">
@@ -101,25 +112,26 @@ export default function Header() {
               <a href="#about">Про нас</a>
             </li>
             <li>
-              <a href="#tournaments">Турніри</a>
+              <a href="#reviews">Відгуки</a>
             </li>
           </ul>
         </nav>
         {isAuthenticated && user ? (
           <div className="user-info">
-            <a
-              href="#"
-              className="a-user-info"
+            <div
+              className="user-info-container"
               onClick={() => setProfileModalActive(true)}
+              style={{ cursor: "pointer" }} // Додайте це, щоб виглядало як клік
             >
               <img
-                src={require("../img/Account.png")}
+                src={avatar}
                 alt="account"
                 width="35px"
                 height="35px"
+                className="user-avatar"
               />
-            </a>
-            <span className="username">{user.username}</span>
+              <span className="usernameh">{user.username}</span>
+            </div>
             <Button className="button-logout" onClick={handleLogout}>
               Вийти
             </Button>

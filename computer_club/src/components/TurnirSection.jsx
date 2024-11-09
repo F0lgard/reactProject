@@ -157,7 +157,7 @@ export default function TurnirSection() {
   const [turnirUnikNum, setTurnirUnikNum] = useState("");
   const [turnirs, setTurnirs] = useState([]);
   const [createdTurnir, setCreatedTurnir] = useState(false);
-
+  const { user, setUser } = useAuth();
   const handleCreateTurnir = async () => {
     if (teams.length > 0 && turnirName.trim() !== "") {
       try {
@@ -275,11 +275,15 @@ export default function TurnirSection() {
           </SwiperSlide>
         ))}
       </Swiper>
-      {!isAuthenticated && (
+      {isAuthenticated && user?.role === "admin" ? (
+        // Ваш вміст для адмінів
+        <div className="admin-content">
+          <h3>Тільки для адміністраторів</h3>
+          <p>Цей вміст доступний лише користувачам з роллю "адмін".</p>
+        </div>
+      ) : (
         <div className="turnir-overlay">
-          <h3 className="desabled-tip">
-            Для доступу до турнірної сітки, вам потрібно авторизуватися
-          </h3>
+          <h3 className="desabled-tip">Coming soon...</h3>
         </div>
       )}
     </div>

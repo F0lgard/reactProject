@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "kursova2024",
+  "private_key_id": "38bc45dc8d21f56cee0a30e79ecadccc267154c5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCoVA4pRMQWH5JD\ndUoXMnPkSm1lkt33NygL625hgI2EtD65kztN00V9/IxpJe96bHZZXnah6GqnjVxs\n2EK1/1CYIh63D9ZwTmuA0JlWu4/2R8DE+yddLA/vImQw4wHUWXWSNSS3Cuibed7+\nhpeHyQ24RzjdnYLAvGGfI/5jrf3FALh82IsbZYCfEdOZg5HaTpcWQygAyLKKkgfM\nVpLl8v/E/KfiwGTr5K5H8VXf/l0DTp//89fJpFxsHRyqKxl6X4gusWb4lCFboYyL\nO+hTpIxiHL/1gyp5c0gS+s6kqxpsfpLdUsoHUtRVDr89xhYhtrPLNB/+4phSMfDl\nZDifn5InAgMBAAECggEAGsK6OZ9gGTBNvYHBFK0Fta6Lc9GEjk/rgvGb685XMVjC\nfBhHHllPO/dRj0njp6/kpNKaw6TCh/62Seubt3luo7EQ9wOCkPo2pxUCu8I34eyI\nXgibunlN0zPBf/AnE05hnavrOVp3nngilo5pOsIg90IDbWAkMGYCkx1SzSAVLyNr\nBX+eTTqZbGS7QrpwMGeCrpBCF76zfbkNDHTb8loEL0vR+kmA5/ocRX/FnVkY2rCi\nozUjBzzHItkErzgdZ088R8fLLISN757XBDOkoBUNU7U7gcPG+ns75zsnuu0xQ+0Y\nGSkruxPChceVInLdKP6KmJzlNK9MOmh+fZqSauT6iQKBgQDe0glP5vqtPa7JQSIP\nSuFn203c8YNUIs6gMvR7dQDxyHfB8xS1KbVn4fg703Npwn08uMFiMxXkehYLWKfI\nf/A/EoCepX/Eup6NG+pPYCoDBWCWushIGf9vQx2mtFdtury4Zf0YQ7uG7tAbD4YK\nus/fYNyBPT44sj7dXXyjRc7dYwKBgQDBZMSSlMkDUVBgFcDL4erDHkkvcT0VLMGX\nkqcyzrtljEfum2HMXxEe8p0O0TyXBVIaxkG2OVD1m67e/gC1dg7IYoi4sKaR2CdF\n1AqkYhQRSsjoaZqBtMfYEDy2LOUgkN+CZjPWwteDz044nDpN/dItD9yTV2lVMId1\nwuWXuQQlbQKBgDZdXLRIEOVv5VNpNtwwUuq6ETdVHcvLakqf5BKzK3XSiZWir2y8\nLmyYL665GrG1KEVGdrh06mSCfRprmRRMUtuwsf0DODdRqRmYtASF2/o8t6JPFEqz\nPSVyZKul2KcHJsB+8c+XxwtW/SN9GCFKDynbQjGuNZ4zry7nfl9/ysctAoGAaek4\nqhnnd/SpMuXW3xFLUy4b4GqAjD8lik/bVzzWbgeEQU1BIv6RTsSJdNrr9r0IOPeI\ndzYue0OWYjLyym3sLJuhypubrVWWNGyqo1m/KbUuD/H9lrkdlNtXlGFD3jDY5v33\nt86e3mXCrcgJOjseRmVgZCTD386i8MAaopvFhIUCgYEAz8nkRbJe1Ez1ESJAUTxn\nrZkW9SXoLcXQG+kiwBCWc5Hyy6B871hsqU3sLjRQiTv5Oaj0/2vGlY2Ki9rt3wRh\nVxQMeidwcQw7W4dmEitKLNnKowuJJdYdxu571fXManBbdA39B/sM3VDg7UgMgqTz\ne7YUOt6QNzNG0R9Dgnwe71o=\n-----END PRIVATE KEY-----\n",
+  "client_email": "translate@kursova2024.iam.gserviceaccount.com",
+  "client_id": "114503025234984345718",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/translate%40kursova2024.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

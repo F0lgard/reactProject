@@ -8,16 +8,20 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null); // Додаємо стан для користувача
 
-  // AuthContext.js
+  // Ініціалізуємо стан авторизації та користувача з localStorage при завантаженні компонента
   useEffect(() => {
     const storedIsAuthenticated =
       localStorage.getItem("isAuthenticated") === "true";
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setIsAuthenticated(storedIsAuthenticated);
     setUser(storedUser);
-
-    // console.log("User from localStorage:", storedUser); // Додайте це логування
   }, []);
+
+  // Оновлюємо localStorage кожного разу, коли змінюється isAuthenticated або user
+  useEffect(() => {
+    localStorage.setItem("isAuthenticated", isAuthenticated);
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [isAuthenticated, user]);
 
   return (
     <AuthContext.Provider

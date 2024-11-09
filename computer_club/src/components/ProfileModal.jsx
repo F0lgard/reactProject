@@ -9,13 +9,24 @@ import axios from "axios";
 import ChangePasswordForm from "./ChangePasswordForm";
 
 const ProfileModal = ({ active, setActive }) => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedBookings, setSelectedBookings] = useState([]);
   const [showAllBookingsMode, setShowAllBookingsMode] = useState(false);
   const [isPasswordChangeFormOpen, setIsPasswordChangeFormOpen] =
     useState(false);
+  const [avatar, setAvatar] = useState(
+    user?.avatar || "http://localhost:3001/uploads/usericon.png"
+  ); // Дефолтне фото
+  console.log(user);
+
+  useEffect(() => {
+    // Оновлюємо аватар, коли user.avatar змінюється або стає доступним
+    if (user?.avatar) {
+      setAvatar(user.avatar);
+    }
+  }, [user]);
 
   const fetchBookings = useCallback(async () => {
     if (!user) return;
@@ -65,6 +76,40 @@ const ProfileModal = ({ active, setActive }) => {
       ws.close();
     };
   }, []);
+
+  const handleAvatarChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const userId = user._id;
+    if (!userId) {
+      console.error("userId відсутній");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+    formData.append("userId", userId);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/upload-avatar`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      // Оновлюємо user в локальному та глобальному контексті з новим URL аватара
+      setUser((prevUser) => ({
+        ...prevUser,
+        avatar: response.data.avatar,
+      }));
+      setAvatar(response.data.avatar); // Оновлюємо локальний аватар
+    } catch (error) {
+      console.error("Error uploading avatar:", error);
+    }
+  };
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
@@ -132,20 +177,18 @@ const ProfileModal = ({ active, setActive }) => {
       <div className="profile-modal">
         <div className="user-info-wrap">
           <img
-            src={require("../img/usericon.png")}
+            src={avatar}
             alt="account"
-            width="283px"
-            height="171px"
+            width="150px"
+            height="150px"
             className="user-icon"
           />
+          <input type="file" onChange={handleAvatarChange} accept="image/*" />
           <p>
             Ім'я користувача: <span className="red-text">{user?.username}</span>
           </p>
           <p>
             Email: <span className="red-text">{user?.email}</span>
-          </p>
-          <p>
-            Role: <span className="red-text">{user?.role}</span>
           </p>
           <a
             onClick={handleOpenChangePasswordForm}

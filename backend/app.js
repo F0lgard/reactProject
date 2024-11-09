@@ -4,13 +4,14 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const shortid = require("shortid");
 const WebSocket = require("ws");
+const axios = require("axios");
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
-
+app.use("/uploads", express.static("uploads"));
 // Підключення до бази даних MongoDB
 mongoose.connect("mongodb://localhost:27017/computerClub", {
   useNewUrlParser: true,
@@ -46,6 +47,15 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    avatar: {
+      type: String,
+      default: "./uploads/usericon.png", // URL дефолтного аватара
+    },
+    commentsCount: {
+      type: Number,
+      default: 0,
+    },
+    lastCommentDate: Date,
   },
   { timestamps: true }
 );
@@ -108,7 +118,7 @@ const onNewBooking = (booking) => {
 
 // Обробник POST-запиту для створення нового користувача
 app.post("/register", async (req, res) => {
-  const { username, email, password, role } = req.body; // Додано поле ролі
+  const { username, email, password, role, avatar } = req.body; // Додано поле ролі
 
   try {
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
@@ -116,7 +126,7 @@ app.post("/register", async (req, res) => {
       return res.status(400).send("User already exists");
     }
 
-    const newUser = new User({ username, email, password, role }); // Додано поле ролі
+    const newUser = new User({ username, email, password, role, avatar }); // Додано поле ролі
     await newUser.save();
     console.log("User registered successfully:", newUser);
     res.status(200).send("User registered successfully");
@@ -271,12 +281,10 @@ app.delete("/bookings/:id", async (req, res) => {
     }
 
     notifyClients({ type: "DELETE_BOOKING", booking: deletedBooking });
-    res
-      .status(200)
-      .json({
-        message: "Booking deleted successfully",
-        booking: deletedBooking,
-      });
+    res.status(200).json({
+      message: "Booking deleted successfully",
+      booking: deletedBooking,
+    });
   } catch (error) {
     console.error("Error deleting booking:", error);
     res.status(500).json({ message: "Server error" });
@@ -338,6 +346,159 @@ app.post("/check-email", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Failed to check email");
+  }
+});
+
+// Схема для MongoDB
+const reviewSchema = new mongoose.Schema(
+  {
+    text: { type: String, required: true },
+    rating: { type: Number, required: true, min: 1, max: 5 },
+    useri: {
+      username: { type: String, required: true },
+      profileImage: { type: String, default: "" },
+      userId: { type: String, required: true },
+    },
+    sentiment: { type: String, required: true }, // Поле для настрою
+    processedText: { type: String, required: true }, // Поле для відфільтрованого тексту
+  },
+  { timestamps: true }
+);
+
+const Review = mongoose.model("Review", reviewSchema);
+
+// Функція коригування настрою
+const adjustSentiment = (sentiment, rating) => {
+  if (sentiment === "Negative" && rating > 3) {
+    return "Neutral"; // Якщо негативний настрій і висока оцінка, робимо нейтральним
+  }
+
+  if (sentiment === "Neutral" && rating <= 3) {
+    return "Negative"; // Якщо нейтральний настрій і низька оцінка, робимо негативним
+  }
+
+  return sentiment; // Для інших випадків повертаємо оригінальний настрій
+};
+
+// Ендпойнт для отримання всіх коментарів
+app.get("/api/reviews", async (req, res) => {
+  try {
+    const reviews = await Review.find().sort({ createdAt: -1 });
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching reviews" });
+  }
+});
+
+app.post("/api/reviews", async (req, res) => {
+  const { text, rating, useri } = req.body;
+
+  try {
+    // Знаходимо користувача за ID
+    const user = await User.findById(useri.userId);
+
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    const currentDate = new Date();
+    const oneWeekAgo = new Date(currentDate);
+    oneWeekAgo.setDate(currentDate.getDate() - 7); // Поточна дата мінус тиждень
+
+    // Якщо дата останнього коментаря була менше тижня тому, перевіряємо кількість коментарів
+    if (user.lastCommentDate && user.lastCommentDate > oneWeekAgo) {
+      if (user.commentsCount >= 3) {
+        return res
+          .status(400)
+          .json({ error: "Ви можете написати лише 3 відгуки на тиждень" });
+      }
+    } else {
+      // Якщо користувач не додавав коментарів протягом останнього тижня
+      user.commentsCount = 0; // Оновлюємо лічильник
+    }
+
+    // Викликаємо Flask API для аналізу настрою
+    const response = await axios.post("http://127.0.0.1:5000/api/analyze", {
+      text,
+    });
+    const { sentiment, processed_text: processedText } = response.data;
+
+    // Коригування настрою на основі оцінки
+    const adjustedSentiment = adjustSentiment(sentiment, rating);
+
+    // Створення нового відгуку
+    const newReview = new Review({
+      text,
+      rating,
+      useri,
+      sentiment: adjustedSentiment,
+      processedText,
+    });
+
+    await newReview.save();
+
+    // Оновлюємо інформацію про кількість коментарів та дату
+    user.commentsCount += 1;
+    user.lastCommentDate = currentDate;
+    await user.save();
+
+    return res.status(201).json(newReview);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error adding review" });
+  }
+});
+
+const multer = require("multer");
+const path = require("path");
+
+// Налаштування для multer
+
+// Налаштування multer для збереження файлів
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads"); // Папка для збереження
+  },
+  filename: (req, file, cb) => {
+    // Генерація імені файлу
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// Завантаження аватара користувача
+app.post("/upload-avatar", upload.single("avatar"), async (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: "userId відсутній у запиті" });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Користувача не знайдено" });
+    }
+
+    // Зберігаємо шлях до файлу аватара
+    user.avatar = `http://localhost:3001/uploads/${req.file.filename}`;
+    await user.save();
+    console.log("userId на бекенді:", userId);
+    console.log("Файл:", req.file);
+
+    res.status(200).json({
+      message: "Аватар успішно завантажено",
+      avatar: user.avatar,
+    });
+    console.log("Новий аватар користувача:", user.avatar);
+  } catch (error) {
+    console.error("Помилка при завантаженні аватара:", error);
+    res.status(500).json({ message: "Помилка сервера" });
   }
 });
 

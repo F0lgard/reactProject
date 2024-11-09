@@ -12,6 +12,7 @@ import TurnirSection from "./components/TurnirSection";
 import { AuthProvider } from "./components/AuthContext"; // Імпортуємо AuthProvider з файлу AuthContext.js
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import { BookingsProvider } from "./components/BookingsContext";
+import Reviews from "./components/Reviews/Reviews";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <GamesSection />
           <PronasSection />
           <TurnirSection />
+          <Reviews />
           <Footer />
         </div>
       </BookingsProvider>
