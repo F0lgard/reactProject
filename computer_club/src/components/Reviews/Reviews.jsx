@@ -17,9 +17,6 @@ const Reviews = () => {
         const data = await response.json();
 
         // Сортуємо відгуки за сентиментом:
-        // 1. Позитивні ("Positive") йдуть першими
-        // 2. Нейтральні ("Neutral") йдуть після позитивних
-        // 3. Негативні ("Negative") йдуть останніми
         const sortedReviews = data.sort((a, b) => {
           const sentimentOrder = {
             Positive: 1,
@@ -39,7 +36,6 @@ const Reviews = () => {
   }, []);
 
   const addReview = (newReview) => {
-    // Додаємо новий відгук в початок списку та сортуємо за сентиментом
     const updatedReviews = [newReview, ...reviews].sort((a, b) => {
       const sentimentOrder = {
         Positive: 1,
@@ -66,6 +62,13 @@ const Reviews = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  // Обчислюємо середній рейтинг
+  const averageRating = reviews.length
+    ? (
+        reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
+      ).toFixed(1)
+    : 0;
 
   return (
     <div className="reviews" id="reviews">
@@ -97,6 +100,14 @@ const Reviews = () => {
             Наступна сторінка
           </button>
         </div>
+      </div>
+
+      {/* Виведення кількості відгуків і середнього рейтингу */}
+      <div className="reviews-summary">
+        <p>
+          Загальна кількість відгуків: {reviews.length} <br />
+          Середній рейтинг: {averageRating} / 5
+        </p>
       </div>
     </div>
   );

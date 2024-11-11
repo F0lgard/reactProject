@@ -74,10 +74,10 @@
 }
 
 .delete-icon {
-  position: absolute; /* Add this line */
-  top: 10px; /* Adjust the position as needed */
+  position: absolute; /* Add this line */ /* Adjust the position as needed */
   right: 10px; /* Adjust the position as needed */
   cursor: pointer;
+  margin-top: 45px;
 }
 
 .booking-details h3 {

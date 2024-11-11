@@ -19,10 +19,20 @@ const ReviewForm = ({ addReview }) => {
     }
   }, [user]);
 
+  const MIN_WORDS = 5; // Мінімальна кількість слів в відгуку
+
+  // Функція для підрахунку кількості слів в тексті
+  const countWords = (text) => {
+    return text.trim().split(/\s+/).length;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!text.trim()) return;
+    if (countWords(text) < MIN_WORDS) {
+      setError(`Відгук повинен містити мінімум ${MIN_WORDS} слів.`);
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -38,7 +48,6 @@ const ReviewForm = ({ addReview }) => {
     };
 
     try {
-      // Аналіз настрою за допомогою Flask API
       const sentimentResponse = await fetch(
         "http://localhost:5000/api/analyze",
         {
@@ -55,15 +64,19 @@ const ReviewForm = ({ addReview }) => {
       }
 
       const sentimentData = await sentimentResponse.json();
-      const { sentiment } = sentimentData;
+      const { sentiment, processed_text } = sentimentData; // Отримуємо processed_text з Flask
 
-      // Додавання відгуку до бази даних
+      // Додаємо processedText до об’єкта перед відправкою на сервер
       const response = await fetch("http://localhost:3001/api/reviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...newReview, sentiment }),
+        body: JSON.stringify({
+          ...newReview,
+          sentiment,
+          processedText: processed_text,
+        }),
       });
 
       if (!response.ok) {
@@ -74,7 +87,6 @@ const ReviewForm = ({ addReview }) => {
       const savedReview = await response.json();
       addReview(savedReview);
 
-      // Очищення полів форми
       setText("");
       setRating(5);
     } catch (error) {

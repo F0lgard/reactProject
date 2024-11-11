@@ -19,6 +19,7 @@ export default function PricesSection() {
   const [authNotification, setAuthNotification] = useState(false);
   const [profileModalActive, setProfileModalActive] = useState(false);
   const [bookingError, setBookingError] = useState("");
+  const [selectedTime, setSelectedTime] = useState("12:00");
 
   useEffect(() => {
     const today = new Date();
@@ -41,8 +42,8 @@ export default function PricesSection() {
   };
 
   const handleReserve = async () => {
-    if (!selectedCell || !selectedDate) {
-      setBookingError("Будь ласка, виберіть дату.");
+    if (!selectedCell || !selectedDate || !selectedTime) {
+      setBookingError("Будь ласка, виберіть дату та час.");
       return;
     }
 
@@ -62,12 +63,29 @@ export default function PricesSection() {
       return;
     }
 
+    // Додаткова перевірка на час, якщо дата бронювання сьогоднішня
+    if (selectedDate === todayString) {
+      const currentTime = today.getHours() * 60 + today.getMinutes();
+      const [selectedHour, selectedMinute] = selectedTime
+        .split(":")
+        .map(Number);
+      const selectedTimeInMinutes = selectedHour * 60 + selectedMinute;
+
+      if (selectedTimeInMinutes <= currentTime) {
+        setBookingError(
+          "Час початку бронювання має бути пізніше за теперішній."
+        );
+        return;
+      }
+    }
+
     const bookingData = {
       zone: selectedCell.zone,
       hours: selectedCell.hours,
       price: selectedCell.price,
       userId: user._id,
       date: selectedDate,
+      time: selectedTime, // Додаємо вибрану годину
     };
 
     console.log("Booking data:", bookingData);
@@ -83,7 +101,7 @@ export default function PricesSection() {
       0
     );
 
-    if (totalHoursForDay + bookingData.hours > 10) {
+    if (totalHoursForDay + bookingData.hours > 12) {
       setBookingError("Ви не можете забронювати більше ніж 10 годин на день.");
       return;
     }
@@ -204,6 +222,22 @@ export default function PricesSection() {
                     }
                   />
                 </p>
+                <p>
+                  Виберіть час початку:
+                  <input
+                    type="time"
+                    value={selectedTime}
+                    onChange={(e) => setSelectedTime(e.target.value)}
+                    required
+                    min={(() => {
+                      const now = new Date();
+                      const hours = String(now.getHours()).padStart(2, "0");
+                      const minutes = String(now.getMinutes()).padStart(2, "0");
+                      return `${hours}:${minutes}`; // поточний час як мінімум
+                    })()}
+                  />
+                </p>
+
                 <Button onClick={handleReserve} className="modal-button-bron">
                   Підтвердити
                 </Button>

@@ -121,7 +121,7 @@ export default function Header() {
             <div
               className="user-info-container"
               onClick={() => setProfileModalActive(true)}
-              style={{ cursor: "pointer" }} // Додайте це, щоб виглядало як клік
+              style={{ cursor: "pointer" }}
             >
               <img
                 src={avatar}

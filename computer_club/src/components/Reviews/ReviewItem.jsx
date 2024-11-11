@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ReviewItem.css"; // Підключаємо CSS для стилів
 
-const ReviewItem = ({ review }) => {
+const ReviewItem = ({ review, isAdmin, onDelete }) => {
   const [profileImage, setAvatar] = useState(
     review.useri?.profileImage || "http://localhost:3001/uploads/usericon.png"
   ); // Дефолтне фото
@@ -34,6 +34,13 @@ const ReviewItem = ({ review }) => {
       <div className="review-text">
         <p>{review.processedText}</p>
       </div>
+
+      {/* Кнопка видалення доступна лише для адміністраторів */}
+      {isAdmin && (
+        <button onClick={() => onDelete(review._id)} className="delete-button">
+          Видалити
+        </button>
+      )}
     </div>
   );
 };

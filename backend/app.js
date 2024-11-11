@@ -86,6 +86,7 @@ const BookingSchema = new mongoose.Schema({
   userId: mongoose.Schema.Types.ObjectId,
   userEmail: String, // Додаємо поле для зберігання емейлу користувача
   date: Date,
+  time: String,
   createdAt: { type: Date, default: Date.now, index: { expires: "3d" } }, // Додаємо поле createdAt з TTL індексом
 });
 
@@ -218,7 +219,7 @@ app.post("/updateTurnir", async (req, res) => {
 });
 
 app.post("/bookings", async (req, res) => {
-  const { zone, hours, price, userId, date } = req.body;
+  const { zone, hours, price, userId, date, time } = req.body;
 
   try {
     const user = await User.findById(userId); // Знаходимо користувача за userId
@@ -232,6 +233,7 @@ app.post("/bookings", async (req, res) => {
       userId,
       userEmail: user.email, // Зберігаємо емейл користувача
       date,
+      time,
     });
     await newBooking.save();
     onNewBooking(newBooking); // Викликаємо функцію для повідомлення клієнтів
@@ -373,8 +375,12 @@ const adjustSentiment = (sentiment, rating) => {
     return "Neutral"; // Якщо негативний настрій і висока оцінка, робимо нейтральним
   }
 
-  if (sentiment === "Neutral" && rating <= 3) {
+  if (sentiment === "Neutral" && rating <= 2) {
     return "Negative"; // Якщо нейтральний настрій і низька оцінка, робимо негативним
+  }
+
+  if (sentiment === "Positive" && rating <= 3) {
+    return "Neutral"; // Якщо нейтральний настрій і низька оцінка, робимо негативним
   }
 
   return sentiment; // Для інших випадків повертаємо оригінальний настрій
@@ -391,10 +397,9 @@ app.get("/api/reviews", async (req, res) => {
 });
 
 app.post("/api/reviews", async (req, res) => {
-  const { text, rating, useri } = req.body;
+  const { text, rating, useri, sentiment, processedText } = req.body;
 
   try {
-    // Знаходимо користувача за ID
     const user = await User.findById(useri.userId);
 
     if (!user) {
@@ -403,30 +408,22 @@ app.post("/api/reviews", async (req, res) => {
 
     const currentDate = new Date();
     const oneWeekAgo = new Date(currentDate);
-    oneWeekAgo.setDate(currentDate.getDate() - 7); // Поточна дата мінус тиждень
+    oneWeekAgo.setDate(currentDate.getDate() - 7);
 
-    // Якщо дата останнього коментаря була менше тижня тому, перевіряємо кількість коментарів
-    if (user.lastCommentDate && user.lastCommentDate > oneWeekAgo) {
-      if (user.commentsCount >= 3) {
-        return res
-          .status(400)
-          .json({ error: "Ви можете написати лише 3 відгуки на тиждень" });
+    if (user.role !== "admin") {
+      if (user.lastCommentDate && user.lastCommentDate > oneWeekAgo) {
+        if (user.commentsCount >= 3) {
+          return res
+            .status(400)
+            .json({ error: "Ви можете написати лише 3 відгуки на тиждень" });
+        }
+      } else {
+        user.commentsCount = 0;
       }
-    } else {
-      // Якщо користувач не додавав коментарів протягом останнього тижня
-      user.commentsCount = 0; // Оновлюємо лічильник
     }
 
-    // Викликаємо Flask API для аналізу настрою
-    const response = await axios.post("http://127.0.0.1:5000/api/analyze", {
-      text,
-    });
-    const { sentiment, processed_text: processedText } = response.data;
-
-    // Коригування настрою на основі оцінки
     const adjustedSentiment = adjustSentiment(sentiment, rating);
 
-    // Створення нового відгуку
     const newReview = new Review({
       text,
       rating,
@@ -437,7 +434,6 @@ app.post("/api/reviews", async (req, res) => {
 
     await newReview.save();
 
-    // Оновлюємо інформацію про кількість коментарів та дату
     user.commentsCount += 1;
     user.lastCommentDate = currentDate;
     await user.save();

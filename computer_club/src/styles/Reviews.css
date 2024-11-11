@@ -124,6 +124,19 @@
   margin-right: 0; /* Залишаємо зправа */
 }
 
+/* src/components/Reviews/Reviews.css */
+
+.reviews-summary {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.reviews-summary p {
+  margin: 0;
+}
+
 /* Адаптивність для мобільних */
 @media (max-width: 768px) {
   .reviews-list {

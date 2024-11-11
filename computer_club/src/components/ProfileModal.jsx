@@ -222,6 +222,14 @@ const ProfileModal = ({ active, setActive }) => {
               <div className="booking-details-list">
                 {selectedBookings.map((booking) => (
                   <div key={booking._id} className="booking-details">
+                    <img
+                      src={require("../img/trashcan.png")}
+                      alt="account"
+                      width="35px"
+                      height="35px"
+                      className="delete-icon"
+                      onClick={() => handleDeleteBooking(booking._id)}
+                    />
                     <p>
                       Дата бронювання:{" "}
                       <span className="red-text">
@@ -233,6 +241,10 @@ const ProfileModal = ({ active, setActive }) => {
                       <span className="red-text">
                         {new Date(booking.date).toLocaleDateString()}
                       </span>
+                    </p>
+                    <p>
+                      Обраний час:{" "}
+                      <span className="red-text">{booking.time}</span>
                     </p>
                     <p>
                       Зона: <span className="red-text">{booking.zone}</span>
@@ -245,20 +257,10 @@ const ProfileModal = ({ active, setActive }) => {
                       Ціна: <span className="red-text">{booking.price}₴</span>
                     </p>
                     {user.role === "admin" && (
-                      <>
-                        <p>
-                          Емейл користувача:{" "}
-                          <span className="red-text">{booking.userEmail}</span>
-                        </p>
-                        <img
-                          src={require("../img/trashcan.png")}
-                          alt="account"
-                          width="35px"
-                          height="35px"
-                          className="delete-icon"
-                          onClick={() => handleDeleteBooking(booking._id)}
-                        />
-                      </>
+                      <p>
+                        Емейл користувача:{" "}
+                        <span className="red-text">{booking.userEmail}</span>
+                      </p>
                     )}
                   </div>
                 ))}
@@ -270,16 +272,15 @@ const ProfileModal = ({ active, setActive }) => {
               <div className="booking-details-list">
                 {selectedBookings.map((booking) => (
                   <div key={booking._id} className="booking-details">
-                    {user.role === "admin" && (
-                      <img
-                        src={require("../img/trashcan.png")}
-                        alt="delete"
-                        width="35px"
-                        height="35px"
-                        className="delete-icon"
-                        onClick={() => handleDeleteBooking(booking._id)}
-                      />
-                    )}
+                    <img
+                      src={require("../img/trashcan.png")}
+                      alt="delete"
+                      width="35px"
+                      height="35px"
+                      className="delete-icon"
+                      onClick={() => handleDeleteBooking(booking._id)}
+                    />
+
                     <p>
                       Дата бронювання:{" "}
                       <span className="red-text">
@@ -291,6 +292,10 @@ const ProfileModal = ({ active, setActive }) => {
                       <span className="red-text">
                         {new Date(booking.date).toLocaleDateString()}
                       </span>
+                    </p>
+                    <p>
+                      Обраний час:{" "}
+                      <span className="red-text">{booking.time}</span>
                     </p>
                     <p>
                       Зона: <span className="red-text">{booking.zone}</span>
