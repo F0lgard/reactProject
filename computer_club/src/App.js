@@ -13,6 +13,7 @@ import { AuthProvider } from "./components/AuthContext"; // Імпортуємо
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import { BookingsProvider } from "./components/BookingsContext";
 import Reviews from "./components/Reviews/Reviews";
+import MapSection from "./components/MapSection";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <WelcomeSection />
           <ZoneSection />
           <PricesSection />
+          <MapSection />
           <ScrollToTopButton />
           <GamesSection />
           <PronasSection />

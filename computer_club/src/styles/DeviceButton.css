@@ -1,0 +1,112 @@
+.device-button {
+  all: unset; /* Прибираємо дефолтні стилі кнопки */
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  background-color: #ff0000;
+  transition: background-color 0.3s ease;
+}
+
+.icon-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -75%); /* Центруємо іконку */
+  width: 30px;
+  height: 30px;
+}
+
+.device-icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* 🔹 Цифра для ПК — рівно по центру кнопки */
+.pc-style {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 🔹 Цифра для консолей — по центру, але ближче до низу */
+.console-style {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.device-id {
+  position: absolute;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  top: 30px;
+}
+
+.error-message {
+  color: #ff4d4d; /* Червоний колір для помилки */
+  background-color: #ffe6e6; /* Світлий фон для виділення */
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 10px;
+  border: 1px solid #ff4d4d;
+}
+
+.booking-list {
+  background: #222; /* Темний фон */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  max-width: 300px;
+  margin-top: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.booking-list h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #555;
+  padding-bottom: 5px;
+}
+
+.booking-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.booking-list li {
+  background: #333;
+  padding: 8px 12px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.booking-list li:last-child {
+  margin-bottom: 0;
+}
+
+.booking-list li::before {
+  margin-right: 8px;
+}

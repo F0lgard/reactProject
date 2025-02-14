@@ -5,6 +5,7 @@ const cors = require("cors");
 const shortid = require("shortid");
 const WebSocket = require("ws");
 const axios = require("axios");
+const Device = require("./models/Device");
 
 const app = express();
 const port = 3001;
@@ -79,7 +80,7 @@ const turnirSchema = new mongoose.Schema({
 const Turnir = mongoose.model("Turnir", turnirSchema);
 
 // Створення схеми бронювання
-const BookingSchema = new mongoose.Schema({
+/* const BookingSchema = new mongoose.Schema({
   zone: String,
   hours: Number,
   price: Number,
@@ -88,9 +89,9 @@ const BookingSchema = new mongoose.Schema({
   date: Date,
   time: String,
   createdAt: { type: Date, default: Date.now, index: { expires: "3d" } }, // Додаємо поле createdAt з TTL індексом
-});
+}); */
 
-const Booking = mongoose.model("Booking", BookingSchema);
+//const Booking = mongoose.model("Booking", BookingSchema);
 
 // WebSocket сервер
 const wss = new WebSocket.Server({ port: 8000 });
@@ -113,9 +114,9 @@ const notifyClients = (data) => {
   });
 };
 
-const onNewBooking = (booking) => {
+/*const onNewBooking = (booking) => {
   notifyClients({ type: "NEW_BOOKING", booking });
-};
+};*/
 
 // Обробник POST-запиту для створення нового користувача
 app.post("/register", async (req, res) => {
@@ -218,7 +219,7 @@ app.post("/updateTurnir", async (req, res) => {
   }
 });
 
-app.post("/bookings", async (req, res) => {
+/*app.post("/bookings", async (req, res) => {
   const { zone, hours, price, userId, date, time } = req.body;
 
   try {
@@ -291,7 +292,7 @@ app.delete("/bookings/:id", async (req, res) => {
     console.error("Error deleting booking:", error);
     res.status(500).json({ message: "Server error" });
   }
-});
+}); */
 
 // Обробник POST-запиту для зміни пароля
 app.post("/change-password", async (req, res) => {
@@ -495,6 +496,227 @@ app.post("/upload-avatar", upload.single("avatar"), async (req, res) => {
   } catch (error) {
     console.error("Помилка при завантаженні аватара:", error);
     res.status(500).json({ message: "Помилка сервера" });
+  }
+});
+
+// **Отримати список пристроїв і їх статус**
+app.get("/devices/status", async (req, res) => {
+  try {
+    const devices = await Device.find();
+
+    const currentTime = new Date();
+    const bufferTime = 30 * 60 * 1000; // 30 хвилин у мілісекундах
+
+    const devicesWithStatus = devices.map((device) => {
+      const isBooked = device.bookings.some(
+        (booking) =>
+          (currentTime >= booking.startTime && currentTime < booking.endTime) ||
+          (booking.startTime - currentTime <= bufferTime &&
+            booking.startTime > currentTime)
+      );
+
+      return { ...device.toObject(), isBooked };
+    });
+
+    res.json(devicesWithStatus);
+  } catch (error) {
+    res.status(500).json({ error: "Помилка отримання статусу пристроїв" });
+  }
+});
+
+app.post("/devices/book", async (req, res) => {
+  try {
+    const { deviceId, userId, userEmail, startTime, duration, price } =
+      req.body;
+
+    // Конвертація в UTC з урахуванням часового поясу клієнта
+    const clientStart = new Date(startTime);
+    const utcStart = new Date(
+      clientStart.getTime() - clientStart.getTimezoneOffset() * 60000
+    );
+    const utcEnd = new Date(utcStart.getTime() + duration * 3600000);
+
+    // Перевірка мінімального часу (8:00 за локальним часом клієнта)
+    const clientHours = clientStart.getHours();
+    if (clientHours < 8) {
+      return res.status(400).json({ error: "Бронювання можливе з 08:00" });
+    }
+
+    // Перевірка максимального часу (24:00 за локальним часом)
+    const clientEnd = new Date(clientStart.getTime() + duration * 3600000);
+    if (
+      clientEnd.getHours() >= 24 ||
+      clientEnd.getDate() !== clientStart.getDate()
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Бронювання має закінчуватися до 24:00" });
+    }
+
+    // Перевірка на минулий час (UTC)
+    const nowUTC = new Date();
+    if (utcStart < nowUTC) {
+      return res
+        .status(400)
+        .json({ error: "Неможливо бронювати на минулий час" });
+    }
+
+    // Пошук пристрою та перевірка конфліктів
+    const device = await Device.findOne({ id: deviceId });
+    if (!device) {
+      return res.status(404).json({ error: "Пристрій не знайдено" });
+    }
+
+    const hasConflict = (device.bookings || []).some((b) => {
+      const existingStart = new Date(b.startTime);
+      const existingEnd = new Date(b.endTime);
+      return utcStart < existingEnd && utcEnd > existingStart;
+    });
+
+    if (hasConflict) {
+      return res.status(400).json({ error: "Час вже зайнятий" });
+    }
+
+    // Збереження в UTC
+    device.bookings.push({
+      userId,
+      userEmail,
+      startTime: utcStart,
+      endTime: utcEnd,
+      price,
+    });
+
+    await device.save();
+    notifyClients({ type: "BOOKING_UPDATED", device });
+    res.json({ message: "Успішно", booking: device.bookings.at(-1) });
+  } catch (error) {
+    res.status(500).json({ error: "Помилка сервера" });
+  }
+});
+
+app.get("/bookings/user/:userId", async (req, res) => {
+  try {
+    const devices = await Device.find({ "bookings.userId": req.params.userId });
+
+    const bookings = devices.flatMap((device) =>
+      device.bookings
+        .filter((b) => b.userId === req.params.userId)
+        .map((b) => ({
+          id: b._id, // Додано ID бронювання для адмін-функцій
+          deviceId: device.id,
+          type: device.type,
+          zone: device.zone,
+          startTime: b.startTime,
+          endTime: b.endTime,
+          price: b.price,
+        }))
+    );
+
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: "Помилка отримання бронювань" });
+  }
+});
+
+app.delete("/admin/bookings/:bookingId", async (req, res) => {
+  try {
+    const userId = req.headers.userid; // Передавати userId у headers
+    if (!userId) {
+      return res.status(403).json({ error: "Неавторизований запит" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user || user.role !== "admin") {
+      return res.status(403).json({ error: "Доступ заборонено" });
+    }
+
+    const device = await Device.findOne({
+      "bookings._id": req.params.bookingId,
+    });
+    if (!device) {
+      return res.status(404).json({ error: "Пристрій не знайдено" });
+    }
+
+    // Видалення бронювання
+    device.bookings = device.bookings.filter(
+      (b) => b._id.toString() !== req.params.bookingId
+    );
+    await device.save();
+
+    notifyClients({ type: "BOOKING_DELETED", device });
+    res.json({ message: "Бронювання видалено" });
+  } catch (error) {
+    console.error("Помилка видалення:", error);
+    res.status(500).json({ error: "Помилка сервера" });
+  }
+});
+
+// Додати годину до бронювання
+app.patch("/admin/bookings/:bookingId", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const user = await User.findById(userId);
+
+    if (!user || user.role !== "admin") {
+      return res.status(403).json({ error: "Доступ заборонено" });
+    }
+
+    // Знайти пристрій та бронювання
+    const device = await Device.findOne({
+      "bookings._id": req.params.bookingId,
+    });
+    if (!device) {
+      return res.status(404).json({ error: "Пристрій не знайдено" });
+    }
+
+    const booking = device.bookings.id(req.params.bookingId);
+    if (!booking) {
+      return res.status(404).json({ error: "Бронювання не знайдено" });
+    }
+
+    // Збільшити тривалість
+    booking.endTime = new Date(booking.endTime.getTime() + 3600000);
+    await device.save();
+
+    notifyClients({ type: "BOOKING_UPDATED", device });
+    res.json({ message: "Годину додано", booking });
+  } catch (error) {
+    console.error("Помилка продовження:", error);
+    res.status(500).json({ error: "Помилка сервера" });
+  }
+});
+
+// Додамо ендпоінт для отримання бронювань з урахуванням ролі
+app.get("/bookings", async (req, res) => {
+  try {
+    const { userId, role } = req.query;
+
+    if (role === "admin") {
+      const devices = await Device.find();
+      const allBookings = devices.flatMap((device) =>
+        device.bookings.map((b) => ({
+          ...b.toObject(),
+          deviceId: device.id,
+          zone: device.zone,
+        }))
+      );
+      return res.json(allBookings);
+    }
+
+    const userDevices = await Device.find({ "bookings.userId": userId });
+    const userBookings = userDevices.flatMap((device) =>
+      device.bookings
+        .filter((b) => b.userId === userId)
+        .map((b) => ({
+          ...b.toObject(),
+          deviceId: device.id,
+          zone: device.zone,
+        }))
+    );
+
+    res.json(userBookings);
+  } catch (error) {
+    res.status(500).json({ error: "Помилка отримання бронювань" });
   }
 });
 

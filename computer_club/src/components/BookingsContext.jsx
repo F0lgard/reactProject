@@ -19,14 +19,17 @@ export const BookingsProvider = ({ children }) => {
           );
           setBookings(response.data);
         } catch (error) {
-          console.error("Error fetching bookings:", error);
+          console.error("Помилка отримання бронювань:", error);
         }
       }
     };
 
     fetchBookings();
+    const interval = setInterval(fetchBookings, 10000); // Оновлення кожні 10 секунд
+    return () => clearInterval(interval);
   }, [user]);
 
+  // BookingsContext.jsx
   const addBooking = (newBooking) => {
     setBookings((prevBookings) => [...prevBookings, newBooking]);
   };

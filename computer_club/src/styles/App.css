@@ -357,6 +357,7 @@ table {
   border-radius: 50%; /* Обрізаємо зображення до кола */
   object-fit: cover; /* Масштабуємо зображення, щоб воно заповнювало коло */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Додаємо тінь (необов’язково) */
+  flex-shrink: 0;
 }
 
 .user-info-container {
