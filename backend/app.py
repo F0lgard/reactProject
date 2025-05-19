@@ -2,39 +2,30 @@ from flask import Flask, request, jsonify
 import tensorflow as tf
 import joblib
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from google.cloud import translate_v2 as translate
 from better_profanity import profanity
 from flask_cors import CORS
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "prediction-model/kursova2024-38bc45dc8d21.json"
-print("Ключ API налаштовано.")
+print("Сервер запущено...")
 
 class SentimentModelWithFilter:
     def __init__(self, model_path, tokenizer_path, profanity_file):
         self.model = tf.keras.models.load_model(model_path)
         with open(tokenizer_path, 'rb') as f:
             self.tokenizer = joblib.load(f)
-        self.translate_client = translate.Client()
         self.maxlen = 200
         self.load_profanity_list(profanity_file)
 
     def load_profanity_list(self, file_path):
-        # Завантажуємо власний список поганих слів з текстового файлу
         with open(file_path, 'r', encoding='utf-8') as f:
             bad_words = [line.strip() for line in f if line.strip()]
-        profanity.load_censor_words(bad_words)  # Завантажуємо ці слова в profanity
+        profanity.load_censor_words(bad_words)
 
     def blur_profanity(self, text):
-        # Використовуємо censor для цензурування тексту
         return profanity.censor(text)
 
-    def translate_to_english(self, text):
-        result = self.translate_client.translate(text, target_language='en')
-        return result['translatedText']
-
     def predict_sentiment(self, text):
-        en_text = self.translate_to_english(text)
+        en_text = text  # Використовуємо текст без перекладу
         tokenized_text = self.tokenizer.texts_to_sequences([en_text])
         padded_text = pad_sequences(tokenized_text, maxlen=self.maxlen)
         prediction = self.model.predict(padded_text)
@@ -45,14 +36,14 @@ class SentimentModelWithFilter:
         elif prediction[0] < 0.5:
             sentiment = "Negative"
         else:
-            sentiment = "Neutral"  # Нейтральний настрій
+            sentiment = "Neutral"
 
-        processed_text = self.blur_profanity(text)  # Цензуруємо текст
+        processed_text = self.blur_profanity(text)
         return sentiment, processed_text
 
 # Ініціалізація Flask API
 app = Flask(__name__)
-CORS(app)  # Додаємо CORS для всіх роутів
+CORS(app)
 
 # Ініціалізація моделі
 model_path = "prediction-model/sentiment_model_amazon100k.h5"

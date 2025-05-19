@@ -126,3 +126,21 @@
 .delete-booking-btn:hover {
   background-color: #cc0000;
 }
+
+.admin-info {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.admin-info h4 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.admin-info .red-text {
+  color: red;
+  font-weight: bold;
+}

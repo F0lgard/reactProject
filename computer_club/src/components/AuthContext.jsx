@@ -8,13 +8,14 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null); // Додаємо стан для користувача
 
-  // Ініціалізуємо стан авторизації та користувача з localStorage при завантаженні компонента
   useEffect(() => {
     const storedIsAuthenticated =
       localStorage.getItem("isAuthenticated") === "true";
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const storedUser = localStorage.getItem("user");
+
+    // Перевіряємо, чи є значення перед парсингом
     setIsAuthenticated(storedIsAuthenticated);
-    setUser(storedUser);
+    setUser(storedUser ? JSON.parse(storedUser) : null);
   }, []);
 
   // Оновлюємо localStorage кожного разу, коли змінюється isAuthenticated або user

@@ -74,7 +74,9 @@ const MapSection = () => {
 
   return (
     <div className="map-section">
-      <h2 className="map-section-name">Мапа</h2>
+      <h2 className="map-section-name" id="map">
+        Карта
+      </h2>
       <div className="map-container">
         <div className="map-info">
           <h2 className="map-text">
@@ -131,6 +133,7 @@ const MapSection = () => {
           isActive={isBookingModalOpen}
           onClose={() => setBookingModalOpen(false)}
           selectedDevice={selectedDevice}
+          fetchDevices={fetchDevices} // Передаємо функцію для оновлення пристроїв
         />
       )}
     </div>

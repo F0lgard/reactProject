@@ -118,23 +118,34 @@ const notifyClients = (data) => {
   notifyClients({ type: "NEW_BOOKING", booking });
 };*/
 
-// Обробник POST-запиту для створення нового користувача
 app.post("/register", async (req, res) => {
-  const { username, email, password, role, avatar } = req.body; // Додано поле ролі
+  const { username, email, password, role } = req.body;
 
   try {
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
-      return res.status(400).send("User already exists");
+      return res
+        .status(400)
+        .json({ error: "Користувач із таким ім'ям або емейлом вже існує" });
     }
 
-    const newUser = new User({ username, email, password, role, avatar }); // Додано поле ролі
+    // Встановлюємо дефолтний аватар, якщо його не передано
+    const avatar =
+      req.body.avatar || "http://localhost:3001/uploads/usericon.png";
+
+    const newUser = new User({ username, email, password, role, avatar });
     await newUser.save();
-    console.log("User registered successfully:", newUser);
-    res.status(200).send("User registered successfully");
+
+    res.status(201).json({
+      _id: newUser._id,
+      username: newUser.username,
+      email: newUser.email,
+      role: newUser.role,
+      avatar: newUser.avatar,
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Failed to register user");
+    console.error("Помилка реєстрації користувача:", err);
+    res.status(500).json({ error: "Не вдалося зареєструвати користувача" });
   }
 });
 
@@ -626,8 +637,8 @@ app.delete("/admin/bookings/:bookingId", async (req, res) => {
     }
 
     const user = await User.findById(userId);
-    if (!user || user.role !== "admin") {
-      return res.status(403).json({ error: "Доступ заборонено" });
+    if (!user) {
+      return res.status(403).json({ error: "Користувач не знайдений" });
     }
 
     const device = await Device.findOne({
@@ -635,6 +646,21 @@ app.delete("/admin/bookings/:bookingId", async (req, res) => {
     });
     if (!device) {
       return res.status(404).json({ error: "Пристрій не знайдено" });
+    }
+
+    const booking = device.bookings.find(
+      (b) => b._id.toString() === req.params.bookingId
+    );
+
+    if (!booking) {
+      return res.status(404).json({ error: "Бронювання не знайдено" });
+    }
+
+    // Дозволяємо видалення, якщо користувач є власником бронювання або адміністратором
+    if (booking.userId.toString() !== userId && user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ error: "Ви не можете видалити це бронювання" });
     }
 
     // Видалення бронювання
@@ -650,7 +676,6 @@ app.delete("/admin/bookings/:bookingId", async (req, res) => {
     res.status(500).json({ error: "Помилка сервера" });
   }
 });
-
 // Додати годину до бронювання
 app.patch("/admin/bookings/:bookingId", async (req, res) => {
   try {

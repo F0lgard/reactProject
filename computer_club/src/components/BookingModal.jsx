@@ -23,7 +23,7 @@ const getLocalDateString = () => {
   )}-${String(date.getDate()).padStart(2, "0")}`;
 };
 
-const BookingModal = ({ isActive, onClose, selectedDevice }) => {
+const BookingModal = ({ isActive, onClose, selectedDevice, fetchDevices }) => {
   const { user } = useAuth();
   const { addBooking } = useBookings();
   const [startTime, setStartTime] = useState("");
@@ -43,13 +43,30 @@ const BookingModal = ({ isActive, onClose, selectedDevice }) => {
 
   useEffect(() => {
     if (selectedDevice) {
+      console.log("Selected Device Bookings:", selectedDevice.bookings);
+
+      // Отримуємо поточний час у UTC
+      const nowUTC = new Date(Date.now()); // Використовуємо Date.now() для точного часу
+
       const filteredBookings = (selectedDevice.bookings || []).filter(
         (booking) => {
-          const bookingDate = new Date(booking.startTime);
-          return bookingDate.toISOString().split("T")[0] === currentDate;
+          const bookingEndTime = new Date(booking.endTime); // Час завершення бронювання в UTC
+          console.log("Booking End Time (UTC):", bookingEndTime.toISOString());
+          console.log("Current Time (UTC):", nowUTC.toISOString());
+
+          // Ігноруємо бронювання, які завершилися
+          if (bookingEndTime <= nowUTC) {
+            console.log("✅ Це бронювання вже завершилось, пропускаємо");
+            return false;
+          }
+
+          return true; // Додаємо тільки активні бронювання
         }
       );
-      setBookings(filteredBookings);
+
+      console.log("Filtered Bookings (Active):", filteredBookings);
+      setBookings(filteredBookings); // Оновлюємо стан
+      console.log("Updated Bookings State:", filteredBookings);
     }
   }, [selectedDevice, currentDate]);
 
@@ -111,16 +128,19 @@ const BookingModal = ({ isActive, onClose, selectedDevice }) => {
     }
 
     // Перевірка робочих годин
+    const DISABLE_TIME_RESTRICTIONS = false; // Встановіть true, щоб вимкнути обмеження
+
+    // Перевірка робочих годин
     if (
-      localStart.getHours() < MIN_HOUR ||
-      localEnd.getHours() > MAX_HOUR ||
-      (localEnd.getHours() === MAX_HOUR && localEnd.getMinutes() > 0) ||
-      localEnd.getDate() !== localStart.getDate()
+      !DISABLE_TIME_RESTRICTIONS &&
+      (localStart.getHours() < MIN_HOUR ||
+        localEnd.getHours() > MAX_HOUR ||
+        (localEnd.getHours() === MAX_HOUR && localEnd.getMinutes() > 0) ||
+        localEnd.getDate() !== localStart.getDate())
     ) {
       setBookingError(`Бронювання можливе з ${MIN_HOUR}:00 до ${MAX_HOUR}:00`);
       return;
     }
-
     // **Конвертуємо бронювання з UTC у локальний час + додаємо буфер 5 хв**
     const hasConflict = bookings.some((booking) => {
       const existingStart = new Date(booking.startTime);
@@ -160,12 +180,22 @@ const BookingModal = ({ isActive, onClose, selectedDevice }) => {
       hasConflict ? "Мінімальний проміжок між бронюваннями - 5 хвилин" : ""
     );
   };
-
-  // 2. Оновлення стану bookings після успішного бронювання
+  console.log("User in BookingModal:", user);
   const handleReserve = async () => {
     if (!user || !selectedDevice || bookingError) return;
 
     try {
+      console.log("Дані для бронювання:", {
+        deviceId: selectedDevice.id,
+        userId: user._id,
+        userEmail: user.email,
+        startTime: new Date(
+          `${currentDate}T${startTime.slice(11, 16)}`
+        ).toISOString(),
+        duration,
+        price,
+      });
+
       const response = await axios.post("http://localhost:3001/devices/book", {
         deviceId: selectedDevice.id,
         userId: user._id,
@@ -177,15 +207,16 @@ const BookingModal = ({ isActive, onClose, selectedDevice }) => {
         price,
       });
 
-      // Додаємо нове бронювання до локального стану
       setBookings((prev) => [...prev, response.data.booking]);
       addBooking(response.data.booking);
-      onClose();
+
+      // Видаляємо виклик onClose(), щоб вікно залишалося відкритим
+      console.log("Бронювання успішно створено:", response.data.booking);
     } catch (error) {
+      console.error("Помилка бронювання:", error);
       setBookingError(error.response?.data?.error || "Помилка бронювання");
     }
   };
-
   useEffect(() => {
     if (startTime) {
       checkTimeConflict(startTime.slice(11, 16), duration);
@@ -236,15 +267,30 @@ const BookingModal = ({ isActive, onClose, selectedDevice }) => {
 
   const handleDeleteBooking = async (bookingId) => {
     try {
-      await fetch(`http://localhost:3001/admin/bookings/${bookingId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          userid: user._id,
-        },
-      });
+      console.log("Видаляємо бронювання з ID:", bookingId);
 
-      setBookings((prev) => prev.filter((b) => b._id !== bookingId));
+      const response = await fetch(
+        `http://localhost:3001/admin/bookings/${bookingId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            userid: user._id, // Передаємо user._id
+          },
+        }
+      );
+
+      if (response.ok) {
+        setBookings((prev) => prev.filter((b) => b._id !== bookingId));
+
+        // Оновлюємо пристрої після видалення бронювання
+        if (typeof fetchDevices === "function") {
+          fetchDevices(); // Викликаємо функцію для оновлення пристроїв
+        }
+      } else {
+        const errorData = await response.json();
+        console.error("Не вдалося видалити бронювання:", errorData);
+      }
     } catch (error) {
       console.error("Помилка видалення бронювання:", error);
     }
@@ -266,29 +312,35 @@ const BookingModal = ({ isActive, onClose, selectedDevice }) => {
           <div className="booking-list">
             <h3>Заброньовано:</h3>
             <ul>
-              {bookings.map((booking) => (
-                <li key={booking._id}>
-                  {new Date(booking.startTime).toLocaleTimeString("uk-UA", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    timeZone: "UTC",
-                  })}{" "}
-                  -{" "}
-                  {new Date(booking.endTime).toLocaleTimeString("uk-UA", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    timeZone: "UTC",
-                  })}
-                  {user?.role === "admin" && (
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDeleteBooking(booking._id)}
-                    >
-                      Видалити
-                    </button>
-                  )}
-                </li>
-              ))}
+              {bookings.map((booking) => {
+                const bookingStartTime = new Date(booking.startTime);
+                const bookingEndTime = new Date(booking.endTime);
+
+                return (
+                  <li key={booking._id}>
+                    {bookingStartTime.toLocaleTimeString("uk-UA", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      timeZone: "UTC",
+                    })}{" "}
+                    -{" "}
+                    {bookingEndTime.toLocaleTimeString("uk-UA", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      timeZone: "UTC",
+                    })}
+                    {(user?.role === "admin" ||
+                      user?._id === booking.userId) && (
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteBooking(booking._id)}
+                      >
+                        Видалити
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ) : (
@@ -328,7 +380,12 @@ const BookingModal = ({ isActive, onClose, selectedDevice }) => {
         </p>
 
         {bookingError && <div className="error-message">{bookingError}</div>}
-        <button onClick={handleReserve} disabled={!!bookingError}>
+        {!user && (
+          <div className="error-message">
+            Для бронювання потрібно зареєструватися.
+          </div>
+        )}
+        <button onClick={handleReserve} disabled={!user || !!bookingError}>
           Підтвердити
         </button>
       </div>

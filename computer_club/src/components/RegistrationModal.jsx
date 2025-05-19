@@ -4,8 +4,10 @@ import Input from "./Input";
 import Button from "./Button";
 import axios from "axios";
 import debounce from "lodash/debounce";
+import { useAuth } from "./AuthContext";
 
 const RegistrationModal = ({ active, setActive, setLoginActive }) => {
+  const { setIsAuthenticated, setUser } = useAuth();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -117,7 +119,6 @@ const RegistrationModal = ({ active, setActive, setLoginActive }) => {
       setPasswordError("");
     }
   };
-
   const handleRegistration = async (event) => {
     event.preventDefault();
     try {
@@ -126,10 +127,21 @@ const RegistrationModal = ({ active, setActive, setLoginActive }) => {
         email,
         password,
       });
-      setRegistrationSuccess(true); // Позначити реєстрацію як успішну
+
+      console.log("Server response:", response.data); // Логування відповіді сервера
+
+      const userData = response.data;
+
+      // Автоматичний вхід після реєстрації
+      setIsAuthenticated(true);
+      setUser(userData);
+      localStorage.setItem("isAuthenticated", true);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      // Закриваємо модальне вікно одразу після реєстрації
+      setActive(false);
     } catch (error) {
-      alert("Помилка реєстрації");
-      console.log(error);
+      console.error("Помилка реєстрації:", error);
     }
   };
 

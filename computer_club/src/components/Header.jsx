@@ -106,6 +106,9 @@ export default function Header() {
               <a href="#prices">Ціни</a>
             </li>
             <li>
+              <a href="#map">Карта</a>
+            </li>
+            <li>
               <a href="#games">Ігри</a>
             </li>
             <li>
