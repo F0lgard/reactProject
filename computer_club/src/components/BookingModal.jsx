@@ -4,12 +4,7 @@ import "../styles/Modal.css";
 import { useAuth } from "./AuthContext";
 import { useBookings } from "./BookingsContext";
 import axios from "axios";
-
-const priceTable = {
-  Pro: { 1: 80, 3: 225, 5: 350, 7: 450 },
-  VIP: { 1: 120, 3: 350, 5: 550, 7: 700 },
-  PS: { 1: 200, 3: 500 },
-};
+import { usePrice } from "./PriceContext";
 
 const MIN_HOUR = 8;
 const MAX_HOUR = 24;
@@ -23,7 +18,13 @@ const getLocalDateString = () => {
   )}-${String(date.getDate()).padStart(2, "0")}`;
 };
 
-const BookingModal = ({ isActive, onClose, selectedDevice, fetchDevices }) => {
+const BookingModal = ({
+  isActive,
+  onClose,
+  selectedDevice,
+  fetchDevices,
+  recommendedDuration,
+}) => {
   const { user } = useAuth();
   const { addBooking } = useBookings();
   const [startTime, setStartTime] = useState("");
@@ -32,6 +33,7 @@ const BookingModal = ({ isActive, onClose, selectedDevice, fetchDevices }) => {
   const [bookings, setBookings] = useState([]);
   const [price, setPrice] = useState(0);
   const [currentDate, setCurrentDate] = useState(getLocalDateString());
+  const priceTable = usePrice(); // Отримуємо таблицю цін із контексту
 
   // Оновлення дати кожну хвилину
   useEffect(() => {
@@ -42,31 +44,53 @@ const BookingModal = ({ isActive, onClose, selectedDevice, fetchDevices }) => {
   }, []);
 
   useEffect(() => {
+    if (isActive && recommendedDuration) {
+      setDuration(recommendedDuration); // Встановлюємо рекомендовану тривалість
+    }
+  }, [isActive, recommendedDuration]);
+
+  useEffect(() => {
     if (selectedDevice) {
       console.log("Selected Device Bookings:", selectedDevice.bookings);
 
-      // Отримуємо поточний час у UTC
-      const nowUTC = new Date(Date.now()); // Використовуємо Date.now() для точного часу
+      // Поточний локальний час
+      const now = new Date();
 
       const filteredBookings = (selectedDevice.bookings || []).filter(
         (booking) => {
-          const bookingEndTime = new Date(booking.endTime); // Час завершення бронювання в UTC
-          console.log("Booking End Time (UTC):", bookingEndTime.toISOString());
-          console.log("Current Time (UTC):", nowUTC.toISOString());
+          const bookingEndTime = new Date(booking.endTime);
+          // Конвертуємо UTC у локальний час
+          const localBookingEndTime = new Date(
+            bookingEndTime.getTime() +
+              bookingEndTime.getTimezoneOffset() * 60000
+          );
 
-          // Ігноруємо бронювання, які завершилися
-          if (bookingEndTime <= nowUTC) {
+          console.log(
+            "Booking End Time (Local):",
+            localBookingEndTime.toLocaleString()
+          );
+          console.log("Current Time (Local):", now.toLocaleString());
+
+          // Ігноруємо бронювання, які завершилися в локальному часі
+          if (localBookingEndTime <= now) {
             console.log("✅ Це бронювання вже завершилось, пропускаємо");
             return false;
           }
 
-          return true; // Додаємо тільки активні бронювання
+          return true;
         }
       );
 
-      console.log("Filtered Bookings (Active):", filteredBookings);
-      setBookings(filteredBookings); // Оновлюємо стан
-      console.log("Updated Bookings State:", filteredBookings);
+      // Сортуємо бронювання за startTime у порядку зростання
+      const sortedBookings = filteredBookings.sort((a, b) => {
+        const startTimeA = new Date(a.startTime);
+        const startTimeB = new Date(b.startTime);
+        return startTimeA - startTimeB; // Сортування від найближчого до найвіддаленішого
+      });
+
+      console.log("Filtered and Sorted Bookings (Active):", sortedBookings);
+      setBookings(sortedBookings);
+      console.log("Updated Bookings State:", sortedBookings);
     }
   }, [selectedDevice, currentDate]);
 
@@ -227,7 +251,7 @@ const BookingModal = ({ isActive, onClose, selectedDevice, fetchDevices }) => {
     if (selectedDevice && duration) {
       updatePrice(duration);
     }
-  }, [duration, selectedDevice, startTime]);
+  }, [duration, selectedDevice, priceTable]);
 
   const updatePrice = (selectedDuration) => {
     if (!selectedDevice || !selectedDevice.zone) {
@@ -245,7 +269,6 @@ const BookingModal = ({ isActive, onClose, selectedDevice, fetchDevices }) => {
       .map(Number)
       .sort((a, b) => a - b);
 
-    // Знаходимо найближчу допустиму тривалість
     let closestDuration = availableDurations[0];
     for (let d of availableDurations) {
       if (d <= selectedDuration) closestDuration = d;
@@ -315,7 +338,6 @@ const BookingModal = ({ isActive, onClose, selectedDevice, fetchDevices }) => {
               {bookings.map((booking) => {
                 const bookingStartTime = new Date(booking.startTime);
                 const bookingEndTime = new Date(booking.endTime);
-
                 return (
                   <li key={booking._id}>
                     {bookingStartTime.toLocaleTimeString("uk-UA", {

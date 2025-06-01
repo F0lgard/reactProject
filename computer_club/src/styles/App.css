@@ -365,3 +365,19 @@ table {
   align-items: center; /* Вертикальне вирівнювання по центру */
   cursor: pointer; /* Показує, що елемент клікабельний */
 }
+
+.admin-panel-btn {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.admin-panel-btn:hover {
+  background-color: #1e40af;
+}

@@ -1,72 +1,44 @@
-/* .booking-list {
-  max-height: 220px; 
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 8px;
-  margin: 10px 0;
-} */
-
-.booking-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.booking-list li {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
+/* filepath: f:\education_2024\reactProject\computer_club\src\styles\Modal.css */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
+  z-index: 1000;
 }
 
-/* Стилі для кнопки видалення */
-.delete-btn {
-  margin-left: 10px;
-  background-color: #ff0000;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
+.modal_content {
+  color: #000000;
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  max-width: 1200px; /* Максимальна ширина */
+  max-height: 90vh; /* Максимальна висота */
+  overflow-y: auto; /* Прокрутка, якщо вміст перевищує висоту */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: 0.4s all;
 }
 
-.modal-content-bron {
-  max-width: 500px; /* Обмежуємо ширину модального вікна */
-  padding: 20px;
-  text-align: left; /* За замовчуванням текст вирівняний ліворуч */
+.modal.active {
+  display: flex;
 }
 
-/* Заголовок по центру */
-.modal-content-bron h2 {
-  text-align: center;
-  font-weight: bold;
-  font-size: 22px; /* Трохи збільшений шрифт */
-  margin-bottom: 15px;
+.modal_content.active {
+  animation: fadeIn 0.3s ease;
 }
 
-/* Стилі для інформації про пристрій */
-.modal-content-bron p {
-  font-size: 20px;
-  margin: 5px 0;
-}
-
-/* Виділяємо значення червоним */
-.modal-content-bron p span.red-text {
-  color: red;
-  font-weight: bold;
-}
-
-/* Стилі для помилки */
-.error-message {
-  background-color: #ffdddd;
-  color: #d8000c;
-  padding: 8px;
-  border-radius: 5px;
-  font-size: 14px;
-  text-align: center;
-  max-width: 300px; /* Обмежуємо ширину */
-  margin: 10px auto; /* Центруємо */
-  word-wrap: break-word; /* Дозволяє перенос тексту */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

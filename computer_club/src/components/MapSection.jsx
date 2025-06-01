@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from "react";
+// MapSection.jsx
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import DeviceButton from "./DeviceButton";
 import BookingModal from "./BookingModal";
 import "../styles/Map.css";
 
-const MapSection = () => {
+const MapSection = forwardRef((props, ref) => {
   const [devices, setDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [isBookingModalOpen, setBookingModalOpen] = useState(false);
+  const [recommendedDuration, setRecommendedDuration] = useState(null); // Додаємо стан для recommendedDuration
+  const sectionRef = useRef(null);
 
-  // Функція для розрахунку позиції пристрою
   const calculatePosition = (device) => {
     const indexMatch = device.id.match(/\d+/);
     const index = indexMatch ? parseInt(indexMatch[0], 10) - 1 : 0;
@@ -34,7 +42,6 @@ const MapSection = () => {
     }
   };
 
-  // Отримання даних про пристрої
   const fetchDevices = async () => {
     try {
       const response = await fetch("http://localhost:3001/devices/status");
@@ -51,8 +58,6 @@ const MapSection = () => {
 
   useEffect(() => {
     fetchDevices();
-
-    // WebSocket для миттєвих оновлень
     const ws = new WebSocket("ws://localhost:8000");
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -63,17 +68,35 @@ const MapSection = () => {
         fetchDevices();
       }
     };
-
     return () => ws.close();
   }, []);
 
+  useImperativeHandle(ref, () => ({
+    scrollToSection() {
+      if (sectionRef.current) {
+        sectionRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    },
+    openBookingModal(deviceId, recommendedDuration) {
+      const device = devices.find((d) => d._id === deviceId);
+      if (device) {
+        setSelectedDevice(device);
+        setRecommendedDuration(recommendedDuration); // Зберігаємо recommendedDuration
+        setBookingModalOpen(true);
+      } else {
+        console.error(`Пристрій із deviceId ${deviceId} не знайдено.`);
+      }
+    },
+  }));
+
   const handleDeviceClick = (device) => {
     setSelectedDevice(device);
+    setRecommendedDuration(null); // Скидаємо recommendedDuration при виборі з мапи
     setBookingModalOpen(true);
   };
 
   return (
-    <div className="map-section">
+    <div className="map-section" ref={sectionRef}>
       <h2 className="map-section-name" id="map">
         Карта
       </h2>
@@ -133,11 +156,13 @@ const MapSection = () => {
           isActive={isBookingModalOpen}
           onClose={() => setBookingModalOpen(false)}
           selectedDevice={selectedDevice}
-          fetchDevices={fetchDevices} // Передаємо функцію для оновлення пристроїв
+          fetchDevices={fetchDevices}
+          recommendedDuration={recommendedDuration} // Передаємо recommendedDuration
+          customStyles={{ width: "500px" }}
         />
       )}
     </div>
   );
-};
+});
 
 export default MapSection;

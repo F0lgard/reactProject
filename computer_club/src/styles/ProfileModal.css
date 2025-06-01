@@ -1,0 +1,35 @@
+/* filepath: f:\education_2024\reactProject\computer_club\src\styles\ProfileModal.css */
+.modal-content-bron {
+  max-width: 500px;
+  padding: 20px;
+  text-align: left;
+}
+
+.modal-content-bron h2 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.modal-content-bron p {
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.modal-content-bron p span.red-text {
+  color: red;
+  font-weight: bold;
+}
+
+.error-message {
+  background-color: #ffdddd;
+  color: #d8000c;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  max-width: 300px;
+  margin: 10px auto;
+  word-wrap: break-word;
+}

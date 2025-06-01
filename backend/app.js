@@ -6,6 +6,8 @@ const shortid = require("shortid");
 const WebSocket = require("ws");
 const axios = require("axios");
 const Device = require("./models/Device");
+const sendVerificationEmail = require("./utils/sendVerificationEmail");
+const crypto = require("crypto"); // для створення токену
 
 const app = express();
 const port = 3001;
@@ -50,19 +52,28 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "./uploads/usericon.png", // URL дефолтного аватара
+      default: "./uploads/usericon.png",
     },
     commentsCount: {
       type: Number,
       default: 0,
     },
     lastCommentDate: Date,
+
+    // ✅ Нові поля для підтвердження email:
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 
-// Створення моделі користувача на основі схеми
 const User = mongoose.model("User", userSchema);
+
 // Створення схеми турніру
 const turnirSchema = new mongoose.Schema({
   pairs: [
@@ -129,27 +140,35 @@ app.post("/register", async (req, res) => {
         .json({ error: "Користувач із таким ім'ям або емейлом вже існує" });
     }
 
-    // Встановлюємо дефолтний аватар, якщо його не передано
     const avatar =
       req.body.avatar || "http://localhost:3001/uploads/usericon.png";
 
-    const newUser = new User({ username, email, password, role, avatar });
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    const newUser = new User({
+      username,
+      email,
+      password,
+      role,
+      avatar,
+      verificationToken,
+      isVerified: false,
+    });
+
     await newUser.save();
 
+    // 🔔 Надсилаємо лист
+    await sendVerificationEmail(email, verificationToken);
+
     res.status(201).json({
-      _id: newUser._id,
-      username: newUser.username,
-      email: newUser.email,
-      role: newUser.role,
-      avatar: newUser.avatar,
+      message: "Користувач створений. Перевірте пошту для підтвердження.",
     });
   } catch (err) {
-    console.error("Помилка реєстрації користувача:", err);
+    console.error("Помилка реєстрації:", err);
     res.status(500).json({ error: "Не вдалося зареєструвати користувача" });
   }
 });
 
-// Обробник POST-запиту для входу користувача
 app.post("/login", async (req, res) => {
   const { login, password } = req.body;
 
@@ -162,13 +181,75 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Неправильний логін або емейл" });
     }
 
-    if (user.password === password) {
-      res.status(200).json(user);
-    } else {
-      res.status(401).json({ message: "Неправильний пароль" });
+    if (user.password !== password) {
+      return res.status(401).json({ message: "Неправильний пароль" });
     }
+
+    // ⛔ Перевірка підтвердження пошти
+    if (!user.isVerified) {
+      return res.status(403).json({
+        message: "Будь ласка, підтвердіть свою електронну пошту перед входом.",
+      });
+    }
+
+    res.status(200).json(user);
   } catch (error) {
     console.error("Помилка при авторизації:", error);
+    res.status(500).json({ message: "Помилка сервера" });
+  }
+});
+
+app.get("/verify-email", async (req, res) => {
+  const { token } = req.query;
+
+  if (!token) {
+    return res.status(400).send("Невірний запит: немає токену");
+  }
+
+  try {
+    const user = await User.findOne({ verificationToken: token });
+
+    if (!user) {
+      return res.status(400).send("Невірний або прострочений токен");
+    }
+
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    res.send(`
+      <h2>✅ Пошта успішно підтверджена!</h2>
+      <p>Тепер ви можете увійти до системи.</p>
+    `);
+  } catch (err) {
+    console.error("Помилка під час верифікації:", err);
+    res.status(500).send("Сталася помилка на сервері");
+  }
+});
+
+app.post("/resend-verification", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Користувача не знайдено" });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: "Пошта вже підтверджена" });
+    }
+
+    // Створюємо новий токен
+    const newToken = crypto.randomBytes(32).toString("hex");
+    user.emailVerificationToken = newToken;
+    await user.save();
+
+    await sendVerificationEmail(user.email, newToken, user.username);
+    res.status(200).json({ message: "Лист підтвердження повторно надіслано" });
+  } catch (error) {
+    console.error("Помилка при повторній верифікації:", error);
     res.status(500).json({ message: "Помилка сервера" });
   }
 });
@@ -745,6 +826,96 @@ app.get("/bookings", async (req, res) => {
   }
 });
 
+app.get("/analytics/summary", async (req, res) => {
+  try {
+    const getLocalDateString = (date) => {
+      const offsetMs = date.getTimezoneOffset() * 60000; // Зсув у мілісекундах
+      const local = new Date(date.getTime() - offsetMs);
+      return local.toISOString().slice(0, 10);
+    };
+
+    // Отримання локального часу
+    const nowUTC = new Date();
+    const offsetMs = nowUTC.getTimezoneOffset() * 60000; // Зсув у мілісекундах
+    const now = new Date(nowUTC.getTime() - offsetMs); // Локальний час
+
+    console.log("Поточний час (now):", now);
+
+    const from = req.query.from
+      ? new Date(req.query.from + "T00:00:00.000Z")
+      : new Date(getLocalDateString(now) + "T00:00:00.000Z");
+
+    const to = req.query.to
+      ? new Date(req.query.to + "T23:59:59.999Z")
+      : new Date(getLocalDateString(now) + "T23:59:59.999Z");
+
+    console.log("Computed 'from' date:", from);
+    console.log("Computed 'to' date:", to);
+
+    const devices = await Device.find();
+
+    let totalRevenue = 0;
+    let totalBookingsCount = 0;
+    let activeBookingsCount = 0;
+
+    const zoneStats = {
+      Pro: { revenue: 0, durationHours: 0 },
+      VIP: { revenue: 0, durationHours: 0 },
+      PS: { revenue: 0, durationHours: 0 },
+    };
+
+    const hourUsage = new Array(24).fill(0);
+    const dailyRevenueMap = new Map();
+
+    devices.forEach((device) => {
+      const zone = device.zone;
+      if (!zoneStats[zone]) return;
+
+      device.bookings.forEach((booking) => {
+        const startUTC = new Date(booking.startTime);
+        const endUTC = new Date(booking.endTime);
+        const price = booking.price || 0;
+
+        if ((from && endUTC < from) || (to && startUTC > to)) return;
+
+        totalBookingsCount++;
+
+        if (startUTC <= now && endUTC >= now) {
+          activeBookingsCount++;
+        }
+
+        const durationHours = (endUTC - startUTC) / (1000 * 60 * 60);
+
+        totalRevenue += price;
+        zoneStats[zone].revenue += price;
+        zoneStats[zone].durationHours += durationHours;
+
+        const hour = startUTC.getUTCHours();
+        hourUsage[hour]++;
+
+        const dayKey = startUTC.toISOString().split("T")[0];
+        dailyRevenueMap.set(dayKey, (dailyRevenueMap.get(dayKey) || 0) + price);
+      });
+    });
+
+    const dailyRevenue = Array.from(dailyRevenueMap.entries()).map(
+      ([date, revenue]) => ({ date, revenue })
+    );
+
+    res.json({
+      totalRevenue,
+      zoneStats,
+      hourUsage,
+      activeBookingsCount,
+      totalBookingsCount,
+      dailyRevenue,
+    });
+  } catch (error) {
+    console.error("Аналітика помилка:", error);
+    res.status(500).json({ error: "Помилка при обробці аналітики" });
+  }
+});
+
 // Додайте обробник помилок для всіх інших запитів
 app.use((req, res) => {
   res.status(404).send("Not Found");
@@ -753,3 +924,5 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
+
+// ... (попередній імпорт, ініціалізація)

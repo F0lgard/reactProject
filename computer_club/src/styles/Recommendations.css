@@ -1,0 +1,95 @@
+.recommendations-bck {
+  width: 100%;
+  /*min-height: 705px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  gap: 20px;
+
+  background-color: #09111c; /* Темний фон */
+  color: #ffffff; /* Білий текст */
+}
+
+.recommendations-title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #ff0000; /* Червоний акцент */
+  margin: 0;
+}
+
+.recommendations-subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0;
+}
+
+.recommendations-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.recommendation-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.recommendation-card h3 {
+  margin: 0 0 8px;
+}
+
+.recommendation-card p {
+  margin: 4px 0;
+}
+
+.recommendation-card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.recommendation-card button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .recommendations-bck {
+    padding: 40px 10px;
+  }
+
+  .recommendations-title {
+    font-size: 36px;
+  }
+
+  .recommendations-subtitle {
+    font-size: 18px;
+  }
+
+  .recommendations-container {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .recommendations-title {
+    font-size: 28px;
+  }
+
+  .recommendations-subtitle {
+    font-size: 16px;
+  }
+}

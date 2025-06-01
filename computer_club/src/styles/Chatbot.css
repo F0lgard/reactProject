@@ -1,0 +1,193 @@
+/* Контейнер чат-бота */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000; /* Підвищений z-index для видимості */
+  width: auto; /* Для прив’язки кнопки до краю */
+}
+
+/* Кастомний контейнер для чат-бота */
+.chatbot-box {
+  width: 320px;
+  max-width: 90vw; /* Адаптивність для мобільних */
+  height: 500px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Повідомлення про завантаження */
+.chatbot-loading {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Кастомний заголовок */
+.chatbot-header {
+  background-color: #f50057;
+  color: #fff;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  flex-shrink: 0; /* Фіксована висота */
+}
+
+/* Заголовок чат-бота */
+.chatbot-title {
+  font-size: 16px;
+}
+
+/* Кнопка закриття */
+.chatbot-close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Кнопка для відкриття/закриття чат-бота */
+.chat-toggle-icon {
+  background-color: #f50057;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  height: auto;
+  border: none;
+}
+
+/* Hover для кнопки toggle-icon */
+.chat-toggle-icon:hover {
+  background-color: #c51162;
+}
+
+/* Основний контейнер чат-бота */
+.react-chatbot-kit-chat-container {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+/* Внутрішній контейнер чат-бота */
+.react-chatbot-kit-chat-inner-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Заповнює простір між заголовком і полем вводу */
+  overflow: hidden;
+}
+
+/* Контейнер повідомлень (прокручуваний) */
+.react-chatbot-kit-chat-message-container {
+  flex: 1; /* Заповнює доступний простір */
+  padding: 10px 17.5px;
+  overflow-y: auto; /* Тільки вертикальна прокрутка */
+  background-color: #f9f9f9; /* Легкий фон для контрасту */
+  max-height: 370px;
+}
+
+/* Повідомлення бота */
+.react-chatbot-kit-chat-bot-message {
+  background-color: #2898ec;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: medium;
+  width: auto;
+  margin-left: auto;
+  text-align: left;
+  margin-top: 5px;
+}
+
+/* Кнопки в чат-боті (включаючи chatbot-options) */
+.react-chatbot-kit-chat-btn {
+  background-color: #f50057;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  margin: 5px 5px 0 0;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 30px;
+}
+
+/* Hover для кнопок чат-бота */
+.react-chatbot-kit-chat-btn:hover {
+  background-color: #c51162;
+}
+
+/* Контейнер для опцій (chatbot-options) */
+.chatbot-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; /* Відступи між кнопками */
+  justify-content: center;
+}
+
+/* Контейнер поля вводу */
+.react-chatbot-kit-chat-input-container {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #fff;
+  flex-shrink: 0; /* Фіксована висота */
+  display: flex;
+  align-items: center;
+}
+
+/* Форма вводу */
+.react-chatbot-kit-chat-input-form {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+/* Поле вводу */
+.react-chatbot-kit-chat-input {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* Кнопка відправки */
+.react-chatbot-kit-chat-btn-send {
+  margin-left: 10px;
+  background-color: #f50057;
+  border: none;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Hover для кнопки відправки */
+.react-chatbot-kit-chat-btn-send:hover {
+  background-color: #c51162;
+}
+
+/* Приховуємо стандартний заголовок */
+.react-chatbot-kit-chat-header {
+  display: none !important;
+}

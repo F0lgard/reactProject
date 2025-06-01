@@ -8,6 +8,7 @@ import ProfileModal from "./ProfileModal";
 import Input from "./Input";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
+import AdminAnalytics from "./Admin/AdminAnalytics";
 
 export default function Header() {
   const { isAuthenticated, setIsAuthenticated, user, setUser } = useAuth();
@@ -17,6 +18,7 @@ export default function Header() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isAnalyticsOpen, setAnalyticsOpen] = useState(false);
 
   useEffect(() => {
     const storedIsAuthenticated =
@@ -121,6 +123,15 @@ export default function Header() {
         </nav>
         {isAuthenticated && user ? (
           <div className="user-info">
+            {user?.role === "admin" && (
+              <button
+                className="admin-panel-btn"
+                onClick={() => setAnalyticsOpen(true)}
+              >
+                Адмін панель
+              </button>
+            )}
+
             <div
               className="user-info-container"
               onClick={() => setProfileModalActive(true)}
@@ -194,6 +205,15 @@ export default function Header() {
           active={profileModalActive}
           setActive={setProfileModalActive}
         />
+        {isAnalyticsOpen && (
+          <Modal
+            active={isAnalyticsOpen}
+            setActive={setAnalyticsOpen}
+            customStyles={{ width: "90%", maxWidth: "1200px" }}
+          >
+            <AdminAnalytics />
+          </Modal>
+        )}
       </header>
     </div>
   );
