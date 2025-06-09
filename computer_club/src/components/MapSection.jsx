@@ -1,4 +1,3 @@
-// MapSection.jsx
 import React, {
   useState,
   useEffect,
@@ -14,8 +13,9 @@ const MapSection = forwardRef((props, ref) => {
   const [devices, setDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [isBookingModalOpen, setBookingModalOpen] = useState(false);
-  const [recommendedDuration, setRecommendedDuration] = useState(null); // Додаємо стан для recommendedDuration
+  const [recommendedDuration, setRecommendedDuration] = useState(null);
   const sectionRef = useRef(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const calculatePosition = (device) => {
     const indexMatch = device.id.match(/\d+/);
@@ -58,6 +58,7 @@ const MapSection = forwardRef((props, ref) => {
 
   useEffect(() => {
     fetchDevices();
+
     const ws = new WebSocket("ws://localhost:8000");
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -71,6 +72,14 @@ const MapSection = forwardRef((props, ref) => {
     return () => ws.close();
   }, []);
 
+  // 🔄 Оновлення часу кожні 30 секунд
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   useImperativeHandle(ref, () => ({
     scrollToSection() {
       if (sectionRef.current) {
@@ -81,7 +90,7 @@ const MapSection = forwardRef((props, ref) => {
       const device = devices.find((d) => d._id === deviceId);
       if (device) {
         setSelectedDevice(device);
-        setRecommendedDuration(recommendedDuration); // Зберігаємо recommendedDuration
+        setRecommendedDuration(recommendedDuration);
         setBookingModalOpen(true);
       } else {
         console.error(`Пристрій із deviceId ${deviceId} не знайдено.`);
@@ -91,7 +100,7 @@ const MapSection = forwardRef((props, ref) => {
 
   const handleDeviceClick = (device) => {
     setSelectedDevice(device);
-    setRecommendedDuration(null); // Скидаємо recommendedDuration при виборі з мапи
+    setRecommendedDuration(null);
     setBookingModalOpen(true);
   };
 
@@ -146,6 +155,7 @@ const MapSection = forwardRef((props, ref) => {
               bookings={device.bookings}
               position={device.position}
               onClick={() => handleDeviceClick(device)}
+              currentTime={currentTime} // ⏱️ Передаємо час
             />
           ))}
         </div>
@@ -157,7 +167,7 @@ const MapSection = forwardRef((props, ref) => {
           onClose={() => setBookingModalOpen(false)}
           selectedDevice={selectedDevice}
           fetchDevices={fetchDevices}
-          recommendedDuration={recommendedDuration} // Передаємо recommendedDuration
+          recommendedDuration={recommendedDuration}
           customStyles={{ width: "500px" }}
         />
       )}

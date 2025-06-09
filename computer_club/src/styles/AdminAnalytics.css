@@ -4,6 +4,7 @@
   height: 100vh;
   overflow-y: auto;
   border-radius: 20px;
+  color: black;
 }
 
 .admin-analytics-container {

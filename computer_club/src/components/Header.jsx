@@ -9,6 +9,7 @@ import Input from "./Input";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
 import AdminAnalytics from "./Admin/AdminAnalytics";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 
 export default function Header() {
   const { isAuthenticated, setIsAuthenticated, user, setUser } = useAuth();
@@ -19,6 +20,9 @@ export default function Header() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isAnalyticsOpen, setAnalyticsOpen] = useState(false);
+  const [forgotModalActive, setForgotModalActive] = useState(false);
+  const [showResendVerification, setShowResendVerification] = useState(false);
+  const [resendMessage, setResendMessage] = useState("");
 
   useEffect(() => {
     const storedIsAuthenticated =
@@ -49,8 +53,8 @@ export default function Header() {
         login,
         password,
       });
-      const userData = response.data;
 
+      const userData = response.data;
       setLoginModalActive(false);
       setIsAuthenticated(true);
       localStorage.setItem("isAuthenticated", true);
@@ -58,12 +62,21 @@ export default function Header() {
       setUser(userData);
       setError("");
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        setError("Невірний логін або пароль.");
-      } else if (error.response && error.response.status === 404) {
-        setError("Користувача не знайдено.");
+      if (error.response) {
+        if (error.response.status === 401) {
+          setError("Невірний логін або пароль.");
+        } else if (error.response.status === 403) {
+          setError(
+            "Будь ласка, підтвердіть свою електронну пошту перед входом."
+          );
+          setShowResendVerification(true); // показати кнопку
+        } else if (error.response.status === 404) {
+          setError("Користувача не знайдено.");
+        } else {
+          setError("Сталася помилка під час авторизації.");
+        }
       } else {
-        setError("Сталася помилка під час авторизації.");
+        setError("Помилка з'єднання з сервером.");
       }
     }
   };
@@ -85,6 +98,26 @@ export default function Header() {
       setAvatar(user.avatar);
     }
   }, [user]);
+
+  const handleResendVerification = async () => {
+    if (!login.includes("@")) {
+      setResendMessage("Будь ласка, введіть email, а не логін.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/resend-verification",
+        {
+          email: login.trim(),
+        }
+      );
+      setResendMessage("Лист повторно надіслано 📧");
+    } catch (err) {
+      setResendMessage("Не вдалося надіслати лист. Спробуйте пізніше.");
+      console.error(err);
+    }
+  };
 
   return (
     <div>
@@ -182,11 +215,35 @@ export default function Header() {
               <button className="modal-button" onClick={handleLogin}>
                 Ввійти
               </button>
+              {showResendVerification && (
+                <div className="resend-verification">
+                  <button
+                    type="button"
+                    className="modal-a resend-link"
+                    onClick={handleResendVerification}
+                  >
+                    Надіслати лист підтвердження повторно
+                  </button>
+                  {resendMessage && (
+                    <p style={{ color: "green", fontSize: "14px" }}>
+                      {resendMessage}
+                    </p>
+                  )}
+                </div>
+              )}
             </form>
             <div className="modal-section-a">
-              <a href="/" className="modal-a">
+              <a
+                href="#"
+                className="modal-a"
+                onClick={() => {
+                  setLoginModalActive(false);
+                  setForgotModalActive(true);
+                }}
+              >
                 Забули пароль
               </a>
+
               <a
                 href="#"
                 className="modal-a"
@@ -201,6 +258,11 @@ export default function Header() {
           active={registrationModalActive}
           setActive={setRegistrationModalActive}
         />
+        <ForgotPasswordModal
+          active={forgotModalActive}
+          setActive={setForgotModalActive}
+        />
+
         <ProfileModal
           active={profileModalActive}
           setActive={setProfileModalActive}

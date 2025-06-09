@@ -3,8 +3,15 @@ import "../styles/DeviceButton.css";
 import pcMonitorIcon from "../img/pcMonitor.png";
 import controllerIcon from "../img/controller.png";
 
-const DeviceButton = ({ id, type, bookings = [], onClick, position }) => {
-  const now = new Date();
+const DeviceButton = ({
+  id,
+  type,
+  bookings = [],
+  onClick,
+  position,
+  currentTime,
+}) => {
+  const now = currentTime; // ← використовуємо переданий час
 
   const convertToLocalTime = (utcTime) => {
     return new Date(utcTime.getTime() + utcTime.getTimezoneOffset() * 60000);

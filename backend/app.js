@@ -8,6 +8,8 @@ const axios = require("axios");
 const Device = require("./models/Device");
 const sendVerificationEmail = require("./utils/sendVerificationEmail");
 const crypto = require("crypto"); // для створення токену
+const sendResetEmail = require("./utils/sendResetEmail");
+const bcrypt = require("bcrypt");
 
 const app = express();
 const port = 3001;
@@ -59,6 +61,8 @@ const userSchema = new mongoose.Schema(
       default: 0,
     },
     lastCommentDate: Date,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
 
     // ✅ Нові поля для підтвердження email:
     isVerified: {
@@ -145,10 +149,13 @@ app.post("/register", async (req, res) => {
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
+    // 🔐 Хешуємо пароль перед збереженням
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new User({
       username,
       email,
-      password,
+      password: hashedPassword, // зберігаємо хеш, а не оригінал
       role,
       avatar,
       verificationToken,
@@ -181,11 +188,29 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Неправильний логін або емейл" });
     }
 
-    if (user.password !== password) {
+    const isHashed = user.password.startsWith("$2b$");
+
+    let isPasswordValid = false;
+
+    if (isHashed) {
+      // 🔐 новий користувач
+      isPasswordValid = await bcrypt.compare(password, user.password);
+    } else {
+      // 🧓 старий користувач
+      if (user.password === password) {
+        // 🔄 автоматично хешуємо й оновлюємо пароль
+        const hashed = await bcrypt.hash(password, 10);
+        user.password = hashed;
+        await user.save();
+        isPasswordValid = true;
+      }
+    }
+
+    if (!isPasswordValid) {
       return res.status(401).json({ message: "Неправильний пароль" });
     }
 
-    // ⛔ Перевірка підтвердження пошти
+    // 🔒 Перевірка email верифікації
     if (!user.isVerified) {
       return res.status(403).json({
         message: "Будь ласка, підтвердіть свою електронну пошту перед входом.",
@@ -243,7 +268,8 @@ app.post("/resend-verification", async (req, res) => {
 
     // Створюємо новий токен
     const newToken = crypto.randomBytes(32).toString("hex");
-    user.emailVerificationToken = newToken;
+    user.verificationToken = newToken;
+
     await user.save();
 
     await sendVerificationEmail(user.email, newToken, user.username);
@@ -251,6 +277,65 @@ app.post("/resend-verification", async (req, res) => {
   } catch (error) {
     console.error("Помилка при повторній верифікації:", error);
     res.status(500).json({ message: "Помилка сервера" });
+  }
+});
+
+app.post("/request-password-reset", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Користувача з таким email не знайдено." });
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiration = Date.now() + 60 * 60 * 1000; // 1 година
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = expiration;
+    await user.save();
+
+    await sendResetEmail(email, token);
+
+    res.json({ message: "Лист з відновленням надіслано." });
+  } catch (error) {
+    console.error("Помилка надсилання листа:", error);
+    res.status(500).json({ message: "Не вдалося надіслати лист." });
+  }
+});
+
+app.post("/reset-password", async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Недійсне або прострочене посилання." });
+    }
+
+    // 🔐 Хешуємо новий пароль
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.json({ message: "Пароль успішно змінено!" });
+  } catch (error) {
+    console.error("Помилка при скиданні паролю:", error);
+    res.status(500).json({ message: "Серверна помилка." });
   }
 });
 
@@ -387,23 +472,32 @@ app.delete("/bookings/:id", async (req, res) => {
 }); */
 
 // Обробник POST-запиту для зміни пароля
+
 app.post("/change-password", async (req, res) => {
   const { userId, currentPassword, newPassword } = req.body;
 
   try {
     const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Користувача не знайдено" });
+    }
 
-    if (user && user.password === currentPassword) {
-      user.password = newPassword;
-      await user.save();
-      res
-        .status(200)
-        .json({ success: true, message: "Пароль успішно змінено" });
-    } else {
-      res
+    // 🔐 Перевірка поточного пароля
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res
         .status(400)
         .json({ success: false, message: "Неправильний поточний пароль" });
     }
+
+    // 🔐 Хешуємо новий пароль
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+
+    await user.save();
+    res.status(200).json({ success: true, message: "Пароль успішно змінено" });
   } catch (error) {
     console.error("Помилка при зміні пароля:", error);
     res.status(500).json({ success: false, message: "Помилка сервера" });
@@ -829,15 +923,14 @@ app.get("/bookings", async (req, res) => {
 app.get("/analytics/summary", async (req, res) => {
   try {
     const getLocalDateString = (date) => {
-      const offsetMs = date.getTimezoneOffset() * 60000; // Зсув у мілісекундах
+      const offsetMs = date.getTimezoneOffset() * 60000;
       const local = new Date(date.getTime() - offsetMs);
       return local.toISOString().slice(0, 10);
     };
 
-    // Отримання локального часу
     const nowUTC = new Date();
-    const offsetMs = nowUTC.getTimezoneOffset() * 60000; // Зсув у мілісекундах
-    const now = new Date(nowUTC.getTime() - offsetMs); // Локальний час
+    const offsetMs = nowUTC.getTimezoneOffset() * 60000;
+    const now = new Date(nowUTC.getTime() - offsetMs);
 
     console.log("Поточний час (now):", now);
 
@@ -866,6 +959,7 @@ app.get("/analytics/summary", async (req, res) => {
 
     const hourUsage = new Array(24).fill(0);
     const dailyRevenueMap = new Map();
+    const dailyBookingsMap = new Map();
 
     devices.forEach((device) => {
       const zone = device.zone;
@@ -895,11 +989,15 @@ app.get("/analytics/summary", async (req, res) => {
 
         const dayKey = startUTC.toISOString().split("T")[0];
         dailyRevenueMap.set(dayKey, (dailyRevenueMap.get(dayKey) || 0) + price);
+        dailyBookingsMap.set(dayKey, (dailyBookingsMap.get(dayKey) || 0) + 1);
       });
     });
 
     const dailyRevenue = Array.from(dailyRevenueMap.entries()).map(
       ([date, revenue]) => ({ date, revenue })
+    );
+    const dailyBookings = Array.from(dailyBookingsMap.entries()).map(
+      ([date, count]) => ({ date, count })
     );
 
     res.json({
@@ -909,6 +1007,7 @@ app.get("/analytics/summary", async (req, res) => {
       activeBookingsCount,
       totalBookingsCount,
       dailyRevenue,
+      dailyBookings,
     });
   } catch (error) {
     console.error("Аналітика помилка:", error);

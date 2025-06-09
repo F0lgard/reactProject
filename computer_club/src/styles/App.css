@@ -381,3 +381,23 @@ table {
 .admin-panel-btn:hover {
   background-color: #1e40af;
 }
+
+.resend-verification {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.resend-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.resend-link:hover {
+  color: #0056b3;
+  background-color: transparent;
+  border: none;
+}

@@ -72,7 +72,7 @@
   border-radius: 10px; /* Зміна обрамлення для активної комірки */
 }
 
-.modal-content-bron {
+/*.modal-content-bron {
   color: #000;
   display: flex;
   flex-direction: column;
@@ -125,3 +125,4 @@
 .modal-button-auth:active {
   background-color: #004895;
 }
+*/

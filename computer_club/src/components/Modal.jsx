@@ -1,15 +1,15 @@
-// filepath: f:\education_2024\reactProject\computer_club\src\components\Modal.jsx
 import React from "react";
+import "../styles/Modal.css"; // переконайся, що стилі підключені
 
 const Modal = ({ active, setActive, children, customStyles = {} }) => {
   return (
     <div
-      className={active ? "modal active" : "modal"}
+      className={`modal ${active ? "active" : ""}`}
       onClick={() => setActive(false)}
     >
       <div
-        className={active ? "modal_content active" : "modal_content"}
-        style={customStyles} // Додаємо стилі з пропса
+        className={`modal_content ${active ? "active" : ""}`}
+        style={customStyles}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

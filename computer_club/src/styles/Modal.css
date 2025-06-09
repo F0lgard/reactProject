@@ -1,44 +1,32 @@
-/* filepath: f:\education_2024\reactProject\computer_club\src\styles\Modal.css */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
   z-index: 1000;
 }
 
-.modal_content {
-  color: #000000;
-  background-color: #ffffff;
-  padding: 30px 40px;
-  border-radius: 12px;
-  max-width: 1200px; /* Максимальна ширина */
-  max-height: 90vh; /* Максимальна висота */
-  overflow-y: auto; /* Прокрутка, якщо вміст перевищує висоту */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  transition: 0.4s all;
+.modal.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.modal.active {
-  display: flex;
+.modal_content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
 }
 
 .modal_content.active {
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  transform: scale(1);
 }

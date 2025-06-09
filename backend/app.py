@@ -15,6 +15,7 @@ import time
 from bson import ObjectId
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import OneHotEncoder
+from prediction.model import BookingLoadPredictor
 
 print("Сервер запущено...")
 
@@ -717,7 +718,25 @@ def get_recommendations_with_filter(user_id):
     except Exception as e:
         print(f"❌ Помилка під час обчислення рекомендацій: {e}")
         return jsonify({"error": "Server error"}), 500
-    
+
+from prediction.model import train_and_predict
+
+@app.route('/api/custom-predict', methods=['POST'])
+def custom_predict():
+    try:
+        data = request.get_json()
+        train_from = data.get("trainFrom")
+        train_to = data.get("trainTo")
+        predict_from = data.get("predictFrom")
+        predict_to = data.get("predictTo")
+        use_all = data.get("useAll", False)
+
+        result = train_and_predict(train_from, train_to, predict_from, predict_to, use_all=use_all)
+        return jsonify(result), 200
+    except Exception as e:
+        print(f"❌ Помилка у /api/custom-predict: {e}")
+        return jsonify({"error": str(e)}), 500
+  
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
-import "../styles/Modal.css";
+import "../styles/BookingModal.css";
 import { useAuth } from "./AuthContext";
 import { useBookings } from "./BookingsContext";
 import axios from "axios";
@@ -320,7 +320,11 @@ const BookingModal = ({
   };
 
   return (
-    <Modal active={isActive} setActive={onClose}>
+    <Modal
+      active={isActive}
+      setActive={onClose}
+      customStyles={{ background: "none", boxShadow: "none", padding: "0" }}
+    >
       <div className="modal-content-bron">
         <h2>Бронювання {selectedDevice?.id}</h2>
 

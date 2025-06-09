@@ -128,17 +128,19 @@ const RegistrationModal = ({ active, setActive, setLoginActive }) => {
         password,
       });
 
-      console.log("Server response:", response.data); // Логування відповіді сервера
-
       const userData = response.data;
 
-      // Автоматичний вхід після реєстрації
+      if (!userData.isVerified) {
+        setRegistrationSuccess(true); // Показати повідомлення
+        return; // Не логінити користувача поки не підтверджено пошту
+      }
+
+      // Якщо зареєстрований користувач чомусь вже підтверджений (що малоймовірно)
       setIsAuthenticated(true);
       setUser(userData);
       localStorage.setItem("isAuthenticated", true);
       localStorage.setItem("user", JSON.stringify(userData));
 
-      // Закриваємо модальне вікно одразу після реєстрації
       setActive(false);
     } catch (error) {
       console.error("Помилка реєстрації:", error);
@@ -172,11 +174,13 @@ const RegistrationModal = ({ active, setActive, setLoginActive }) => {
       }}
     >
       <div className="vxid-modal">
-        {registrationSuccess ? ( // Перевірка на успішну реєстрацію
+        {registrationSuccess ? (
           <>
-            <p className="modal-name">ВІТІАЄМО</p>
+            <p className="modal-name">Підтвердження пошти</p>
             <p className="vxid-modal register-succses">
-              Реєстрація пройшла успішно
+              ✅ Реєстрація пройшла успішно. <br />
+              Ми надіслали вам листа для підтвердження пошти. <br />
+              Будь ласка, перевірте свою скриньку.
             </p>
             <Button onClick={handleModalClose} className="success-modal-Button">
               Закрити

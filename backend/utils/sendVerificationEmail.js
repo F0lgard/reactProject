@@ -3,8 +3,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "your.email@gmail.com", // ✅ ЗАМІНИ на свій Gmail
-    pass: "your_app_password", // ✅ ЗАМІНИ на свій App Password
+    user: "refidSC@gmail.com", // ✅ ЗАМІНИ на свій Gmail
+    pass: "mooa swrm svcv zfsd", // ✅ ЗАМІНИ на свій App Password
   },
 });
 
@@ -12,7 +12,7 @@ const sendVerificationEmail = async (to, token) => {
   const link = `http://localhost:3001/verify-email?token=${token}`;
 
   const mailOptions = {
-    from: "your.email@gmail.com", // той самий email
+    from: '"Cyber Zone" <noreply@club.com>', // той самий email
     to,
     subject: "Підтвердження email для комп'ютерного клубу",
     html: `

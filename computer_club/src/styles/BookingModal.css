@@ -1,0 +1,174 @@
+.modal-content-bron {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px 30px 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  color: #1f2937;
+  min-width: 340px;
+
+  transform: scale(0.5);
+  opacity: 0;
+  transition: 0.3s ease;
+}
+
+.modal.active .modal-content-bron {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.modal-content-bron h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  color: #1f2937;
+  text-align: center;
+}
+
+.modal-content-bron p {
+  font-size: 14px;
+  color: #4b5563;
+  margin: 8px 0;
+}
+
+.modal-content-bron .red-text {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.booking-list {
+  margin: 16px 0;
+}
+
+.booking-list h3 {
+  font-size: 16px;
+  font-weight: 500;
+  /*color: #1f2937;*/
+  margin: 0 0 8px;
+}
+
+.booking-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.booking-list li {
+  font-size: 14px;
+  /*color: #4b5563;*/
+  padding: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.booking-list li:last-child {
+  border-bottom: none;
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  height: auto;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+.modal-content-bron label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #4b5563;
+  margin: 12px 0;
+}
+
+.modal-content-bron input[type="time"],
+.modal-content-bron select {
+  margin-top: 6px;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1f2937;
+  background-color: #f9fafb;
+  transition: border-color 0.3s ease;
+}
+
+.modal-content-bron input[type="time"]:focus,
+.modal-content-bron select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.error-message {
+  background-color: #fef2f2;
+  color: #dc2626;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.modal-content-bron button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: block;
+  width: auto;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-content-bron button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modal-content-bron button:not(:disabled):hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  .modal-content-bron {
+    padding: 16px;
+    max-width: 90%;
+  }
+
+  .modal-content-bron h2 {
+    font-size: 18px;
+  }
+
+  .modal-content-bron p,
+  .modal-content-bron label {
+    font-size: 13px;
+  }
+
+  .modal-content-bron input[type="time"],
+  .modal-content-bron select {
+    font-size: 13px;
+  }
+
+  .modal-content-bron button {
+    padding: 8px 16px;
+  }
+}

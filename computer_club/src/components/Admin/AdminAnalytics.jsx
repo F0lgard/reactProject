@@ -39,12 +39,12 @@ const AdminAnalytics = () => {
 
   const fetchSummary = async () => {
     setLoading(true);
-    console.log("Запит на сервер з датами:", { from, to }); // Логування перед запитом
+    console.log("Запит на сервер з датами:", { from, to });
     try {
       const response = await axios.get(
         `http://localhost:3001/analytics/summary?from=${from}&to=${to}`
       );
-      console.log("Отримані дані з сервера:", response.data); // Логування відповіді сервера
+      console.log("Отримані дані з сервера:", response.data);
       setSummary(response.data);
     } catch (error) {
       console.error("Помилка отримання аналітики:", error);
@@ -55,7 +55,7 @@ const AdminAnalytics = () => {
 
   const fetchPrediction = async () => {
     setLoading(true);
-    console.log("Запит на прогноз з датами:", { from, to }); // Логування перед запитом
+    console.log("Запит на прогноз з датами:", { from, to });
     try {
       const response = await axios.post(
         "http://localhost:5000/api/predict-load",
@@ -64,7 +64,7 @@ const AdminAnalytics = () => {
           endDate: to,
         }
       );
-      console.log("Отримані дані прогнозу:", response.data); // Логування відповіді сервера
+      console.log("Отримані дані прогнозу:", response.data);
       setPredictionData(response.data);
     } catch (error) {
       console.error("Помилка отримання прогнозу:", error);
@@ -80,7 +80,7 @@ const AdminAnalytics = () => {
       const response = await axios.post(
         "http://localhost:5000/api/retrain-model"
       );
-      console.log("Результат донавчання:", response.data); // Логування відповіді сервера
+      console.log("Результат донавчання:", response.data);
       alert("Модель успішно донавчена!");
     } catch (error) {
       console.error("Помилка донавчання моделі:", error);
@@ -113,19 +113,17 @@ const AdminAnalytics = () => {
   const dailyRevenueData = Array.isArray(summary.dailyRevenue)
     ? summary.dailyRevenue
         .map(({ date, revenue }) => ({
-          // Формат дати: "20.05.25" (день.місяць.рік)
           day: new Date(date).toLocaleDateString("uk-UA", {
             day: "2-digit",
             month: "2-digit",
             year: "2-digit",
           }),
-          rawDate: new Date(date), // Зберігаємо оригінальну дату для сортування
+          rawDate: new Date(date),
           revenue,
         }))
-        .sort((a, b) => a.rawDate - b.rawDate) // Сортуємо за датою
+        .sort((a, b) => a.rawDate - b.rawDate)
     : [];
 
-  // Додаємо останню дату, якщо її немає
   if (dailyRevenueData.length > 0) {
     const lastDate = new Date(to).toLocaleDateString("uk-UA", {
       day: "2-digit",
@@ -136,22 +134,53 @@ const AdminAnalytics = () => {
     if (!dailyRevenueData.some((entry) => entry.day === lastDate)) {
       dailyRevenueData.push({
         day: lastDate,
-        rawDate: new Date(to), // Додаємо оригінальну дату для сортування
+        rawDate: new Date(to),
         revenue: 0,
       });
     }
 
-    // Повторно сортуємо після додавання останньої дати
     dailyRevenueData.sort((a, b) => a.rawDate - b.rawDate);
   }
 
-  // Видаляємо поле rawDate перед передачею в графік
   const formattedDailyRevenueData = dailyRevenueData.map(
     ({ day, revenue }) => ({
       day,
       revenue,
     })
   );
+
+  // Підрахунок кількості бронювань по днях
+  const calculateDailyBookings = () => {
+    const bookingsByDay = new Map();
+    if (summary && summary.devices) {
+      summary.devices.forEach((device) => {
+        device.bookings.forEach((booking) => {
+          const startDate = new Date(booking.startTime)
+            .toISOString()
+            .split("T")[0];
+          if (
+            new Date(startDate) >= new Date(from) &&
+            new Date(startDate) <= new Date(to)
+          ) {
+            bookingsByDay.set(
+              startDate,
+              (bookingsByDay.get(startDate) || 0) + 1
+            );
+          }
+        });
+      });
+    }
+    return Array.from(bookingsByDay.entries()).map(([date, count]) => ({
+      day: new Date(date).toLocaleDateString("uk-UA", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
+      }),
+      count,
+    }));
+  };
+
+  const dailyLoadData = calculateDailyBookings();
 
   const EditablePriceTable = () => {
     const [priceTable, setPriceTable] = useState([]);
@@ -255,7 +284,6 @@ const AdminAnalytics = () => {
     if (!predictionData) return null;
 
     if (from === to) {
-      // Погодинний графік для одного дня
       const hourlyZoneData = [];
 
       for (let hour = 8; hour < 24; hour++) {
@@ -292,7 +320,6 @@ const AdminAnalytics = () => {
         </div>
       );
     } else {
-      // Графік для кількох днів
       const dailyData = predictionData.map((item) => ({
         day: item.date,
         expectedBookings: item.expectedBookings,
@@ -326,7 +353,6 @@ const AdminAnalytics = () => {
       <div className="admin-analytics-container">
         <h2 className="admin-header">Аналітична панель адміністратора</h2>
 
-        {/* Вибір періоду та кнопка оновлення */}
         <div className="date-picker">
           <label>Період з: </label>
           <input
@@ -349,7 +375,6 @@ const AdminAnalytics = () => {
           </button>
         </div>
 
-        {/* Кнопки для прогнозу та донавчання */}
         <div className="action-buttons">
           <button
             className="predict-button"
@@ -367,28 +392,23 @@ const AdminAnalytics = () => {
           </button>
         </div>
 
-        {/* Загальні показники */}
         <div className="summary-cards">
           <div className="card">
             <h3>Загальний прибуток</h3>
             <p>{summary.totalRevenue || 0} грн</p>
           </div>
-
           <div className="card">
             <h3>Активні бронювання</h3>
             <p>{summary.activeBookingsCount || 0}</p>
           </div>
-
           <div className="card">
             <h3>Загальна кількість бронювань</h3>
             <p>{summary.totalBookingsCount || 0}</p>
           </div>
         </div>
 
-        {/* Графік прогнозу */}
         {renderPredictionChart()}
 
-        {/* Прибуток по зонах */}
         <div className="chart-block">
           <h3>Прибуток по зонах</h3>
           <ResponsiveContainer width="100%" height={250}>
@@ -415,7 +435,6 @@ const AdminAnalytics = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Навантаження по годинах */}
         <div className="chart-block">
           <h3>Навантаження по годинах</h3>
           <ResponsiveContainer width="100%" height={250}>
@@ -429,7 +448,29 @@ const AdminAnalytics = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Динаміка прибутку */}
+        <div className="chart-block">
+          <h3>Навантаження по днях</h3>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart
+              data={summary.dailyBookings.map((item) => ({
+                day: new Date(item.date).toLocaleDateString("uk-UA", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "2-digit",
+                }),
+                count: item.count,
+              }))}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="count" fill="#82ca9d" barSize={30} />{" "}
+              {/* Зменшено ширину стовпців до 15px */}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
         <div className="chart-block-full">
           <h3>Динаміка прибутку</h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -448,7 +489,7 @@ const AdminAnalytics = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        {/* Форма для оновлення таблиці цін */}
+
         <div className="chart-block-full">
           <EditablePriceTable />
         </div>
