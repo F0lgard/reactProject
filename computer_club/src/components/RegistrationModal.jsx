@@ -5,6 +5,7 @@ import Button from "./Button";
 import axios from "axios";
 import debounce from "lodash/debounce";
 import { useAuth } from "./AuthContext";
+import "../styles/RegisterModal.css";
 
 const RegistrationModal = ({ active, setActive, setLoginActive }) => {
   const { setIsAuthenticated, setUser } = useAuth();
@@ -173,16 +174,19 @@ const RegistrationModal = ({ active, setActive, setLoginActive }) => {
         handleModalClose();
       }}
     >
-      <div className="vxid-modal">
+      <div className="approve-modal">
         {registrationSuccess ? (
           <>
-            <p className="modal-name">Підтвердження пошти</p>
-            <p className="vxid-modal register-succses">
-              ✅ Реєстрація пройшла успішно. <br />
+            <p className="modal-name-approve">Підтвердження пошти</p>
+            <p className="register-succses">
+              Реєстрація пройшла успішно. <br />
               Ми надіслали вам листа для підтвердження пошти. <br />
               Будь ласка, перевірте свою скриньку.
             </p>
-            <Button onClick={handleModalClose} className="success-modal-Button">
+            <Button
+              onClick={handleModalClose}
+              className="success-modal-Button-approve"
+            >
               Закрити
             </Button>
           </>

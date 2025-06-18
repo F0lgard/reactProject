@@ -1,17 +1,21 @@
+/* Modal.css */
+
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.7); /* Темніший фон для контрасту */
   display: flex;
-  align-items: center;
+  align-items: center; /* Початок з верхньої частини */
   justify-content: center;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 1000;
+  overflow-y: auto; /* Дозволяємо прокрутку */
+  padding: 20px; /* Відступи для адаптивності */
 }
 
 .modal.active {
@@ -23,10 +27,16 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 12px;
-  transform: scale(0.8);
+
+  max-width: 1200px; /* Максимальна ширина для адмін-панелі */
+  min-width: 300px; /* Мінімальна ширина для малих екранів */
+  transform: scale(1); /* Прибираємо масштабування за замовчуванням */
   transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Менш агресивна тінь */
+  box-sizing: border-box;
+  margin: 20px 0; /* Відступи зверху та знизу */
 }
 
 .modal_content.active {
-  transform: scale(1);
+  transform: scale(1); /* Без масштабування при активації */
 }

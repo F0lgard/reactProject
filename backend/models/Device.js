@@ -10,10 +10,16 @@ const deviceSchema = new mongoose.Schema({
       userEmail: { type: String, required: true },
       startTime: { type: Date, required: true },
       endTime: { type: Date, required: true },
-      price: { type: Number, required: true }, // Додаємо нове поле
+      price: { type: Number, required: true },
+      status: {
+        type: String,
+        enum: ["pending", "cancelled", "noShow", "completed"],
+        default: "pending",
+      },
     },
   ],
 });
+
 const Device = mongoose.model("Device", deviceSchema);
 
 module.exports = Device;

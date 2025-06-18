@@ -18,7 +18,7 @@ export default function PricesSection() {
   // Використання Polling для динамічного оновлення
   useEffect(() => {
     fetchPriceTable(); // Початкове завантаження
-    const interval = setInterval(fetchPriceTable, 5000); // Оновлення кожні 5 секунд
+    const interval = setInterval(fetchPriceTable, 50000); // Оновлення кожні 5 секунд
     return () => clearInterval(interval); // Очищення інтервалу при розмонтуванні
   }, []);
 

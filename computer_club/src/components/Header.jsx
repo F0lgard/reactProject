@@ -268,13 +268,17 @@ export default function Header() {
           setActive={setProfileModalActive}
         />
         {isAnalyticsOpen && (
-          <Modal
-            active={isAnalyticsOpen}
-            setActive={setAnalyticsOpen}
-            customStyles={{ width: "90%", maxWidth: "1200px" }}
+          <div
+            className="admin-panel-overlay"
+            onClick={() => setAnalyticsOpen(false)}
           >
-            <AdminAnalytics />
-          </Modal>
+            <div
+              className="admin-panel-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AdminAnalytics setAnalyticsOpen={setAnalyticsOpen} />
+            </div>
+          </div>
         )}
       </header>
     </div>

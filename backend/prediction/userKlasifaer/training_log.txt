@@ -1,0 +1,128 @@
+
+2025-06-17 14:35:30.554183+00:00: Розподіл класів:
+label
+at_risk    9
+active     8
+passive    6
+new        3
+Крос-валідація F1 (macro): 0.9333 ± 0.0816
+
+2025-06-18 10:05:23.938802+00:00: Розподіл класів:
+label
+active     11
+at_risk     9
+passive     3
+new         3
+Найкращі параметри: {'max_depth': 5, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
+Крос-валідація F1 (macro): 0.7800 ± 0.1833
+Звіт класифікації:
+              precision    recall  f1-score   support
+
+      active       1.00      1.00      1.00         2
+     at_risk       1.00      1.00      1.00         3
+         new       1.00      1.00      1.00         1
+
+    accuracy                           1.00         6
+   macro avg       1.00      1.00      1.00         6
+weighted avg       1.00      1.00      1.00         6
+
+Важливість фічей:
+                feature  importance
+5        accountAgeDays    0.340360
+7       completed_ratio    0.176092
+0         totalBookings    0.117414
+8     booking_frequency    0.093616
+3           cancelCount    0.075424
+1     completedBookings    0.070786
+4  daysSinceLastBooking    0.069426
+6           avgDuration    0.043888
+2           noShowCount    0.012995
+
+2025-06-18 10:10:09.370412+00:00: Розподіл класів:
+label
+at_risk    9
+passive    7
+active     7
+new        3
+Крос-валідація F1 (macro): 0.8333 ± 0.1394
+
+2025-06-18 10:16:23.660889+00:00: Розподіл класів:
+label
+active     12
+at_risk     9
+new         3
+passive     2
+Найкращі параметри: {'max_depth': 5, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 50}
+Крос-валідація F1 (macro): 0.7838 ± 0.1797
+Звіт класифікації:
+              precision    recall  f1-score   support
+
+      active       1.00      1.00      1.00         2
+     at_risk       1.00      1.00      1.00         3
+         new       1.00      1.00      1.00         1
+
+    accuracy                           1.00         6
+   macro avg       1.00      1.00      1.00         6
+weighted avg       1.00      1.00      1.00         6
+
+Важливість фічей:
+                feature  importance
+5        accountAgeDays    0.331622
+7       completed_ratio    0.198317
+0         totalBookings    0.105041
+8     booking_frequency    0.086520
+1     completedBookings    0.077771
+4  daysSinceLastBooking    0.075340
+3           cancelCount    0.065829
+6           avgDuration    0.053652
+2           noShowCount    0.005908
+Середні ймовірності за класами:
+Клас active: середня ймовірність = 0.920
+Клас at_risk: середня ймовірність = 0.980
+Клас new: середня ймовірність = 0.940
+Клас passive: середня ймовірність = nan
+
+2025-06-18 10:21:32.165697+00:00: Розподіл класів:
+label
+at_risk    9
+active     8
+passive    6
+new        3
+Найкращі параметри: {'max_depth': 5, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
+Крос-валідація F1 (macro): 0.7400 ± 0.1555
+Звіт класифікації:
+              precision    recall  f1-score   support
+
+      active       1.00      0.50      0.67         2
+     at_risk       1.00      1.00      1.00         3
+         new       1.00      1.00      1.00         1
+     passive       0.00      0.00      0.00         0
+
+    accuracy                           0.83         6
+   macro avg       0.75      0.62      0.67         6
+weighted avg       1.00      0.83      0.89         6
+
+Confusion Matrix:
+         active  at_risk  new  passive
+active        1        0    0        1
+at_risk       0        3    0        0
+new           0        0    1        0
+passive       0        0    0        0
+Важливість фічей:
+                feature  importance
+4        accountAgeDays    0.353926
+7     booking_frequency    0.139800
+5           avgDuration    0.130844
+6       completed_ratio    0.116531
+3  daysSinceLastBooking    0.100639
+0         totalBookings    0.095605
+2           cancelCount    0.047243
+1           noShowCount    0.015413
+Середні ймовірності за класами:
+Клас active: середня ймовірність = 0.625
+Клас at_risk: середня ймовірність = 0.990
+Клас new: середня ймовірність = 0.870
+Клас passive: середня ймовірність = nan
+Неправильно класифіковані користувачі:
+   totalBookings   noShowCount  cancelCount  daysSinceLastBooking  accountAgeDays  avgDuration  completed_ratio  booking_frequency true_label predicted_label
+0           37.0 -1.110223e-16          4.0                   7.0             1.0     2.513514         0.891892             1110.0     active         passive

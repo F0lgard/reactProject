@@ -11,21 +11,26 @@ const DeviceButton = ({
   position,
   currentTime,
 }) => {
-  const now = currentTime; // ← використовуємо переданий час
+  const now = currentTime; // Використовуємо переданий час
 
   const convertToLocalTime = (utcTime) => {
     return new Date(utcTime.getTime() + utcTime.getTimezoneOffset() * 60000);
   };
 
+  // Фільтруємо лише бронювання зі статусом 'pending'
+  const pendingBookings = bookings.filter(
+    (booking) => booking.status === "pending"
+  );
+
   // Активне бронювання (локальний час)
-  const activeBooking = bookings.find((booking) => {
+  const activeBooking = pendingBookings.find((booking) => {
     const start = convertToLocalTime(new Date(booking.startTime));
     const end = convertToLocalTime(new Date(booking.endTime));
     return start <= now && now < end;
   });
 
   // Майбутні бронювання (відсортовані за часом)
-  const futureBookings = bookings
+  const futureBookings = pendingBookings
     .filter((booking) => {
       const start = convertToLocalTime(new Date(booking.startTime));
       return start > now;
@@ -40,7 +45,7 @@ const DeviceButton = ({
   let timeToStart = null;
   if (nearestFuture) {
     const startTime = convertToLocalTime(new Date(nearestFuture.startTime));
-    timeToStart = Math.floor((startTime - now) / (1000 * 60)); // хвилини
+    timeToStart = Math.floor((startTime - now) / (1000 * 60)); // Хвилини
   }
 
   let bgColor = "#3DA35D"; // Зелений (вільний)
@@ -49,7 +54,7 @@ const DeviceButton = ({
     bgColor = "#FF0000"; // Червоний (активне бронювання)
   } else if (nearestFuture) {
     if (timeToStart <= 10) {
-      bgColor = "#ff9800"; // Оранжевий (менше 10хв до старту)
+      bgColor = "#ff9800"; // Оранжевий (менше 10 хв до старту)
     } else {
       bgColor = "#287740"; // Світло-зелений (майбутнє бронювання)
     }

@@ -123,7 +123,8 @@
   text-align: center;
 }
 
-.modal-content-bron button {
+.modal-content-bron-btn {
+  height: auto;
   background-color: #3b82f6;
   color: white;
   border: none;
@@ -143,7 +144,7 @@
   transform: none;
 }
 
-.modal-content-bron button:not(:disabled):hover {
+.modal-content-bron-btn:not(:disabled):hover {
   background-color: #2563eb;
   transform: translateY(-2px);
 }

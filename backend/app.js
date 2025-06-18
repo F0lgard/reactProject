@@ -31,6 +31,7 @@ db.once("open", () => {
 });
 
 // Створення схеми користувача
+
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -72,11 +73,37 @@ const userSchema = new mongoose.Schema(
     verificationToken: {
       type: String,
     },
+
+    // ✅ Нові поля для no-show
+    noShowCount: {
+      type: Number,
+      default: 0, // Кількість no-show
+    },
+    noShowHistory: {
+      type: [
+        {
+          date: { type: Date, default: Date.now },
+          type: { type: String, enum: ["cancelled", "noShow"], required: true }, // Тип події
+          bookingId: { type: mongoose.Schema.Types.ObjectId },
+        },
+      ],
+      default: [], // Історія no-show
+    },
+    cancelCount: { type: Number, default: 0 },
+    cancelHistory: [
+      {
+        date: { type: Date, required: true },
+        type: { type: String, required: true },
+        bookingId: { type: mongoose.Schema.Types.ObjectId },
+      },
+    ],
   },
   { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
+
+module.exports = User; // Експортуємо модель
 
 // Створення схеми турніру
 const turnirSchema = new mongoose.Schema({
@@ -756,6 +783,13 @@ app.post("/devices/book", async (req, res) => {
     const hasConflict = (device.bookings || []).some((b) => {
       const existingStart = new Date(b.startTime);
       const existingEnd = new Date(b.endTime);
+      // Ігноруємо бронювання зі статусом 'cancelled'
+      if (b.status === "cancelled" || b.status === "noShow") {
+        console.log(
+          `⏭ Пропускаємо конфлікт з 'cancelled' бронюванням: ${existingStart.toISOString()} - ${existingEnd.toISOString()}`
+        );
+        return false;
+      }
       return utcStart < existingEnd && utcEnd > existingStart;
     });
 
@@ -770,6 +804,7 @@ app.post("/devices/book", async (req, res) => {
       startTime: utcStart,
       endTime: utcEnd,
       price,
+      status: "pending", // Встановлюємо статус 'pending' за замовчуванням
     });
 
     await device.save();
@@ -802,6 +837,198 @@ app.get("/bookings/user/:userId", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Помилка отримання бронювань" });
   }
+});
+
+// Функція для оновлення статусу бронювання
+const updateBookingStatus = async (deviceId, bookingId, status, userId) => {
+  try {
+    const device = await Device.findOne({ id: deviceId });
+    if (!device) throw new Error("Пристрій не знайдено");
+
+    const booking = device.bookings.id(bookingId);
+    if (!booking) throw new Error("Бронювання не знайдено");
+
+    const now = new Date(); // Локальний час
+    const startTime = new Date(booking.startTime); // UTC з БД
+    const endTime = new Date(booking.endTime); // UTC з БД
+
+    // Конвертуємо now у UTC для порівняння
+    const nowUTC = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    console.log("📅 Поточний час (UTC):", nowUTC.toISOString());
+    console.log("⏳ Start Time (UTC):", startTime.toISOString());
+    console.log("⌛ End Time (UTC):", endTime.toISOString());
+    console.log("📋 Поточний статус:", booking.status);
+
+    if (status === "cancelled" && nowUTC < startTime) {
+      booking.status = "cancelled";
+      console.log("✅ Статус змінено на 'cancelled'");
+    } else if (
+      status === "noShow" &&
+      nowUTC >= startTime &&
+      nowUTC <= endTime
+    ) {
+      booking.status = "noShow";
+      console.log("✅ Статус змінено на 'noShow'");
+      const user = await User.findOne({ _id: booking.userId });
+      if (user) {
+        user.noShowCount += 1;
+        user.noShowHistory.push({ date: nowUTC, type: "noShow" });
+        await user.save();
+        console.log("🔄 noShowCount оновлено для користувача:", user._id);
+      }
+    } else if (status === "completed" && nowUTC > endTime) {
+      booking.status = "completed";
+      console.log("✅ Статус змінено на 'completed'");
+    } else {
+      throw new Error(
+        `Неможливо змінити статус на '${status}' у поточному стані: nowUTC=${nowUTC.toISOString()}, startTime=${startTime.toISOString()}, endTime=${endTime.toISOString()}`
+      );
+    }
+
+    await device.save();
+    console.log(
+      `Статус бронювання ${bookingId} оновлено на ${status} о ${nowUTC}`
+    );
+    return { success: true, message: `Статус оновлено на ${status}` };
+  } catch (error) {
+    console.error("Помилка оновлення статусу:", error);
+    throw error;
+  }
+};
+
+// Роут для скасування бронювання
+app.post("/api/cancel-booking", async (req, res) => {
+  try {
+    const { deviceId, bookingId, userId, startTime } = req.body;
+    const now = new Date();
+    const bookingStartTime = new Date(startTime); // Отримуємо startTime з фронту (UTC)
+    const userRole = req.headers.role || "user"; // Роль із заголовка
+
+    console.log("📦 Отримані дані:", {
+      deviceId,
+      bookingId,
+      userId,
+      startTime,
+      userRole,
+    });
+
+    if (!deviceId || !bookingId || !userId || !startTime) {
+      throw new Error("Відсутні обов'язкові поля в запиті");
+    }
+
+    const device = await Device.findOne({ id: deviceId });
+    console.log("Знайдено пристрій:", device ? "Так" : "Ні");
+    if (!device) throw new Error("Пристрій не знайдено");
+
+    const booking = device.bookings.id(bookingId);
+    console.log("Знайдено бронювання:", booking ? "Так" : "Ні");
+    if (!booking) throw new Error("Бронювання не знайдено");
+
+    const nowUTC = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    const startUTC = new Date(booking.startTime);
+    const endUTC = new Date(booking.endTime);
+
+    console.log("Часи:", { nowUTC, startUTC, endUTC });
+
+    let status;
+    if (nowUTC < startUTC) {
+      status = "cancelled";
+    } else if (nowUTC >= startUTC && nowUTC <= endUTC) {
+      status = "noShow";
+    } else {
+      throw new Error("Бронювання вже завершено або не розпочалося коректно");
+    }
+
+    // Оновлення користувача (автора бронювання)
+    const originalUserId = booking.userId;
+    console.log("Оригінальний користувач:", originalUserId);
+    const user = await User.findOne({ _id: originalUserId });
+    if (!user) {
+      console.warn("Користувач не знайдено:", originalUserId);
+    } else {
+      // Оновлення історії з заповненням bookingId для старих записів
+      user.noShowHistory = user.noShowHistory.map((entry) => ({
+        ...entry,
+        bookingId: entry.bookingId || booking._id, // Заповнюємо відсутні bookingId
+      }));
+      user.cancelHistory = user.cancelHistory.map((entry) => ({
+        ...entry,
+        bookingId: entry.bookingId || booking._id, // Заповнюємо відсутні bookingId
+      }));
+
+      if (status === "noShow") {
+        user.noShowCount += 1;
+        user.noShowHistory.push({
+          date: nowUTC,
+          type: "noShow",
+          bookingId: booking._id,
+        });
+        console.log("🔄 noShowCount оновлено для користувача:", originalUserId);
+      } else if (status === "cancelled") {
+        user.cancelCount += 1;
+        user.cancelHistory.push({
+          date: nowUTC,
+          type: "cancelled",
+          bookingId: booking._id,
+        });
+        console.log("🔄 cancelCount оновлено для користувача:", originalUserId);
+      }
+      await user.save();
+      console.log("Користувач збережений:", user._id);
+    }
+
+    // Якщо адмін скасовує, зараховуємо noShow автору бронювання
+    if (userRole === "admin" && status === "noShow") {
+      console.log("Адмін скасував noShow для користувача:", originalUserId);
+    }
+
+    booking.status = status;
+    await device.save();
+    console.log(
+      `Статус бронювання ${bookingId} оновлено на ${status} о ${nowUTC}`
+    );
+
+    res.json({ success: true, message: `Статус оновлено на ${status}` });
+  } catch (error) {
+    console.error("Помилка в /api/cancel-booking:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Функція для автоматичного оновлення статусів на completed
+const checkCompletedBookings = async () => {
+  try {
+    const now = new Date();
+    const nowUTC = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    const devices = await Device.find();
+    for (const device of devices) {
+      for (const booking of device.bookings) {
+        if (
+          booking.status === "pending" &&
+          nowUTC > new Date(booking.endTime)
+        ) {
+          await updateBookingStatus(
+            device.id,
+            booking._id,
+            "completed",
+            booking.userId
+          );
+        }
+      }
+    }
+    console.log(`Перевірка завершених бронювань о ${nowUTC}`);
+  } catch (error) {
+    console.error("Помилка перевірки завершених бронювань:", error);
+  }
+};
+
+// Запуск перевірки кожні 5 хвилин
+setInterval(checkCompletedBookings, 1 * 60 * 1000);
+
+// Тестовий роут
+app.get("/api/check-status", async (req, res) => {
+  await checkCompletedBookings();
+  res.json({ message: "Статуси перевірено" });
 });
 
 app.delete("/admin/bookings/:bookingId", async (req, res) => {
@@ -969,27 +1196,43 @@ app.get("/analytics/summary", async (req, res) => {
         const startUTC = new Date(booking.startTime);
         const endUTC = new Date(booking.endTime);
         const price = booking.price || 0;
+        const status = booking.status || "pending"; // Фallback для старих записів
 
-        if ((from && endUTC < from) || (to && startUTC > to)) return;
-
-        totalBookingsCount++;
-
-        if (startUTC <= now && endUTC >= now) {
-          activeBookingsCount++;
+        // Фільтруємо лише completed бронювання для доходів та підрахунків
+        if (
+          (from && endUTC < from) ||
+          (to && startUTC > to) ||
+          status === "cancelled" ||
+          status === "noShow"
+        ) {
+          return;
         }
 
-        const durationHours = (endUTC - startUTC) / (1000 * 60 * 60);
+        // Підрахунок для completed бронювань
+        if (status === "completed") {
+          totalBookingsCount++;
 
-        totalRevenue += price;
-        zoneStats[zone].revenue += price;
-        zoneStats[zone].durationHours += durationHours;
+          const durationHours = (endUTC - startUTC) / (1000 * 60 * 60);
 
-        const hour = startUTC.getUTCHours();
-        hourUsage[hour]++;
+          totalRevenue += price;
+          zoneStats[zone].revenue += price;
+          zoneStats[zone].durationHours += durationHours;
 
-        const dayKey = startUTC.toISOString().split("T")[0];
-        dailyRevenueMap.set(dayKey, (dailyRevenueMap.get(dayKey) || 0) + price);
-        dailyBookingsMap.set(dayKey, (dailyBookingsMap.get(dayKey) || 0) + 1);
+          const hour = startUTC.getUTCHours();
+          hourUsage[hour]++;
+
+          const dayKey = startUTC.toISOString().split("T")[0];
+          dailyRevenueMap.set(
+            dayKey,
+            (dailyRevenueMap.get(dayKey) || 0) + price
+          );
+          dailyBookingsMap.set(dayKey, (dailyBookingsMap.get(dayKey) || 0) + 1);
+        }
+
+        // Активні бронювання лише зі статусом 'pending'
+        if (status === "pending" && startUTC <= now && endUTC >= now) {
+          activeBookingsCount++;
+        }
       });
     });
 

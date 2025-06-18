@@ -232,7 +232,10 @@ p.error-message {
   color: #ffffff;
 }
 
-.modal {
+/* App.css (фрагмент) */
+
+/* Видаляємо дубльовані стилі .modal, оскільки вони є в Modal.css */
+/* .modal {
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.7);
@@ -242,7 +245,6 @@ p.error-message {
   display: flex;
   justify-content: center;
   align-items: center;
-
   opacity: 0;
   pointer-events: none;
   transition: 0.5s;
@@ -252,8 +254,9 @@ p.error-message {
   opacity: 1;
   pointer-events: all;
   z-index: 1000;
-}
+} */
 
+/* Оновлюємо .modal_content для узгодженості */
 .modal_content {
   display: flex;
   flex-direction: column;
@@ -261,14 +264,10 @@ p.error-message {
   border-radius: 12px;
   background-color: #ffffff;
   width: auto;
-  transform: scale(0.5);
-  transition: 0.4s all;
+  box-sizing: border-box;
 }
 
-.modal_content.active {
-  transform: scale(1);
-}
-
+/* Стилі для форми в модальному вікні */
 .modal-form {
   display: flex;
   flex-direction: column;
@@ -288,7 +287,7 @@ p.error-message {
 }
 
 .modal-button:hover {
-  border-color: #09111c; /* Колір межі при наведенні */
+  border-color: #09111c;
 }
 
 .modal-section-a {
@@ -306,10 +305,7 @@ p.error-message {
   color: #11998e;
 }
 
-table {
-  color: #000000;
-}
-
+/* Стилі для vxid-modal */
 .vxid-modal {
   display: flex;
   flex-direction: column;
@@ -349,6 +345,8 @@ table {
 .success-modal-Button:active {
   background-color: #004895;
 }
+
+/* Решта стилів залишається без змін */
 
 .user-avatar {
   align-self: center;

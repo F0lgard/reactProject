@@ -28,7 +28,7 @@ export const PriceProvider = ({ children }) => {
 
     const interval = setInterval(() => {
       fetchPriceTable(); // Оновлювати кожні 10 секунд (можна змінити)
-    }, 10000);
+    }, 100000);
 
     return () => clearInterval(interval);
   }, []);

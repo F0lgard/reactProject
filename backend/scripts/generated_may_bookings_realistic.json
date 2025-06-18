@@ -1,0 +1,4833 @@
+{
+  "devices": [
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509451"
+      },
+      "id": "ПК1P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T20:35:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T23:35:00.000Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "67ab8807f840e167b54de01e"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-18T13:01:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-18T18:01:00.000Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "67b46637eee2a64b8541fd27"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-08T11:01:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T12:01:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "681c628e76be21c7758ccc6d"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T18:17:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T21:17:00.000Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "681c9d463175ec0c8105b15f"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T19:11:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T20:11:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682b55f6fbc8c4229270dfee"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T20:16:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T23:16:00.000Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "682b5725fbc8c4229270e444"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T18:24:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T19:24:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682c9c67b197f5cc59cf2e73"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-21T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-21T09:00:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682cf258a75a257d1b32b949"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "6830f29b2fda9d971a878c7c"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T10:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T13:00:00.000Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "6830fc9a2fda9d971a87ce74"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T20:33:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T23:33:00.000Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "683843de2fda9d971a8d72e2"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T20:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "687908786964267904"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-11T10:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-11T11:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682026743616128394"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-13T16:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-13T17:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "687368356057423446"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-14T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-14T21:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "683718029172530724"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-09T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-10T03:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "685766690214606095"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-07T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T01:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "685065060568983072"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-17T21:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-17T22:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "683479530780493267"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-08T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T23:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "681743507273392078"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-20T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-21T01:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "689880992296106963"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-15T10:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-15T17:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "688940918468581651"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-11T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-11T20:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "684412550362883107"
+          }
+        }
+      ],
+      "__v": 11
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509452"
+      },
+      "id": "ПК2P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T15:22:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T16:22:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "681c9f923175ec0c8105baf6"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T19:09:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T20:09:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682ca6d0dffc32f6a370401c"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "6830f2a02fda9d971a878ce5"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-13T17:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-13T18:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "684195215114907725"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-20T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T22:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "689100931641615218"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-28T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T04:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "687122770433501555"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T21:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "685485106150313560"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-03T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-03T22:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "686928289823336561"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-05T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-06T06:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "689568330804621176"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-01T15:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "686983497996129528"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-27T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-27T21:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "686820785958993176"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-05T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-05T18:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "683367537937641304"
+          }
+        }
+      ],
+      "__v": 3
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509453"
+      },
+      "id": "ПК3P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T19:09:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T20:09:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682ca6d5dffc32f6a37040b9"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-09T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-10T02:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "683875351672961010"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T11:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T14:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "686814047002321407"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-12T14:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-12T21:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "687400292185112449"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T04:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "682014270065763816"
+          }
+        }
+      ],
+      "__v": 3
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509454"
+      },
+      "id": "ПК4P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T16:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "684459217609647668"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-10T10:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-10T13:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "687539930664475397"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-05T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-05T19:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "684619803007864009"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-26T14:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T15:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "684985301463343889"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-19T16:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T19:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "681187695145654945"
+          }
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509455"
+      },
+      "id": "ПК5P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T20:04:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T21:04:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "67ab8ec8f840e167b54de55e"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-08T11:02:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T12:02:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "681c62a376be21c7758cccfe"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T22:09:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T23:09:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682ca702dffc32f6a370437c"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T15:00:00.000Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "6830f70b2fda9d971a87b14f"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T20:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T21:00:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "6830fd502fda9d971a87d6e9"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-12T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-13T02:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "683525577994935011"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T16:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-01T17:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "681140150056129524"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-08T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T23:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "682585082596466907"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-25T15:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-25T20:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "685634610903710610"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-03T10:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-03T17:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "686851810180598381"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-22T17:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T22:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "688306753806093192"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-22T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T17:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "683591345945981128"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T17:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-25T00:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "686688047822738856"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-01T23:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "688016873971966911"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-27T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-27T14:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "681147198495997809"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-02T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-02T19:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "686011743868856907"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-27T10:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-27T13:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "682891975608202827"
+          }
+        }
+      ],
+      "__v": 5
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509456"
+      },
+      "id": "ПК6P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T21:41:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T22:41:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "67aba576f840e167b54e0005"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T11:00:00.000Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "6830f70f2fda9d971a87b1c0"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-21T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T06:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "686979794624215553"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-15T17:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-15T18:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "683028242321722255"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T14:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T21:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "688447944810942972"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-22T21:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T22:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "686403065805471245"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-15T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-15T14:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "684967552853086845"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T23:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "689718384587446728"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-01T23:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "688988179984462887"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-27T04:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "685085068030451067"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-25T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T00:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "684514552266893383"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-06T17:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-07T00:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "683201258720168654"
+          }
+        }
+      ],
+      "__v": 2
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509457"
+      },
+      "id": "ПК7P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T11:00:00.000Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "6830f6e82fda9d971a87b00c"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T12:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T13:00:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "683103062fda9d971a881115"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-29T14:31:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T21:31:00.000Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "6838433c2fda9d971a8d6dcb"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-13T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-14T05:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "689141378783639011"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T23:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "684948757209933201"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-04T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-04T16:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "687224301694612303"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-01T17:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "681730280063786686"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-27T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-27T19:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "683986345921695853"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T16:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T17:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "689519878676597673"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-06T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-07T01:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "682257642784878052"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-08T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T20:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682648631613858501"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-06T09:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-06T10:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "687992042776195643"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-28T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-28T19:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "685502754887935161"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-22T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T02:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "684062376157436746"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-23T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T13:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "686940666047391653"
+          }
+        }
+      ],
+      "__v": 3
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509458"
+      },
+      "id": "ПК8P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T12:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T17:00:00.000Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "6830f83b2fda9d971a87b6f2"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T11:00:00.000Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "6831098e2fda9d971a88373e"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-28T11:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-28T16:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "684864371735778876"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-02T01:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "685457756586700924"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-09T14:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-09T21:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "686023974386073640"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-06T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-07T06:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "689954561254410731"
+          }
+        }
+      ],
+      "__v": 2
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509459"
+      },
+      "id": "ПК9P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T21:44:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T22:44:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "67aba65bf840e167b54e029a"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T13:00:00.000Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "6830f9f62fda9d971a87bf2c"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T14:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T15:00:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "6830fdf72fda9d971a87dd87"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T11:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-01T12:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "688477986328801152"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-14T14:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-14T19:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "689856981180800094"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-17T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-18T00:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "682266863169687114"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-19T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T00:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "682118124192668374"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T16:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "681644045847479904"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-16T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-16T18:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "682760146954215881"
+          }
+        }
+      ],
+      "__v": 9
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e50945a"
+      },
+      "id": "ПК10P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T20:28:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T21:28:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "67ab9484f840e167b54debf0"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T13:00:00.000Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "6830fb102fda9d971a87c4b0"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T14:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T15:00:00.000Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "6830fd182fda9d971a87d41f"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-30T02:00:00Z"
+          },
+          "price": 225,
+          "_id": {
+            "$oid": "686642921048571755"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-30T15:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-30T22:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "684738470981797581"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-11T16:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-11T17:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "681847694054490033"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-27T00:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "681331393734170264"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-23T21:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T22:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "683018979113535657"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-16T17:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-16T18:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "687005389606823781"
+          }
+        }
+      ],
+      "__v": 3
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e50945b"
+      },
+      "id": "ПК11P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-13T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-14T04:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "687030328549191540"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-14T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-14T20:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "687716541490858248"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T20:00:00Z"
+          },
+          "price": 80,
+          "_id": {
+            "$oid": "685247530593590516"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-31T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-06-01T05:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "686245625643106816"
+          }
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e50945c"
+      },
+      "id": "ПК12P",
+      "type": "pc",
+      "zone": "Pro",
+      "bookings": [
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-23T08:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T15:00:00Z"
+          },
+          "price": 450,
+          "_id": {
+            "$oid": "681753024772947949"
+          }
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e50945d"
+      },
+      "id": "ПК1V",
+      "type": "pc",
+      "zone": "VIP",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T21:33:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T22:33:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67aba3a8f840e167b54dfcb6"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-12T17:59:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T18:59:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67acb4f65a544c42563f09ae"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-12T19:05:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T20:05:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67acbaf05a544c42563f1654"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-13T14:21:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-13T15:21:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67ade181554fce222d8413bc"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-17T13:33:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-17T14:33:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67b31c1a5559b6e96ca188b2"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-17T14:39:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-17T17:39:00.000Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "67b31ce25559b6e96ca18af2"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-18T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-18T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67b3b7845559b6e96ca1cf84"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-18T09:06:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-18T16:06:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "67b3c4645559b6e96ca1d759"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-03-20T12:47:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-03-20T13:47:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67dbefcfc519744b82a2d92d"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-04-03T13:48:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-04-03T14:48:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67ee6519aba406d836f7a8a2"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-07T21:52:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-07T22:52:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681ba9a9326f467a3a09c1b9"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T16:06:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T17:06:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681caa183175ec0c8105da94"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T20:18:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T21:18:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682b65852c4239103e330be4"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T22:59:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T23:59:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682b8ba05b890c699c536767"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T17:38:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T18:38:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682c91765b890c699c53cd9e"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T18:53:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T19:53:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682ca325d74dc4693c3dd99d"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682f957260dc115fb4cfac57"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T17:37:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T18:37:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683085eb2fda9d971a85901d"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830f2882fda9d971a878adf"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T10:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T13:00:00.000Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "6830fc6a2fda9d971a87cc5d"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-25T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-25T15:00:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683238cd2fda9d971a888817"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T14:26:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T15:26:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6838441d2fda9d971a8d7420"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-01T17:10:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-01T22:10:00.000Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "683c5d1a15e9914f1f06d985"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-02T18:57:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-02T19:57:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683dc794ec7973a5684188d4"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-03T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-03T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683e16e137bd5e3993c4c0cf"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T19:12:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T22:12:00.000Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "684187655ffff165ee6547a8"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-08T16:28:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T17:28:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68458d8c5f9cea7b2436e908"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-06-09T11:06:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-09T12:06:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "684693ba7788128b647c8860"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-18T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-18T23:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "689651175492896099"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-21T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-21T18:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "686832748512004129"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-11T08:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-11T15:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "687325597492046604"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-25T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T01:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "684099410770901157"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T09:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T12:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "687063828586600171"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-20T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-21T01:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "683583369785146246"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-17T21:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-17T22:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "687927762001152861"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-09T09:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-09T12:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "688127857935846514"
+          }
+        }
+      ],
+      "__v": 68
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e50945e"
+      },
+      "id": "ПК2V",
+      "type": "pc",
+      "zone": "VIP",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-12T17:20:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T18:20:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67acb9d75a544c42563f1423"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-13T16:22:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-13T17:22:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67ade1a4554fce222d841403"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-17T22:48:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-17T23:48:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67b39e625559b6e96ca1ab39"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-18T12:49:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-18T13:49:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67b4635aeee2a64b8541f898"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-03-20T13:25:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-03-20T14:25:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67dbf8d8c519744b82a2e758"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-04-03T17:50:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-04-03T22:50:00.000Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "67ee6523aba406d836f7a8f9"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T16:34:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T17:34:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681cb08c3175ec0c8105eff4"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T20:18:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T21:18:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682b65892c4239103e330c66"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T22:52:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T23:52:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682b8bbf5b890c699c5368f2"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T17:42:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T18:42:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682c926c5b890c699c53d5a9"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682f957460dc115fb4cfad06"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T17:37:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T18:37:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683085e92fda9d971a858fae"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830ec542fda9d971a8754cf"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T10:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T15:00:00.000Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "6830fc712fda9d971a87cce1"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-29T14:31:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T21:31:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683843202fda9d971a8d6906"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-02T18:48:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-02T19:48:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683dc7a1ec7973a56841898d"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-03T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-03T15:00:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683e16e637bd5e3993c4c174"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T18:25:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T23:25:00.000Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "684198721237cd26209afba9"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-08T16:28:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T17:28:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68458d8e5f9cea7b2436e9bd"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-06-09T11:06:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-09T12:06:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "684693bd7788128b647c891f"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-02T11:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-02T18:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "681378302982075222"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T10:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-01T17:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683485188685841145"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-12T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-12T21:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681815469189434601"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-22T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T20:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "686448856690674664"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-16T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-16T23:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "682476581579024776"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-12T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-13T02:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "681672595752578998"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-01T21:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "684713639339495483"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-15T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-16T00:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "681944107154289109"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-28T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-28T14:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "686735877132976991"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-13T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-14T03:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "682033058810383014"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-14T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-14T17:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "681767122649942435"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T16:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T21:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "682727419172958588"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-20T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-21T04:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "687764514924868631"
+          }
+        }
+      ],
+      "__v": 52
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e50945f"
+      },
+      "id": "ПК3V",
+      "type": "pc",
+      "zone": "VIP",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-12T17:23:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T18:23:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67acba885a544c42563f15ec"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-18T15:49:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-18T16:49:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67b4635feee2a64b8541f8dd"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-03-20T13:42:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-03-20T14:42:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67dbfcbcc519744b82a2ef2c"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-04-03T13:39:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-04-03T14:39:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67ee6538aba406d836f7a978"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-07T21:58:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-07T22:58:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681baafe326f467a3a09c8eb"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T18:35:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T19:35:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682b4d53fbc8c4229270d336"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T21:07:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T22:07:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682b711f5b890c699c52f71c"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T17:42:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T18:42:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682c927f5b890c699c53d7cb"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682f957760dc115fb4cfad63"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T17:17:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T18:17:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683081112fda9d971a85823a"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T19:43:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T20:43:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683087492fda9d971a859ad3"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830f6dc2fda9d971a87af19"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T10:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T11:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830fdeb2fda9d971a87dcb8"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-29T14:31:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T15:31:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683843302fda9d971a8d6bad"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-01T17:11:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-01T18:11:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683c5d4615e9914f1f06dd06"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-02T19:07:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-02T20:07:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683dca07ec7973a568419007"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-03T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-03T15:00:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683e16e937bd5e3993c4c245"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T15:12:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T16:12:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "684187595ffff165ee6545aa"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T16:32:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T17:32:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68419a191237cd26209b0d70"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-08T18:29:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T19:29:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68458dd65f9cea7b2436ec7c"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-06-08T16:44:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T17:44:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "684591745f9cea7b243729a2"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T22:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "684616215230710161"
+          }
+        }
+      ],
+      "__v": 39
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509460"
+      },
+      "id": "ПК4V",
+      "type": "pc",
+      "zone": "VIP",
+      "bookings": [
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-12T17:26:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T18:26:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67acbb375a544c42563f16b5"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-13T21:22:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-13T22:22:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67ae3623554fce222d843fcc"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-18T13:21:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-18T14:21:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67b46ae3eee2a64b85420d1d"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-08T10:05:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T11:05:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681c576876be21c7758cb45d"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T21:17:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T22:17:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682b736f5b890c699c530b80"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T18:03:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T19:03:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682c9773426f46e8a9044cd2"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682f958260dc115fb4cfae12"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T17:17:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T18:17:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683081142fda9d971a85829d"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T21:43:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T22:43:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830874e2fda9d971a859b3b"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T21:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T22:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830ee632fda9d971a876c16"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68310a6b2fda9d971a88400c"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T14:32:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T21:32:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683843692fda9d971a8d710c"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-02T19:03:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-02T20:03:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683dcb13ec7973a5684198e8"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-03T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-03T13:00:00.000Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "683e16ed37bd5e3993c4c2e9"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T16:32:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T17:32:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68419a1b1237cd26209b0e1d"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-08T16:20:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T17:20:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68458de35f9cea7b2436ed85"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-16T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-16T21:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "689972808026756374"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-07T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-07T19:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "682010703131533503"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-18T10:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-18T13:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "689765339340480503"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-25T01:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "687272625582768251"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-22T21:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T22:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681046159052392365"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-23T11:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T14:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "683550704403158924"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-12T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-12T14:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681164773689797999"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-01T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-02T05:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "689308638018876521"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-05T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-05T14:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "686067559410699135"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-13T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-13T23:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683539532149207877"
+          }
+        }
+      ],
+      "__v": 20
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509461"
+      },
+      "id": "ПК5V",
+      "type": "pc",
+      "zone": "VIP",
+      "bookings": [
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-12T17:26:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T22:26:00.000Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "67acbb865a544c42563f1747"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-08T10:27:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T11:27:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681c5c7f76be21c7758cb9c6"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T18:41:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T23:41:00.000Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "681c961e3175ec0c81058f76"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T22:23:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T23:23:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682c9c39b197f5cc59cf2b90"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T14:29:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T15:29:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683059a560dc115fb4d056f9"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830f2952fda9d971a878bab"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T11:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T12:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683100da2fda9d971a87f684"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T16:39:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T17:39:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68419bcb1237cd26209b2218"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-08T16:20:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T17:20:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68458dea5f9cea7b2436ee98"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-08T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-09T03:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683266420208304297"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-09T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-10T00:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "689698103536232954"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T11:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "685328807543916682"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-11T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-11T20:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "689691137875530742"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-20T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T19:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "689371877633360643"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-17T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-18T02:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "688579911249778182"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-29T15:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T20:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "683461220917308983"
+          }
+        }
+      ],
+      "__v": 17
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509462"
+      },
+      "id": "ПК6V",
+      "type": "pc",
+      "zone": "VIP",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T18:21:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T19:21:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67ab92cbf840e167b54de9cb"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T21:40:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T22:40:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67aba569f840e167b54dffd2"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-12T17:27:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T22:27:00.000Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "67acbba85a544c42563f1795"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-19T18:34:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-19T19:34:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682b4d4dfbc8c4229270d2f6"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T18:15:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T19:15:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682c9a470efdbe865a06e24f"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T14:20:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T15:20:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "683059b060dc115fb4d05806"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830ecfe2fda9d971a875b88"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-25T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-25T15:00:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683238db2fda9d971a888a2a"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-03T10:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-03T13:00:00.000Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "683e222f37bd5e3993c50589"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T16:39:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T17:39:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "68419bca1237cd26209b2170"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-06-08T16:44:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T17:44:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "684591725f9cea7b243728e4"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-10T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-11T03:00:00Z"
+          },
+          "price": 550,
+          "_id": {
+            "$oid": "682902619071644721"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-20T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T21:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "685575097332314175"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-22T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T19:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "686177661651861629"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-21T21:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T04:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "684613112978554113"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-12T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-12T13:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "686128112793155847"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-02T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-02T16:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "689259657146168312"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-27T05:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "685295370445924466"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-04T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-04T21:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "683793713959649839"
+          }
+        }
+      ],
+      "__v": 21
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509463"
+      },
+      "id": "ПК7V",
+      "type": "pc",
+      "zone": "VIP",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T21:37:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T22:37:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67aba4a5f840e167b54dfe60"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-12T17:28:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T18:28:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67acbbbd5a544c42563f17ea"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T15:12:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T16:12:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681c9d3d3175ec0c8105b0e9"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T18:15:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T19:15:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682c9a410efdbe865a06e1b6"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T14:28:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T15:28:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830598a60dc115fb4d053ec"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T15:00:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "6830f6e12fda9d971a87af8b"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T16:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T17:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830fc8f2fda9d971a87cdc8"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-29T14:30:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T21:30:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683843142fda9d971a8d6769"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T16:25:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T17:25:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6841986a1237cd26209afa98"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-06-08T16:44:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T17:44:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "684591555f9cea7b24372597"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T00:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "685279357401667916"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-22T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T23:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "682635607755357719"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T14:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "687107562886884342"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-07T16:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-07T19:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "685435327974006966"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-04T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-04T21:00:00Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681265495355652555"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-05T15:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-05T22:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683761196890390068"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-26T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-26T23:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "685232692725658295"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-04T12:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-04T19:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683052483971156542"
+          }
+        }
+      ],
+      "__v": 18
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509464"
+      },
+      "id": "ПК8V",
+      "type": "pc",
+      "zone": "VIP",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T20:22:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T21:22:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "67ab9310f840e167b54dea3d"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-08T15:08:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-08T16:08:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "681c9c773175ec0c8105abf2"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T18:15:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T19:15:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "682c9a440efdbe865a06e201"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-23T14:28:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T15:28:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830599f60dc115fb4d055f0"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830f5b42fda9d971a87aab9"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T10:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T11:00:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "6830fe592fda9d971a87e2d4"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-06-08T16:44:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-08T17:44:00.000Z"
+          },
+          "price": 120,
+          "_id": {
+            "$oid": "684591575f9cea7b24372645"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-04T19:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-04T22:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "685440898769954423"
+          }
+        },
+        {
+          "userId": "683c5c9115e9914f1f06d963",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-27T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-28T01:00:00Z"
+          },
+          "price": 350,
+          "_id": {
+            "$oid": "681164837544757746"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-23T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T01:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "689113164293423678"
+          }
+        }
+      ],
+      "__v": 11
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509465"
+      },
+      "id": "PS1",
+      "type": "ps",
+      "zone": "PS",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T19:40:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T20:40:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "67ab894df840e167b54de0b4"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-20T22:34:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-20T23:34:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "682c9ec604ef7519defaee84"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "6830f2a32fda9d971a878db4"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T10:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T17:00:00.000Z"
+          },
+          "price": 800,
+          "_id": {
+            "$oid": "6830fb1d2fda9d971a87c5d7"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-05T08:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-05T13:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "683778074121587719"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-16T21:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-17T00:00:00Z"
+          },
+          "price": 500,
+          "_id": {
+            "$oid": "687472423406929651"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-02T13:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-02T18:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "686837344709648574"
+          }
+        }
+      ],
+      "__v": 6
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509466"
+      },
+      "id": "PS2",
+      "type": "ps",
+      "zone": "PS",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T19:31:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T20:31:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "67ab8959f840e167b54de0c3"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "6830fd732fda9d971a87d824"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-05T14:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-05T21:00:00Z"
+          },
+          "price": 800,
+          "_id": {
+            "$oid": "686687314203945790"
+          }
+        }
+      ],
+      "__v": 4
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509467"
+      },
+      "id": "PS3",
+      "type": "ps",
+      "zone": "PS",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T17:41:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T18:41:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "67ab895ff840e167b54de0d4"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T09:00:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "6830f2f42fda9d971a87914e"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T10:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T11:00:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "6830fd072fda9d971a87d284"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-30T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-30T21:00:00Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "687384231738013512"
+          }
+        },
+        {
+          "userId": "683dd3dcb3d09568afc64356",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-10T17:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-11T00:00:00Z"
+          },
+          "price": 800,
+          "_id": {
+            "$oid": "684993066836439298"
+          }
+        }
+      ],
+      "__v": 7
+    },
+    {
+      "_id": {
+        "$oid": "67ab8458cc11ca537e509468"
+      },
+      "id": "PS4",
+      "type": "ps",
+      "zone": "PS",
+      "bookings": [
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-02-11T19:23:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-11T20:23:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "67ab84ebf840e167b54ddf77"
+          }
+        },
+        {
+          "userId": "672fb422257b03de67387665",
+          "userEmail": "sashaggf424@gmail.com",
+          "startTime": {
+            "$date": "2025-02-12T18:09:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-02-12T19:09:00.000Z"
+          },
+          "price": 200,
+          "_id": {
+            "$oid": "67acc54e5a544c42563f1db3"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-24T08:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T13:00:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "6830f58d2fda9d971a87a8aa"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T15:00:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T20:00:00.000Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "6830fb282fda9d971a87c672"
+          }
+        },
+        {
+          "userId": "663298ac41ca7dd0f54022fa",
+          "userEmail": "sashabos200424@gmail.com",
+          "startTime": {
+            "$date": "2025-06-05T15:12:00.000Z"
+          },
+          "endTime": {
+            "$date": "2025-06-05T18:12:00.000Z"
+          },
+          "price": 500,
+          "_id": {
+            "$oid": "684187525ffff165ee654410"
+          }
+        },
+        {
+          "userId": "6830fc5e2fda9d971a87cc44",
+          "userEmail": "sashabfods200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T11:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-24T14:00:00Z"
+          },
+          "price": 500,
+          "_id": {
+            "$oid": "689884713094213471"
+          }
+        },
+        {
+          "userId": "683d9077ec7973a56841870e",
+          "userEmail": "o.berliak@gmail.com",
+          "startTime": {
+            "$date": "2025-05-04T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-05T01:00:00Z"
+          },
+          "price": 800,
+          "_id": {
+            "$oid": "688173839890022696"
+          }
+        },
+        {
+          "userId": "6830f6502fda9d971a87ad37",
+          "userEmail": "sashabosi200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-22T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-23T03:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "688418294229965330"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-24T18:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-25T01:00:00Z"
+          },
+          "price": 800,
+          "_id": {
+            "$oid": "682801150489082170"
+          }
+        },
+        {
+          "userId": "665b0f9db7f32ce029d86c37",
+          "userEmail": "admin@example.com",
+          "startTime": {
+            "$date": "2025-05-17T21:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-18T00:00:00Z"
+          },
+          "price": 500,
+          "_id": {
+            "$oid": "681891205887386982"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-12T09:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-12T14:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "681649576935730702"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-28T20:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-29T03:00:00Z"
+          },
+          "price": 800,
+          "_id": {
+            "$oid": "682636139380685717"
+          }
+        },
+        {
+          "userId": "681c67a1320f3d6c46dbec81",
+          "userEmail": "sashabogbgfbs200424@gmail.com",
+          "startTime": {
+            "$date": "2025-05-15T23:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-16T04:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "686137088297104553"
+          }
+        },
+        {
+          "userId": "681c54dfc0c7ebec2d8da0dc",
+          "userEmail": "sashabos2004kuyky24@gmail.com",
+          "startTime": {
+            "$date": "2025-05-21T22:00:00Z"
+          },
+          "endTime": {
+            "$date": "2025-05-22T03:00:00Z"
+          },
+          "price": 700,
+          "_id": {
+            "$oid": "689095432999727445"
+          }
+        }
+      ],
+      "__v": 7
+    }
+  ],
+  "__v": 326
+}
