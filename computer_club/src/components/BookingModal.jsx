@@ -35,6 +35,7 @@ const BookingModal = ({
   const [currentDate, setCurrentDate] = useState(getLocalDateString());
   const [noShowRisks, setNoShowRisks] = useState({}); // Стан для зберігання ризиків no-show для кожного bookingId
   const priceTable = usePrice();
+  const [priceLoading, setPriceLoading] = useState(false);
 
   // Оновлення дати кожну хвилину
   useEffect(() => {
@@ -232,6 +233,9 @@ const BookingModal = ({
     if (!user || !selectedDevice || bookingError) return;
 
     try {
+      // Оновлюємо ціну перед бронюванням
+      await updatePrice(duration);
+
       console.log("Дані для бронювання:", {
         deviceId: selectedDevice.id,
         userId: user._id,
@@ -274,31 +278,33 @@ const BookingModal = ({
     if (selectedDevice && duration) {
       updatePrice(duration);
     }
-  }, [duration, selectedDevice, priceTable]);
+  }, [duration, selectedDevice, startTime, priceTable]);
 
-  const updatePrice = (selectedDuration) => {
-    if (!selectedDevice || !selectedDevice.zone) {
+  const updatePrice = async (duration) => {
+    if (selectedDevice && duration && startTime) {
+      setPriceLoading(true);
+      try {
+        const bookingStartTime = new Date(
+          `${currentDate}T${startTime.slice(11, 16)}`
+        ).toISOString();
+        const response = await axios.post(
+          "http://localhost:5000/api/calculate-price",
+          {
+            zone: selectedDevice.zone,
+            duration,
+            booking_start_time: bookingStartTime,
+          }
+        );
+        setPrice(response.data.price);
+      } catch (error) {
+        console.error("Помилка оновлення ціни:", error);
+        setPrice(0);
+      } finally {
+        setPriceLoading(false);
+      }
+    } else {
       setPrice(0);
-      return;
     }
-
-    const zonePrices = priceTable[selectedDevice.zone];
-    if (!zonePrices) {
-      setPrice(0);
-      return;
-    }
-
-    const availableDurations = Object.keys(zonePrices)
-      .map(Number)
-      .sort((a, b) => a - b);
-
-    let closestDuration = availableDurations[0];
-    for (let d of availableDurations) {
-      if (d <= selectedDuration) closestDuration = d;
-      else break;
-    }
-
-    setPrice(zonePrices[closestDuration] || 0);
   };
 
   const handleTimeChange = (e) => {
@@ -397,9 +403,11 @@ const BookingModal = ({
             )}
           </select>
         </label>
-
         <p>
-          Ціна: <span className="red-text">{price} грн</span>
+          Ціна:{" "}
+          <span className="red-text">
+            {priceLoading ? "Завантаження..." : `${price} грн`}
+          </span>
         </p>
 
         {bookingError && <div className="error-message">{bookingError}</div>}
@@ -409,9 +417,9 @@ const BookingModal = ({
           </div>
         )}
         <button
-          className="modal-content-bron-btn "
+          className="modal-content-bron-btn"
           onClick={handleReserve}
-          disabled={!user || !!bookingError}
+          disabled={!user || !!bookingError || priceLoading}
         >
           Підтвердити
         </button>

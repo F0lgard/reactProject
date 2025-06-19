@@ -25,28 +25,20 @@ import re
 from flask import jsonify
 import logging
 logging.basicConfig(level=logging.DEBUG)
-# Custom filter to suppress MongoDB driver logs
-class MongoDBFilter(logging.Filter):
-    def filter(self, record):
-        # Suppress MongoDB driver logs containing specific keywords
-        msg = record.getMessage()
-        return not (
-            "Server selection" in msg or
-            "Connection checkout" in msg or
-            "Connection checked in" in msg or
-            "Command started" in msg or
-            "Command succeeded" in msg or
-            "Server heartbeat" in msg
-        )
 
-# Configure logging with custom filter
+
+# Custom filter to suppress MongoDB driver logs
+# Зміна рівня логування для pymongo
+logging.getLogger("pymongo").setLevel(logging.WARNING)
+logging.getLogger('werkzeug').setLevel(logging.WARNING)
+# Ваше налаштування логування
 logging.basicConfig(
-    level=logging.INFO,  # Set to INFO to reduce DEBUG noise
+    level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler()]
 )
+
 logger = logging.getLogger(__name__)
-logger.addFilter(MongoDBFilter())  # Apply MongoDB filter
 
 print("Сервер запущено...")
 
@@ -129,6 +121,9 @@ zone_encoder = joblib.load(zone_encoder_path)
 
 @app.after_request
 def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, role"
     return response
 
 @app.before_request
@@ -164,6 +159,8 @@ def predict():
         "sentiment": sentiment
     })
 
+kiev_tz = pytz.timezone('Europe/Kiev')
+
 @app.route('/api/price-table', methods=['GET'])
 def get_price_table():
     try:
@@ -196,18 +193,200 @@ def update_price_table():
         logger.error(f"Error updating price table: {e}")
         return jsonify({"error": "Server error"}), 500
 
-def calculate_price(zone, duration):
+from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def calculate_price(zone, duration, booking_start_time=None):
     try:
         price_entry = price_table_collection.find_one({"zone": zone})
         if not price_entry:
-            raise ValueError(f"Prices for zone '{zone}' not found")
+            logger.error(f"Prices for zone '{zone}' not found")
+            return 1  # Мін. ціна, щоб уникнути 0
+
         prices = price_entry["prices"]
         closest_duration = max([int(d) for d in prices.keys() if int(d) <= duration], default=1)
-        return prices[str(closest_duration)]
+        if "originalPrices" in price_entry:
+            base_price = price_entry["originalPrices"].get(str(closest_duration))
+        else:
+            base_price = prices.get(str(closest_duration))  # fallback
+
+        current_date = kiev_tz.localize(datetime.now())
+        if booking_start_time:
+            booking_start_time = pd.to_datetime(booking_start_time)
+            if booking_start_time.tzinfo is None or booking_start_time.tzinfo.utcoffset(booking_start_time) is None:
+                booking_start_time = kiev_tz.localize(booking_start_time)
+            else:
+                booking_start_time = booking_start_time.astimezone(kiev_tz)
+        else:
+            booking_start_time = current_date
+
+        booking_time = booking_start_time.time()
+
+        # Пошук знижок для конкретної зони або для "all"
+        discounts = list(db.discounts.find({
+            "$or": [
+                {"zone": zone},
+                {"zone": "all"}
+            ],
+            "startDate": {"$lte": booking_start_time.isoformat()},
+            "endDate": {"$gte": booking_start_time.isoformat()}
+        }))
+
+        valid_discounts = []
+        for disc in discounts:
+            if 'specificPeriod' in disc and disc['specificPeriod']:
+                try:
+                    start_time_str, end_time_str = map(str.strip, disc['specificPeriod'].split('-'))
+                    start_time = datetime.strptime(start_time_str, "%H:%M").time()
+                    end_time = datetime.strptime(end_time_str, "%H:%M").time()
+                    if start_time <= booking_time <= end_time:
+                        valid_discounts.append(disc)
+                except Exception as e:
+                    logger.warning(f"Помилка specificPeriod '{disc['specificPeriod']}': {e}")
+            else:
+                valid_discounts.append(disc)
+
+        if valid_discounts:
+            applied_discount = max(valid_discounts, key=lambda d: d['discountPercentage'])
+            logger.debug(f"Застосовано знижку {applied_discount['discountPercentage']}% для зони {zone}")
+            return base_price * (1 - applied_discount['discountPercentage'] / 100)
+
+        return base_price
     except Exception as e:
         logger.error(f"Error calculating price: {e}")
-        return 0
+        return 1
 
+@app.route('/api/calculate-price', methods=['POST'])
+def calculate_price_endpoint():
+    data = request.get_json()
+    if not all(k in data for k in ['zone', 'duration']):
+        return jsonify({"error": "Invalid input"}), 400
+    booking_start_time = data.get('booking_start_time')
+    price = calculate_price(data['zone'], data['duration'], booking_start_time)
+    if price <= 0:
+        logger.warning(f"Price calculated as {price} for zone {data['zone']}, setting to minimum 1")
+        price = 1
+    return jsonify({"price": price}), 200
+
+@app.route('/api/discounts', methods=['POST'])
+def create_discount():
+    # check_admin()  # Перевірка ролі
+    data = request.get_json()
+    if not all(k in data for k in ['zone', 'startDate', 'endDate', 'discountPercentage']):
+        return jsonify({"error": "Invalid input"}), 400
+
+    try:
+        # Перевірка знижки
+        discount_percentage = float(data['discountPercentage'])
+        if discount_percentage < 0 or discount_percentage > 100:
+            return jsonify({"error": "Discount percentage must be between 0 and 100"}), 400
+
+        # Перетворення дат у часову зону Києва
+        start_date = pd.to_datetime(data['startDate']).astimezone(kiev_tz)
+        end_date = pd.to_datetime(data['endDate']).astimezone(kiev_tz)
+
+        start_date_str = start_date.isoformat()
+        end_date_str = end_date.isoformat()
+
+        logger.info(f"Received startDate: {data['startDate']}, Converted to Kiev: {start_date}, Saved as: {start_date_str}")
+        logger.info(f"Received endDate: {data['endDate']}, Converted to Kiev: {end_date}, Saved as: {end_date_str}")
+
+        # Формуємо документ знижки
+        discount = {
+            "zone": data['zone'],
+            "startDate": start_date_str,
+            "endDate": end_date_str,
+            "discountPercentage": discount_percentage
+        }
+
+        if 'specificPeriod' in data and data['specificPeriod']:
+            discount['specificPeriod'] = data['specificPeriod']
+
+        # Зберігаємо знижку
+        db.discounts.insert_one(discount)
+        logger.info(f"Discount created for zone {data['zone']} with period {data.get('specificPeriod', 'Весь день')} and dates {start_date_str} - {end_date_str}")
+
+        # Оновлюємо originalPrices, якщо потрібно
+        zones_to_update = [data['zone']] if data['zone'] != "all" else ["Pro", "VIP", "PS"]
+        for zone in zones_to_update:
+            price_entry = price_table_collection.find_one({"zone": zone})
+            if price_entry:
+                if "originalPrices" not in price_entry:
+                    price_table_collection.update_one(
+                        {"zone": zone},
+                        {"$set": {"originalPrices": price_entry["prices"]}}
+                    )
+                    logger.info(f"Original prices saved for zone {zone}")
+
+        return jsonify({"message": "Discount created successfully. Prices will be applied dynamically."}), 200
+
+    except ValueError:
+        return jsonify({"error": "Invalid discount percentage"}), 400
+    except Exception as e:
+        logger.error(f"Error creating discount: {str(e)}")
+        return jsonify({"error": "Server error"}), 500
+
+    
+@app.route('/api/discounts', methods=['GET'])
+def get_discounts():
+    # check_admin()
+    discounts = list(db.discounts.find())
+    for d in discounts:
+        d['_id'] = str(d['_id'])
+    return jsonify(discounts), 200
+
+@app.route('/api/discounts/<discount_id>', methods=['DELETE'])
+def delete_discount(discount_id):
+    try:
+        check_admin()  # Перевірка ролі
+        discount = db.discounts.find_one({"_id": ObjectId(discount_id)})
+        if not discount:
+            return jsonify({"error": "Discount not found"}), 404
+
+        zone = discount["zone"]
+        zones_to_restore = [zone] if zone != "all" else ["Pro", "VIP", "PS"]
+        for z in zones_to_restore:
+            price_entry = price_table_collection.find_one({"zone": z})
+            if price_entry and "originalPrices" in price_entry:
+                price_table_collection.update_one(
+                    {"zone": z},
+                    {"$set": {"prices": price_entry["originalPrices"]}}
+                )
+                logger.info(f"Restored original prices for zone {z} after discount deletion")
+
+        result = db.discounts.delete_one({"_id": ObjectId(discount_id)})
+        if result.deleted_count == 0:
+            return jsonify({"error": "Discount not found"}), 404
+        logger.info(f"Discount {discount_id} deleted successfully")
+        return jsonify({"message": "Discount deleted successfully"}), 200
+    except Exception as e:
+        logger.error(f"Error deleting discount: {str(e)}")
+        return jsonify({"error": "Server error"}), 500
+    
+@app.route('/api/price-table/dynamic', methods=['GET'])
+def get_dynamic_price_table():
+    try:
+        zones = ['Pro', 'VIP', 'PS']
+        result = {}
+        current_time = datetime.now().isoformat()
+
+        for zone in zones:
+            entry = price_table_collection.find_one({"zone": zone})
+            if not entry or "prices" not in entry:
+                continue
+
+            prices = {}
+            for dur in entry["prices"]:
+                price = calculate_price(zone, int(dur), booking_start_time=current_time)
+                prices[dur] = round(price, 2)
+
+            result[zone] = prices
+
+        return jsonify(result), 200
+    except Exception as e:
+        logger.error(f"Error in dynamic price table: {e}")
+        return jsonify({"error": "Server error"}), 500
+    
 @app.route('/api/predict-load', methods=['POST'])
 def predict_booking_load():
     try:
@@ -628,13 +807,26 @@ def custom_predict():
     use_all = data.get('use_all', False)
 
     try:
+        # Виклик функції для тренування та прогнозу
         result = train_and_predict(train_from, train_to, predict_from, predict_to, use_all)
-        logger.info("Custom prediction completed")
-        return jsonify({"predictions": result})
+
+        # Перевірка формату результату
+        if not isinstance(result, dict) or "predictions" not in result or "recommendations" not in result:
+            raise ValueError("Invalid format returned by train_and_predict")
+
+        predictions = result["predictions"]
+        recommendations = result["recommendations"]
+
+        logger.info("Custom prediction and recommendations completed")
+        return jsonify({
+            "predictions": predictions,
+            "recommendations": recommendations
+        })
     except Exception as e:
         logger.error(f"Custom prediction error: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
+    
+    
 from prediction.noShow.model import NoShowPredictor
 
 # Ініціалізація моделі no-show
@@ -1351,6 +1543,55 @@ def get_activity_trends():
         return jsonify({"error": str(e)}), 500
 
 
+from apscheduler.schedulers.background import BackgroundScheduler
 
+def check_expired_discounts():
+    current_datetime = kiev_tz.localize(datetime.now())
+    current_time = current_datetime.time()
+    expired_discounts = db.discounts.find({
+        "startDate": {"$lte": current_datetime.isoformat()},
+        "endDate": {"$gte": current_datetime.isoformat()}  # Фільтр для актуальних акцій
+    })
+
+    for discount in expired_discounts:
+        end_date = pd.to_datetime(discount["endDate"]).astimezone(kiev_tz)
+        logger.debug(f"Checking discount for zone {discount['zone']}: end_date={end_date}, current_datetime={current_datetime}")
+
+        is_expired = end_date < current_datetime
+
+        # Перевірка specificPeriod
+        if 'specificPeriod' in discount and discount['specificPeriod'] and current_datetime.date() == end_date.date():
+            start_time_str, end_time_str = map(str.strip, discount['specificPeriod'].split('-'))
+            start_period = datetime.strptime(start_time_str, "%H:%M").time()
+            end_period = datetime.strptime(end_time_str, "%H:%M").time()
+            if not (start_period <= current_time <= end_period):
+                is_expired = True
+                logger.info(f"Discount for zone {discount['zone']} expired due to specificPeriod {discount['specificPeriod']}")
+
+        if is_expired:
+            zone = discount["zone"]
+            zones_to_restore = [zone] if zone != "all" else ["Pro", "VIP", "PS"]
+            for z in zones_to_restore:
+                price_entry = price_table_collection.find_one({"zone": z})
+                if price_entry and "originalPrices" in price_entry:
+                    price_table_collection.update_one(
+                        {"zone": z},
+                        {"$set": {"prices": price_entry["originalPrices"]}}
+                    )
+                    logger.info(f"Restored original prices for zone {z} after discount expired")
+            db.discounts.delete_one({"_id": discount["_id"]})
+            logger.info(f"Deleted expired discount for zone {zone}")
+
+# Ініціалізація планувальника
+scheduler = BackgroundScheduler()
+scheduler.add_job(check_expired_discounts, 'interval', minutes=1)  # Перевірка кожну хвилину
+scheduler.start()
+
+# Додайте до вашого __main__
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    try:
+        # Виклик check_expired_discounts один раз при старті для ініціалізації
+        check_expired_discounts()
+        app.run(host='0.0.0.0', port=5000)
+    except KeyboardInterrupt:
+        scheduler.shutdown()

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Tab } from "@headlessui/react";
 import StaticAnalytics from "./StaticAnalytics";
 import ModelAnalytics from "./ModelAnalytics";
-import UserManagement from "./UserManagement";
+import Pricing from "./Pricing"; // Нова назва для вкладки ціноутворення
 import "../../styles/AdminAnalytics.css";
 
 const AdminAnalytics = () => {
@@ -19,8 +19,8 @@ const AdminAnalytics = () => {
       component: <ModelAnalytics loading={loading} setLoading={setLoading} />,
     },
     {
-      name: "Управління користувачами",
-      component: <UserManagement loading={loading} setLoading={setLoading} />,
+      name: "Ціноутворення",
+      component: <Pricing />,
     },
   ];
 

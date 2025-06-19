@@ -18,7 +18,20 @@ import {
 import "../../styles/AdminAnalytics.css";
 
 const ZONES = ["Pro", "VIP", "PS"];
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#a4de6c"];
+const COLORS = [
+  "#1976D2", // насичений синій
+  "#283593", // темно-синій
+  "#512DA8", // фіолетовий
+  "#5E35B1", // фіолетово-синій
+  "#3949AB", // синьо-фіолетовий
+  "#1565C0", // ще темніший синій
+  "#00B8D4", // бірюзовий/блакитний
+  "#1A237E", // дуже темний синій
+  "#0D1333", // майже чорний синій
+  "#311B92", // дуже темний фіолетовий
+  "#0D47A1", // глибокий синій
+  "#6200EA", // яскравий фіолетовий для контрасту
+];
 
 const StaticAnalytics = ({ loading, setLoading }) => {
   const getLocalDateString = () => {
@@ -139,97 +152,6 @@ const StaticAnalytics = ({ loading, setLoading }) => {
 
   const dailyLoadData = calculateDailyBookings();
 
-  const EditablePriceTable = () => {
-    const [priceTable, setPriceTable] = useState([]);
-    const [tableLoading, setTableLoading] = useState(false);
-
-    useEffect(() => {
-      const fetchPriceTable = async () => {
-        try {
-          const response = await axios.get(
-            "http://localhost:5000/api/price-table"
-          );
-          setPriceTable(response.data);
-        } catch (error) {
-          console.error("Помилка під час отримання таблиці цін:", error);
-        }
-      };
-      fetchPriceTable();
-    }, []);
-
-    const handleInputChange = (zone, duration, value) => {
-      setPriceTable((prevTable) =>
-        prevTable.map((row) =>
-          row.zone === zone
-            ? {
-                ...row,
-                prices: {
-                  ...row.prices,
-                  [duration]: value ? parseInt(value, 10) : "",
-                },
-              }
-            : row
-        )
-      );
-    };
-
-    const handleSave = async () => {
-      setTableLoading(true);
-      try {
-        for (const row of priceTable) {
-          await axios.post("http://localhost:5000/api/price-table", {
-            zone: row.zone,
-            prices: row.prices,
-          });
-        }
-        alert("Таблиця цін успішно оновлена!");
-      } catch (error) {
-        console.error("Помилка під час оновлення таблиці цін:", error);
-        alert("Не вдалося оновити таблицю цін.");
-      } finally {
-        setTableLoading(false);
-      }
-    };
-
-    return (
-      <div className="editable-price-table">
-        <h3>Редагувати таблицю цін</h3>
-        <table className="table-price-admin">
-          <thead>
-            <tr>
-              <th>Зона</th>
-              <th>1 Година</th>
-              <th>3 Години</th>
-              <th>5 Годин</th>
-              <th>7 Годин</th>
-            </tr>
-          </thead>
-          <tbody>
-            {priceTable.map((row) => (
-              <tr key={row.zone}>
-                <td>{row.zone}</td>
-                {[1, 3, 5, 7].map((duration) => (
-                  <td key={duration}>
-                    <input
-                      type="number"
-                      value={row.prices[duration] || ""}
-                      onChange={(e) =>
-                        handleInputChange(row.zone, duration, e.target.value)
-                      }
-                    />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <button onClick={handleSave} disabled={tableLoading}>
-          {tableLoading ? "Збереження..." : "Зберегти зміни"}
-        </button>
-      </div>
-    );
-  };
-
   return (
     <div>
       <div className="date-picker">
@@ -241,13 +163,6 @@ const StaticAnalytics = ({ loading, setLoading }) => {
         />
         <label> по: </label>
         <input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
-        {/*<button
-          className="refresh-button"
-          onClick={fetchSummary}
-          disabled={loading}
-        >
-          {loading ? "Оновлення..." : "Оновити"}
-        </button>*/}
       </div>
       <div className="summary-cards">
         <div className="card">
@@ -329,9 +244,6 @@ const StaticAnalytics = ({ loading, setLoading }) => {
             />
           </LineChart>
         </ResponsiveContainer>
-      </div>
-      <div className="chart-block-full">
-        <EditablePriceTable />
       </div>
     </div>
   );

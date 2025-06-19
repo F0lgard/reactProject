@@ -3,24 +3,27 @@ import axios from "axios";
 import "../styles/Table.css";
 
 export default function PricesSection() {
-  const [priceTable, setPriceTable] = useState([]);
+  const [priceTable, setPriceTable] = useState({});
 
-  // Функція для отримання таблиці цін
   const fetchPriceTable = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/price-table");
+      const response = await axios.get(
+        "http://localhost:5000/api/price-table/dynamic"
+      );
+      console.log("Дані з сервера:", response.data);
       setPriceTable(response.data);
     } catch (error) {
-      console.error("Помилка під час отримання таблиці цін:", error);
+      console.error("Помилка під час отримання таблиці динамічних цін:", error);
     }
   };
 
-  // Використання Polling для динамічного оновлення
   useEffect(() => {
-    fetchPriceTable(); // Початкове завантаження
-    const interval = setInterval(fetchPriceTable, 50000); // Оновлення кожні 5 секунд
-    return () => clearInterval(interval); // Очищення інтервалу при розмонтуванні
+    fetchPriceTable();
+    const interval = setInterval(fetchPriceTable, 30000);
+    return () => clearInterval(interval);
   }, []);
+
+  const durations = [1, 3, 5, 7];
 
   return (
     <div className="prices-section" id="prices">
@@ -29,21 +32,18 @@ export default function PricesSection() {
         <thead>
           <tr>
             <th className="table-zone zonu">Зони</th>
-            <th>1 Година</th>
-            <th>3 Години</th>
-            <th>5 Годин</th>
-            <th>7 Годин</th>
+            {durations.map((d) => (
+              <th key={d}>{d} год</th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {priceTable.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              <td className="table-zone">{row.zone}</td>
-              {[1, 3, 5, 7].map((duration, colIndex) => (
-                <td key={colIndex} className="price-cell">
-                  {row.prices[duration] !== undefined
-                    ? `${row.prices[duration]} грн`
-                    : "-"}
+          {Object.entries(priceTable).map(([zone, prices]) => (
+            <tr key={zone}>
+              <td className="table-zone">{zone}</td>
+              {durations.map((duration) => (
+                <td key={duration} className="price-cell">
+                  {prices[duration] ? `${prices[duration]} грн` : "-"}
                 </td>
               ))}
             </tr>

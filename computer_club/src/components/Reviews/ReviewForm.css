@@ -26,6 +26,9 @@
 .review-form .rating-label {
   font-weight: 600;
   margin-right: 10px;
+  color: #ffffff;
+  margin-bottom: 0px;
+  font-size: 18px;
 }
 
 .review-form .rating-select {

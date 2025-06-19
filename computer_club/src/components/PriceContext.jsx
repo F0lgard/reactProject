@@ -12,14 +12,12 @@ export const PriceProvider = ({ children }) => {
 
   const fetchPriceTable = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/price-table");
-      const table = {};
-      response.data.forEach((entry) => {
-        table[entry.zone] = entry.prices;
-      });
-      setPriceTable(table);
+      const response = await axios.get(
+        "http://localhost:5000/api/price-table/dynamic"
+      );
+      setPriceTable(response.data);
     } catch (error) {
-      console.error("Помилка під час отримання таблиці цін:", error);
+      console.error("Помилка під час отримання таблиці динамічних цін:", error);
     }
   };
 
@@ -28,7 +26,7 @@ export const PriceProvider = ({ children }) => {
 
     const interval = setInterval(() => {
       fetchPriceTable(); // Оновлювати кожні 10 секунд (можна змінити)
-    }, 100000);
+    }, 30000);
 
     return () => clearInterval(interval);
   }, []);

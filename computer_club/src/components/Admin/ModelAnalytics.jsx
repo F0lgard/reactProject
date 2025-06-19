@@ -12,25 +12,37 @@ import {
   PieChart,
   Pie,
   Cell,
+  LineChart,
+  Line,
 } from "recharts";
 import "../../styles/AdminAnalytics.css";
 
 const ZONES = ["Pro", "VIP", "PS"];
 const HOURS = Array.from({ length: 16 }, (_, i) => i + 8);
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#a4de6c"];
+const COLORS = [
+  "#283593", // темно-синій
+  "#512DA8", // фіолетовий
+  "#1976D2", // насичений синій
+  "#00B8D4", // бірюзовий/блакитний
+  "#3949AB", // синьо-фіолетовий
+  "#1565C0", // ще темніший синій
+  "#5E35B1", // фіолетово-синій
+];
+
 const NO_SHOW_COLORS = {
-  "0–10%": "#4caf50",
-  "10–20%": "#8bc34a",
-  "20–40%": "#9e9e9e",
-  "40–60%": "#2196f3",
-  "60–80%": "#f44336",
-  "80–100%": "#d81b60",
+  "0–10%": "#1976D2", // насичений синій
+  "10–20%": "#283593", // темно-синій
+  "20–40%": "#512DA8", // фіолетовий
+  "40–60%": "#5E35B1", // фіолетово-синій
+  "60–80%": "#00B8D4", // бірюзовий/блакитний
+  "80–100%": "#1A237E", // дуже темний синій
 };
+
 const ACTIVITY_COLORS = {
-  active: "#4caf50",
-  passive: "#ccc",
-  new: "#2196f3",
-  at_risk: "#f44336",
+  active: "#1976D2", // синій
+  passive: "#512DA8", // фіолетовий
+  new: "#00B8D4", // блакитний
+  at_risk: "#1A237E", // дуже темний синій
 };
 
 const ModelAnalytics = ({ loading, setLoading }) => {
@@ -67,6 +79,9 @@ const ModelAnalytics = ({ loading, setLoading }) => {
   const [noShowCurrentPage, setNoShowCurrentPage] = useState(1);
   const [activityCurrentPage, setActivityCurrentPage] = useState(1);
   const [bookingsCurrentPage, setBookingsCurrentPage] = useState(1);
+  const [recommendations, setRecommendations] = useState([]);
+  const [activityTrends, setActivityTrends] = useState([]);
+  const [topUsersRisk, setTopUsersRisk] = useState([]);
   const usersPerPage = 10;
   const bookingsPerPage = 10;
 
@@ -111,19 +126,24 @@ const ModelAnalytics = ({ loading, setLoading }) => {
         payload.train_from = trainFrom;
         payload.train_to = trainTo;
       }
-      console.log("Sending prediction request with payload:", payload);
+      console.log("📤 Відправка запиту на прогноз з параметрами:", payload);
       const response = await axios.post(
         "http://localhost:5000/api/custom-predict",
         payload
       );
+      console.log("📥 Отримані дані з сервера:", response.data);
+
       const dataArray = Array.isArray(response.data.predictions)
         ? response.data.predictions
         : Array.isArray(response.data)
         ? response.data
         : [response.data];
+
+      console.log("📊 Прогнозовані дані:", dataArray);
       setPredictionData(dataArray);
+      setRecommendations(response.data.recommendations || []); // Додаємо recommendations у стан
     } catch (error) {
-      console.error("Помилка прогнозу:", error);
+      console.error("❌ Помилка прогнозу:", error);
     } finally {
       setLoading(false);
     }
@@ -230,9 +250,64 @@ const ModelAnalytics = ({ loading, setLoading }) => {
     }
   };
 
+  const fetchActivityTrends = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/activity-trends",
+        {
+          params: {
+            from: new Date(
+              new Date().setMonth(new Date().getMonth() - 1)
+            ).toISOString(),
+            to: new Date().toISOString(),
+          },
+        }
+      );
+      setActivityTrends(response.data);
+    } catch (error) {
+      console.error(
+        "Помилка отримання трендів:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  const fetchTopUsersRisk = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/top-users-risk"
+      );
+      setTopUsersRisk(response.data.topUsers);
+    } catch (error) {
+      console.error(
+        "Помилка отримання топ-користувачів із ризиком неявки:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  const toggleUserBlock = async (userId, isBlocked) => {
+    setLoading(true);
+    try {
+      await axios.post("http://localhost:5000/api/block-user", {
+        userId,
+        isBlocked: !isBlocked,
+      });
+      alert(`Користувача ${isBlocked ? "розблоковано" : "заблоковано"}!`);
+      await fetchUserDetails(userId);
+    } catch (error) {
+      console.error("Помилка блокування:", error);
+      alert("Не вдалося змінити статус користувача.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchNoShowStats();
     fetchUserActivity();
+    fetchActivityTrends();
+    fetchTopUsersRisk();
   }, []);
 
   useEffect(() => {
@@ -415,14 +490,12 @@ const ModelAnalytics = ({ loading, setLoading }) => {
     }
   };
 
-  // Функція для створення діапазону пагінації
   const getPaginationRange = (currentPage, totalPages) => {
-    const delta = 2; // Кількість сторінок зліва і справа від поточної
+    const delta = 2;
     const range = [];
     const rangeWithDots = [];
     let prevItem = null;
 
-    // Додаємо сторінки
     for (let i = 1; i <= totalPages; i++) {
       if (
         i === 1 ||
@@ -433,7 +506,6 @@ const ModelAnalytics = ({ loading, setLoading }) => {
       }
     }
 
-    // Додаємо крапки
     for (let i of range) {
       if (prevItem && i - prevItem > 1) {
         rangeWithDots.push("...");
@@ -447,7 +519,7 @@ const ModelAnalytics = ({ loading, setLoading }) => {
 
   const renderPredictionChart = () => {
     if (!predictionData || predictionData.length === 0)
-      return <p>Дані для прогнозу відсутні</p>;
+      return <h6>Дані для прогнозу відсутні</h6>;
 
     const predictFromDate = new Date(predictFrom);
     const predictToDate = new Date(predictTo);
@@ -493,7 +565,7 @@ const ModelAnalytics = ({ loading, setLoading }) => {
       predictionData.forEach((d) => {
         const date = d.date.split(" ")[0];
         if (!dailyData[date]) {
-          dailyData[date] = { date, Pro: 0, VIP: 0, PS: 0, total_bookings: 0 }; // Виправлено TS на PS
+          dailyData[date] = { date, Pro: 0, VIP: 0, PS: 0, total_bookings: 0 };
         }
         dailyData[date][d.zone] += d.predicted_bookings || 0;
         dailyData[date].total_bookings += d.predicted_bookings || 0;
@@ -523,6 +595,36 @@ const ModelAnalytics = ({ loading, setLoading }) => {
         </div>
       );
     }
+  };
+
+  const renderRecommendations = () => {
+    if (
+      !predictionData ||
+      !predictionData.length ||
+      !recommendations ||
+      !recommendations.length
+    ) {
+      return <h6>Рекомендацій немає</h6>;
+    }
+
+    return (
+      <div className="recommendations">
+        <h4>Рекомендації:</h4>
+        <ul>
+          {recommendations.map((rec, i) => (
+            <li key={i}>
+              <strong>Дата:</strong> {rec.date}{" "}
+              {rec.period && (
+                <>
+                  <strong>Період:</strong> {rec.period}{" "}
+                </>
+              )}
+              <strong>Рекомендація:</strong> {rec.recommendation}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   };
 
   const renderNoShowDistributionChart = () => {
@@ -1208,21 +1310,121 @@ const ModelAnalytics = ({ loading, setLoading }) => {
     );
   };
 
+  const renderActivityTrendsChart = () => {
+    if (!activityTrends || activityTrends.length === 0)
+      return <p>Дані трендів відсутні</p>;
+
+    return (
+      <div className="chart-block">
+        <h3>Тренди активності користувачів</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={activityTrends}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="active"
+              stroke="#4caf50"
+              name="Активні"
+            />
+            <Line
+              type="monotone"
+              dataKey="passive"
+              stroke="#9e9e9e"
+              name="Пасивні"
+            />
+            <Line type="monotone" dataKey="new" stroke="#2196f3" name="Нові" />
+            <Line
+              type="monotone"
+              dataKey="at_risk"
+              stroke="#f44336"
+              name="Ризик втрати"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  };
+
+  const renderTopUsersRiskChart = () => {
+    if (!topUsersRisk || topUsersRisk.length === 0) {
+      return <p>Дані про користувачів із ризиком неявки відсутні.</p>;
+    }
+
+    const validData = topUsersRisk.filter(
+      (user) => user.username && user.noShowProbability !== undefined
+    );
+
+    if (validData.length === 0) {
+      return <p>Дані про користувачів із ризиком неявки некоректні.</p>;
+    }
+
+    return (
+      <div className="chart-block">
+        <h3>Топ-5 користувачів з високим ризиком неявки</h3>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart
+            data={validData}
+            layout="vertical"
+            margin={{ top: 0, right: 250, left: 50, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis type="number" domain={[0, 100]} unit="%" />
+            <YAxis
+              dataKey="username"
+              type="category"
+              width={150}
+              tickFormatter={(value) =>
+                value.length > 20 ? `${value.slice(0, 17)}...` : value
+              }
+            />
+            <Tooltip formatter={(value) => `${value}%`} />
+            <Bar dataKey="noShowProbability" fill="#1A237E" barSize={30} />
+          </BarChart>
+        </ResponsiveContainer>
+        <button
+          className="send-button"
+          onClick={async () => {
+            try {
+              const response = await axios.post(
+                "http://localhost:5000/api/send-message",
+                {
+                  topUsersRisk: true,
+                  subject: "Нагадування про явку",
+                  message: "Будь ласка, підтвердіть вашу явку на завтра.",
+                }
+              );
+              alert("Повідомлення надіслано!");
+            } catch (error) {
+              console.error("Помилка:", error);
+              alert("Не вдалося надіслати повідомлення.");
+            }
+          }}
+        >
+          Надіслати листи топ-5
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="admin-analytics-container">
       <div className="chart-block">
-        <h3>Оновлення моделі прогнозування</h3>
-        <button
-          onClick={() => setShowUpdateModelModal(true)}
-          disabled={loading}
-          className="update-model-button"
-        >
-          Оновити модель No-Show
-        </button>
-      </div>
-      <div className="chart-block">
-        <h3>Прогноз завантаженості</h3>
-        <div className="date-picker">
+        <h3 className="section-title">Прогноз завантаженості</h3>{" "}
+        <div className="form-group">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={useAll}
+              onChange={(e) => setUseAll(e.target.checked)}
+            />{" "}
+            Навчати на всіх даних
+          </label>
+        </div>
+        <div className="date-pickers">
           <div className="date-row">
             <label>Період для навчання:</label>
             <input
@@ -1251,26 +1453,19 @@ const ModelAnalytics = ({ loading, setLoading }) => {
               onChange={(e) => setPredictTo(e.target.value)}
             />
           </div>
-          <label>
-            <input
-              type="checkbox"
-              checked={useAll}
-              onChange={(e) => setUseAll(e.target.checked)}
-            />{" "}
-            Навчати на всіх даних
-          </label>
-          <button
-            onClick={fetchPrediction}
-            disabled={loading}
-            className="predict-button"
-          >
-            {loading ? "Прогнозування..." : "Зробити прогноз"}
-          </button>
-        </div>
+        </div>{" "}
+        <button
+          onClick={fetchPrediction}
+          disabled={loading}
+          className="predict-button"
+        >
+          {loading ? "Прогнозування..." : "Зробити прогноз"}
+        </button>
         {renderPredictionChart()}
+        {renderRecommendations()}
       </div>
       <div className="chart-block">
-        <h3>Аналіз користувачів</h3>
+        <h3>Розподіл користувачів</h3>
         {renderNoShowDistributionChart()}
         {renderUserActivityChart()}
       </div>
@@ -1278,6 +1473,11 @@ const ModelAnalytics = ({ loading, setLoading }) => {
       {renderActivityGroupUsersModal()}
       {renderUserDetailsModal()}
       {renderUpdateModelModal()}
+      <div className="chart-block">
+        <h3>Тренди та ризики користувачів</h3>
+        {renderActivityTrendsChart()}
+        {renderTopUsersRiskChart()}
+      </div>
     </div>
   );
 };

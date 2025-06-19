@@ -51,7 +51,7 @@
 .admin-analytics-container {
   background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /*box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
   box-sizing: border-box;
   min-height: 100vh;
   display: flex;
@@ -241,6 +241,11 @@
   padding: 20px;
   text-align: center;
   transition: transform 0.2s ease;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .card:hover {
@@ -273,7 +278,23 @@
   width: 100%;
 }
 
-.chart-block h3 {
+.chart-block h3,
+label {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.chart-block h6 {
+  /* Ваші стилі */
+  color: #555;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.chart-block tr,
+th {
   margin-bottom: 10px;
   font-size: 18px;
   color: #333;
@@ -311,7 +332,7 @@
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   z-index: 2000;
   overflow-y: auto;
   padding: 20px;
@@ -578,6 +599,7 @@
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease;
+  height: auto;
 }
 
 .send-button:hover {
@@ -647,13 +669,6 @@
   overflow-x: auto;
 }
 
-.editable-price-table h3 {
-  margin-bottom: 15px;
-  font-size: 18px;
-  color: #333;
-  text-align: left;
-}
-
 .table-price-admin {
   width: 100%;
   min-width: 600px;
@@ -703,7 +718,7 @@
   padding: 10px 20px;
   font-size: 14px;
   color: white;
-  background-color: #8884d8;
+  background-color: #ff0000;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -716,7 +731,13 @@
 }
 
 .editable-price-table button:hover:not(:disabled) {
-  background-color: #7874c8;
+  background-color: #e64a19;
+}
+
+.dynamic-price-note {
+  font-size: 12px;
+  color: #e53935;
+  margin-top: 4px;
 }
 
 /* Кнопки моделі */
@@ -759,6 +780,17 @@
 .predict-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.group-button {
+  background-color: rgb(0, 184, 212);
+  color: rgb(255, 255, 255);
+  padding: 8px 16px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: auto;
 }
 
 /* Статус повідомлення */
@@ -911,5 +943,362 @@
   .deselect-all-button {
     padding: 6px 12px;
     font-size: 12px;
+  }
+}
+
+.recommendations {
+  font-size: 18px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+
+  padding: 10px 20px;
+}
+
+/*Ціноутворення*/
+
+.pricing-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.discount-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.create-discount-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: left;
+  margin-bottom: 15px;
+}
+
+.section-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.checkbox-label {
+  font-size: 16px;
+  color: #555;
+  margin-right: 15px;
+}
+
+.select-zone {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 15px;
+  width: 150px;
+}
+
+.date-input,
+.time-input,
+.discount-input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 15px;
+  width: 150px;
+}
+
+.date-group,
+.time-group {
+  display: flex;
+  gap: 15px;
+}
+
+.create-button,
+.save-button,
+.delete-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff0000;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: auto;
+}
+
+.create-button:hover,
+.save-button:hover,
+.delete-button:hover {
+  background-color: #e64a19;
+}
+
+.create-button:disabled,
+.save-button:disabled,
+.delete-button:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.discount-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.discount-table th,
+.discount-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.discount-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.no-discounts {
+  color: #666;
+  padding: 10px;
+}
+
+.editable-price-table {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.table-price-admin {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.table-price-admin th,
+.table-price-admin td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-price-admin th {
+  background-color: #ff0000;
+  font-weight: bold;
+}
+
+.price-input {
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 80px;
+  text-align: center;
+}
+
+/*Моделі та прогнози */
+/* Секція прогнозів та моделей */
+.model-analytics-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.model-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.date-pickers {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.date-pickers label {
+  font-size: 16px;
+  color: #555;
+  margin-right: 10px;
+}
+
+.date-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row;
+}
+
+.date-row input[type="date"],
+.date-row input[type="checkbox"] {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 15px;
+  width: 150px;
+}
+
+.predict-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff0000;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: auto;
+}
+
+.predict-button:hover {
+  background-color: #e64a19;
+}
+
+.predict-button:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.chart-block {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-block h3 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.chart-block h4 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.recommendations {
+  font-size: 16px;
+  color: #333;
+  padding: 10px 20px;
+}
+
+.recommendations h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.recommendations ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.recommendations li {
+  margin-bottom: 10px;
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+  .model-analytics-container {
+    padding: 15px;
+  }
+
+  .date-pickers {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .date-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .date-row input[type="date"],
+  .date-row input[type="checkbox"] {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .predict-button {
+    width: 100%;
+  }
+
+  .chart-block {
+    padding: 15px;
+  }
+
+  .recommendations {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 20px;
+  }
+
+  .date-pickers label {
+    font-size: 14px;
+  }
+
+  .date-row input[type="date"],
+  .date-row input[type="checkbox"] {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .predict-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .chart-block h3 {
+    font-size: 16px;
+  }
+
+  .recommendations h4 {
+    font-size: 16px;
+  }
+
+  .recommendations li {
+    font-size: 14px;
   }
 }
