@@ -903,7 +903,6 @@ app.post("/api/cancel-booking", async (req, res) => {
     const now = new Date();
     const bookingStartTime = new Date(startTime); // Отримуємо startTime з фронту (UTC)
     const userRole = req.headers.role || "user"; // Роль із заголовка
-
     console.log("📦 Отримані дані:", {
       deviceId,
       bookingId,
@@ -911,25 +910,19 @@ app.post("/api/cancel-booking", async (req, res) => {
       startTime,
       userRole,
     });
-
     if (!deviceId || !bookingId || !userId || !startTime) {
       throw new Error("Відсутні обов'язкові поля в запиті");
     }
-
     const device = await Device.findOne({ id: deviceId });
     console.log("Знайдено пристрій:", device ? "Так" : "Ні");
     if (!device) throw new Error("Пристрій не знайдено");
-
     const booking = device.bookings.id(bookingId);
     console.log("Знайдено бронювання:", booking ? "Так" : "Ні");
     if (!booking) throw new Error("Бронювання не знайдено");
-
     const nowUTC = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
     const startUTC = new Date(booking.startTime);
     const endUTC = new Date(booking.endTime);
-
     console.log("Часи:", { nowUTC, startUTC, endUTC });
-
     let status;
     if (nowUTC < startUTC) {
       status = "cancelled";

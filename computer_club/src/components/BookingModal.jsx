@@ -5,9 +5,12 @@ import { useAuth } from "./AuthContext";
 import { useBookings } from "./BookingsContext";
 import axios from "axios";
 import { usePrice } from "./PriceContext";
+import { FaUserCircle } from "react-icons/fa"; // Додайте на початку файлу
+import { MdCancel } from "react-icons/md";
 
 const MIN_HOUR = 8;
 const MAX_HOUR = 24;
+const BOOKINGS_PER_PAGE = 5; // Кількість бронювань на сторінку
 
 // Функція для отримання локальної дати
 const getLocalDateString = () => {
@@ -33,9 +36,12 @@ const BookingModal = ({
   const [bookings, setBookings] = useState([]);
   const [price, setPrice] = useState(0);
   const [currentDate, setCurrentDate] = useState(getLocalDateString());
-  const [noShowRisks, setNoShowRisks] = useState({}); // Стан для зберігання ризиків no-show для кожного bookingId
+  const [noShowRisks, setNoShowRisks] = useState({});
   const priceTable = usePrice();
   const [priceLoading, setPriceLoading] = useState(false);
+  const [selectedUserDetails, setSelectedUserDetails] = useState(null);
+  const [loadingUserDetails, setLoadingUserDetails] = useState(false);
+  const [bookingsCurrentPage, setBookingsCurrentPage] = useState(1);
 
   // Оновлення дати кожну хвилину
   useEffect(() => {
@@ -317,6 +323,171 @@ const BookingModal = ({
     updatePrice(newDuration);
   };
 
+  // Функція для завантаження деталей користувача
+  const fetchUserDetails = async (userId) => {
+    setLoadingUserDetails(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/user-details/${userId}`
+      );
+      setSelectedUserDetails(response.data);
+    } catch (error) {
+      console.error(
+        "Помилка отримання деталей користувача:",
+        error.response?.data || error.message
+      );
+      alert("Не вдалося отримати деталі користувача");
+    } finally {
+      setLoadingUserDetails(false);
+    }
+  };
+
+  // Компонент для відображення деталей користувача
+  const renderUserDetailsModal = () => {
+    if (!selectedUserDetails) return null;
+
+    const sortedBookings = [...(selectedUserDetails.bookings || [])].sort(
+      (a, b) => new Date(b.startTime) - new Date(a.startTime)
+    );
+
+    const indexOfLastBooking = bookingsCurrentPage * BOOKINGS_PER_PAGE;
+    const indexOfFirstBooking = indexOfLastBooking - BOOKINGS_PER_PAGE;
+    const currentBookings = sortedBookings.slice(
+      indexOfFirstBooking,
+      indexOfLastBooking
+    );
+    const totalPages = Math.ceil(sortedBookings.length / BOOKINGS_PER_PAGE);
+
+    const paginate = (pageNumber) => setBookingsCurrentPage(pageNumber);
+
+    return (
+      <div
+        className="modal-overlay"
+        onClick={() => setSelectedUserDetails(null)}
+      >
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <button
+            className="close-button"
+            onClick={() => setSelectedUserDetails(null)}
+          >
+            Закрити
+          </button>
+          <h2>Деталі користувача: {selectedUserDetails.username}</h2>
+          <div className="user-details">
+            <p>
+              <strong>Email:</strong> {selectedUserDetails.email}
+            </p>
+            <p>
+              <strong>Дата реєстрації:</strong>{" "}
+              {new Date(selectedUserDetails.createdAt).toLocaleDateString(
+                "uk-UA"
+              )}
+            </p>
+            <p>
+              <strong>Всього бронювань:</strong>{" "}
+              {selectedUserDetails.totalBookings || 0}
+            </p>
+            <p>
+              <strong>Завершених:</strong>{" "}
+              {selectedUserDetails.completedBookings || 0}
+            </p>
+            <p>
+              <strong>No-show:</strong> {selectedUserDetails.noShowCount || 0}
+            </p>
+            <p>
+              <strong>Скасованих:</strong>{" "}
+              {selectedUserDetails.cancelCount || 0}
+            </p>
+            <p>
+              <strong>Середня тривалість (години):</strong>{" "}
+              {selectedUserDetails.avgDurationHours
+                ? selectedUserDetails.avgDurationHours.toFixed(2)
+                : "0.00"}
+            </p>
+            <h3>Історія бронювань</h3>
+            {sortedBookings.length > 0 ? (
+              <>
+                <div className="bookings-table-container">
+                  <table className="bookings-table">
+                    <thead>
+                      <tr>
+                        <th>Початок</th>
+                        <th>Кінець</th>
+                        <th>Статус</th>
+                        <th>Тривалість (год)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentBookings.map((booking, index) => (
+                        <tr key={index}>
+                          <td>
+                            {new Date(booking.startTime).toLocaleString(
+                              "uk-UA"
+                            )}
+                          </td>
+                          <td>
+                            {new Date(booking.endTime).toLocaleString("uk-UA")}
+                          </td>
+                          <td>{booking.status}</td>
+                          <td>
+                            {booking.durationHours
+                              ? booking.durationHours.toFixed(2)
+                              : "0.00"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {sortedBookings.length > BOOKINGS_PER_PAGE && (
+                  <div className="pagination">
+                    <button
+                      onClick={() => paginate(bookingsCurrentPage - 1)}
+                      disabled={bookingsCurrentPage === 1}
+                      className="pagination-button"
+                    >
+                      Попередня
+                    </button>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (item) => (
+                        <button
+                          key={item}
+                          onClick={() => paginate(item)}
+                          className={`pagination-button ${
+                            bookingsCurrentPage === item ? "active" : ""
+                          }`}
+                        >
+                          {item}
+                        </button>
+                      )
+                    )}
+                    <button
+                      onClick={() => paginate(bookingsCurrentPage + 1)}
+                      disabled={bookingsCurrentPage === totalPages}
+                      className="pagination-button"
+                    >
+                      Наступна
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <p>Бронювань немає</p>
+            )}
+          </div>
+          <div className="modal-buttons">
+            <button
+              onClick={() => setSelectedUserDetails(null)}
+              className="close-button"
+            >
+              Закрити
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <Modal
       active={isActive}
@@ -341,30 +512,67 @@ const BookingModal = ({
                 const bookingStartTime = new Date(booking.startTime);
                 const bookingEndTime = new Date(booking.endTime);
                 return (
-                  <li key={booking._id}>
-                    {bookingStartTime.toLocaleTimeString("uk-UA", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      timeZone: "UTC",
-                    })}{" "}
-                    -{" "}
-                    {bookingEndTime.toLocaleTimeString("uk-UA", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      timeZone: "UTC",
-                    })}
+                  <li key={booking._id} className="booking-list-item">
+                    <span className="booking-time">
+                      {bookingStartTime.toLocaleTimeString("uk-UA", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        timeZone: "UTC",
+                      })}{" "}
+                      -{" "}
+                      {bookingEndTime.toLocaleTimeString("uk-UA", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        timeZone: "UTC",
+                      })}
+                    </span>
+                    {/* No-show badge */}
+                    <span
+                      className="no-show-badge"
+                      title="Ймовірність неявки"
+                      style={{
+                        marginLeft: 8,
+                        background: "#fbe9e7",
+                        color: "#d84315",
+                        borderRadius: "8px",
+                        fontSize: "12px",
+                        padding: "2px 6px",
+                        display: "inline-block",
+                        minWidth: 38,
+                        textAlign: "center",
+                      }}
+                    >
+                      {noShowRisks[booking._id] !== undefined &&
+                      noShowRisks[booking._id] !== null
+                        ? `${noShowRisks[booking._id].toFixed(1)}%`
+                        : "…"}
+                    </span>
+                    {/* Cancel button */}
                     {(user?.role === "admin" ||
                       user?._id === booking.userId) && (
                       <button
-                        className="delete-btn"
+                        className="icon-btn delete-btn"
                         onClick={() => handleCancelBooking(booking._id)}
+                        title="Скасувати бронювання"
+                        style={{ marginLeft: 8 }}
                       >
-                        Скасувати (N-s:{" "}
-                        {noShowRisks[booking._id] !== undefined &&
-                        noShowRisks[booking._id] !== null
-                          ? `${noShowRisks[booking._id].toFixed(1)}%`
-                          : "Завантаження..."}
-                        )
+                        <MdCancel size={22} color="#fff" />
+                      </button>
+                    )}
+                    {/* Деталі користувача для адміна */}
+                    {user?.role === "admin" && (
+                      <button
+                        className="user-details-icon-btn"
+                        onClick={() => fetchUserDetails(booking.userId)}
+                        disabled={loadingUserDetails}
+                        title="Деталі користувача"
+                        style={{ marginLeft: 8 }}
+                      >
+                        {loadingUserDetails ? (
+                          <span className="loading-spinner" />
+                        ) : (
+                          <FaUserCircle size={22} />
+                        )}
                       </button>
                     )}
                   </li>
@@ -424,6 +632,7 @@ const BookingModal = ({
           Підтвердити
         </button>
       </div>
+      {renderUserDetailsModal()}
     </Modal>
   );
 };

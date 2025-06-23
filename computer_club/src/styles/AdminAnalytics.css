@@ -718,7 +718,7 @@ th {
   padding: 10px 20px;
   font-size: 14px;
   color: white;
-  background-color: #ff0000;
+  background-color: #2196f3;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -731,7 +731,7 @@ th {
 }
 
 .editable-price-table button:hover:not(:disabled) {
-  background-color: #e64a19;
+  background-color: #1976d2;
 }
 
 .dynamic-price-note {
@@ -759,6 +759,27 @@ th {
 
 .update-model-button:disabled {
   background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.create-discount-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff0000;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: auto;
+}
+
+.create-discount:hover {
+  background-color: #e64a19;
+}
+
+.create-discount:disabled {
+  background-color: #e9ecef;
   cursor: not-allowed;
 }
 
@@ -1096,7 +1117,7 @@ th {
 }
 
 .table-price-admin th {
-  background-color: #ff0000;
+  background-color: #2196f3;
   font-weight: bold;
 }
 
@@ -1180,6 +1201,7 @@ th {
   cursor: pointer;
   transition: background-color 0.3s;
   height: auto;
+  margin-bottom: 10px;
 }
 
 .predict-button:hover {
@@ -1232,6 +1254,9 @@ th {
 
 .recommendations li {
   margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 /* Адаптивність */
@@ -1301,4 +1326,22 @@ th {
   .recommendations li {
     font-size: 14px;
   }
+}
+
+/* Додайте у ваш CSS */
+.admin-panel-icon-btn {
+  background: #ff0000;
+
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.admin-panel-icon-btn:hover {
+  background: #d40000;
 }

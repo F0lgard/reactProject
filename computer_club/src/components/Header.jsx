@@ -10,6 +10,7 @@ import axios from "axios";
 import { useAuth } from "./AuthContext";
 import AdminAnalytics from "./Admin/AdminAnalytics";
 import ForgotPasswordModal from "./ForgotPasswordModal";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 export default function Header() {
   const { isAuthenticated, setIsAuthenticated, user, setUser } = useAuth();
@@ -158,13 +159,13 @@ export default function Header() {
           <div className="user-info">
             {user?.role === "admin" && (
               <button
-                className="admin-panel-btn"
+                className="admin-panel-btn admin-panel-icon-btn"
                 onClick={() => setAnalyticsOpen(true)}
+                title="Адмін-панель"
               >
-                Адмін панель
+                <MdAdminPanelSettings size={28} />
               </button>
             )}
-
             <div
               className="user-info-container"
               onClick={() => setProfileModalActive(true)}

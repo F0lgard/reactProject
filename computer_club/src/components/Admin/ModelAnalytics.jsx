@@ -16,6 +16,7 @@ import {
   Line,
 } from "recharts";
 import "../../styles/AdminAnalytics.css";
+import { fetchDiscounts } from "./api";
 
 const ZONES = ["Pro", "VIP", "PS"];
 const HOURS = Array.from({ length: 16 }, (_, i) => i + 8);
@@ -84,6 +85,8 @@ const ModelAnalytics = ({ loading, setLoading }) => {
   const [topUsersRisk, setTopUsersRisk] = useState([]);
   const usersPerPage = 10;
   const bookingsPerPage = 10;
+  const [sendingTop5, setSendingTop5] = useState(false);
+  const [sendTop5Status, setSendTop5Status] = useState(null);
 
   // Блокування прокрутки фону для адмін-панелі
   useEffect(() => {
@@ -540,9 +543,9 @@ const ModelAnalytics = ({ loading, setLoading }) => {
 
       return (
         <div className="chart-block">
-          <h3>Прогноз завантаженості (погодинно)</h3>
+          <h4>Прогноз завантаженості (погодинно)</h4>
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={hourlyData}>
+            <BarChart data={hourlyData} barCategoryGap={1}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="hour" />
               <YAxis />
@@ -574,7 +577,7 @@ const ModelAnalytics = ({ loading, setLoading }) => {
 
       return (
         <div className="chart-block">
-          <h3>Прогноз завантаженості (по днях)</h3>
+          <h4>Прогноз завантаженості (по днях)</h4>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={aggregatedDailyData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -607,6 +610,97 @@ const ModelAnalytics = ({ loading, setLoading }) => {
       return <h6>Рекомендацій немає</h6>;
     }
 
+    const handleCreateDiscountFromRecommendation = (rec) => {
+      try {
+        // Розбиваємо дату
+        let startDateStr, endDateStr;
+        if (rec.date.includes(" - ")) {
+          [startDateStr, endDateStr] = rec.date.split(" - ");
+        } else {
+          startDateStr = rec.date;
+          endDateStr = rec.date;
+        }
+
+        if (!startDateStr) {
+          throw new Error("Некоректний формат дати в рекомендації");
+        }
+
+        // Перетворюємо в ISO-формат з часом і зоною
+        const startDate = new Date(`${startDateStr}T00:00:00Z`).toISOString();
+        const endDate = endDateStr
+          ? new Date(`${endDateStr}T23:59:59Z`).toISOString()
+          : startDate;
+
+        // Отримуємо період, якщо є, і коректуємо '24:00' на '23:59'
+        const [startTime, endTime] = rec.period
+          ? rec.period.split(" - ")
+          : ["00:00", "23:59"];
+        const correctedEndTime = endTime === "24:00" ? "23:59" : endTime;
+        const specificPeriod = rec.period
+          ? `${startTime} - ${correctedEndTime}`
+          : "";
+
+        // Витягнення discountPercentage з тексту рекомендації, якщо поле відсутнє
+        let discountPercentage = rec.discountPercentage
+          ? parseInt(rec.discountPercentage, 10)
+          : 10;
+        if (!rec.discountPercentage && rec.recommendation) {
+          const match = rec.recommendation.match(
+            /Рекомендується акція -(\d+)%/
+          );
+          if (match && match[1]) {
+            discountPercentage = parseInt(match[1], 10);
+            console.log(
+              "Extracted discountPercentage from recommendation:",
+              discountPercentage
+            );
+          } else {
+            console.warn(
+              "Could not extract discountPercentage from recommendation:",
+              rec.recommendation
+            );
+          }
+        }
+
+        // Валідація discountPercentage
+        if (
+          isNaN(discountPercentage) ||
+          discountPercentage < 0 ||
+          discountPercentage > 100
+        ) {
+          console.warn(
+            "Invalid discountPercentage, using default 10:",
+            discountPercentage
+          );
+          throw new Error("Некоректне значення знижки");
+        }
+
+        const payload = {
+          zone: "all",
+          startDate,
+          endDate,
+          discountPercentage,
+          applyToAllZones: true,
+          specificPeriod,
+        };
+
+        console.log("Sending payload:", payload); // Для дебагу
+        axios
+          .post("http://localhost:5000/api/discounts", payload)
+          .then(() => {
+            alert("Акцію створено на основі рекомендації!");
+          })
+          .catch((error) => {
+            console.error("Помилка створення акції:", error);
+            const errorMessage = error.response?.data?.error || error.message;
+            alert(`Не вдалося створити акцію: ${errorMessage}`);
+          });
+      } catch (error) {
+        console.error("Помилка обробки рекомендації:", error);
+        alert(`Помилка: ${error.message}`);
+      }
+    };
+
     return (
       <div className="recommendations">
         <h4>Рекомендації:</h4>
@@ -620,6 +714,12 @@ const ModelAnalytics = ({ loading, setLoading }) => {
                 </>
               )}
               <strong>Рекомендація:</strong> {rec.recommendation}
+              <button
+                onClick={() => handleCreateDiscountFromRecommendation(rec)}
+                className="send-button"
+              >
+                Створити акцію
+              </button>
             </li>
           ))}
         </ul>
@@ -644,7 +744,7 @@ const ModelAnalytics = ({ loading, setLoading }) => {
 
     return (
       <div className="chart-block">
-        <h3>Розподіл користувачів за відсотком неявки</h3>
+        <h4>Розподіл користувачів за відсотком неявки</h4>
         {hasData ? (
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
@@ -717,7 +817,7 @@ const ModelAnalytics = ({ loading, setLoading }) => {
 
     return (
       <div className="chart-block">
-        <h3>Розподіл активності користувачів</h3>
+        <h4>Розподіл активності користувачів</h4>
         {chartData.length > 0 ? (
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
@@ -1316,7 +1416,7 @@ const ModelAnalytics = ({ loading, setLoading }) => {
 
     return (
       <div className="chart-block">
-        <h3>Тренди активності користувачів</h3>
+        <h4>Тренди активності користувачів</h4>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={activityTrends}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -1349,6 +1449,29 @@ const ModelAnalytics = ({ loading, setLoading }) => {
     );
   };
 
+  const handleSendTop5 = async () => {
+    setSendingTop5(true);
+    setSendTop5Status(null);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/send-message",
+        {
+          topUsersRisk: true,
+          subject: "Нагадування про явку",
+          message: "Будь ласка, підтвердіть вашу явку на завтра.",
+        }
+      );
+      setSendTop5Status("success");
+      setTimeout(() => setSendTop5Status(null), 3000);
+    } catch (error) {
+      console.error("Помилка:", error);
+      setSendTop5Status("error");
+      setTimeout(() => setSendTop5Status(null), 3000);
+    } finally {
+      setSendingTop5(false);
+    }
+  };
+
   const renderTopUsersRiskChart = () => {
     if (!topUsersRisk || topUsersRisk.length === 0) {
       return <p>Дані про користувачів із ризиком неявки відсутні.</p>;
@@ -1364,7 +1487,7 @@ const ModelAnalytics = ({ loading, setLoading }) => {
 
     return (
       <div className="chart-block">
-        <h3>Топ-5 користувачів з високим ризиком неявки</h3>
+        <h4>Топ-5 користувачів з високим ризиком неявки</h4>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart
             data={validData}
@@ -1387,25 +1510,21 @@ const ModelAnalytics = ({ loading, setLoading }) => {
         </ResponsiveContainer>
         <button
           className="send-button"
-          onClick={async () => {
-            try {
-              const response = await axios.post(
-                "http://localhost:5000/api/send-message",
-                {
-                  topUsersRisk: true,
-                  subject: "Нагадування про явку",
-                  message: "Будь ласка, підтвердіть вашу явку на завтра.",
-                }
-              );
-              alert("Повідомлення надіслано!");
-            } catch (error) {
-              console.error("Помилка:", error);
-              alert("Не вдалося надіслати повідомлення.");
-            }
-          }}
+          onClick={handleSendTop5}
+          disabled={sendingTop5}
         >
-          Надіслати листи топ-5
+          {sendingTop5 ? "Надсилання..." : "Надіслати листи"}
         </button>
+        {sendTop5Status === "success" && (
+          <div style={{ color: "green", marginTop: 8, fontSize: "14px" }}>
+            Повідомлення надіслано!
+          </div>
+        )}
+        {sendTop5Status === "error" && (
+          <div style={{ color: "red", marginTop: 8, fontSize: "14px" }}>
+            Не вдалося надіслати повідомлення.
+          </div>
+        )}
       </div>
     );
   };

@@ -16,6 +16,9 @@
 .modal.active .modal-content-bron {
   transform: scale(1);
   opacity: 1;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .modal-content-bron h2 {
@@ -29,7 +32,7 @@
 .modal-content-bron p {
   font-size: 14px;
   color: #4b5563;
-  margin: 8px 0;
+  margin: 6px 0;
 }
 
 .modal-content-bron .red-text {
@@ -38,7 +41,7 @@
 }
 
 .booking-list {
-  margin: 16px 0;
+  margin: 10px 0;
 }
 
 .booking-list h3 {
@@ -69,7 +72,7 @@
 }
 
 .delete-btn {
-  background-color: #ef4444;
+  background-color: #ff0000;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -82,7 +85,7 @@
 }
 
 .delete-btn:hover {
-  background-color: #dc2626;
+  background-color: #d40000;
   transform: translateY(-1px);
 }
 
@@ -91,7 +94,7 @@
   flex-direction: column;
   font-size: 14px;
   color: #4b5563;
-  margin: 12px 0;
+  margin: 4px 0;
 }
 
 .modal-content-bron input[type="time"],
@@ -172,4 +175,57 @@
   .modal-content-bron button {
     padding: 8px 16px;
   }
+}
+
+/* BookingModal.css */
+.user-details-icon-btn {
+  background: #ff0000;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.user-details-icon-btn:hover {
+  background: #d40000;
+}
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #1976d2;
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-btn {
+  background: #ff0000;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.icon-btn:hover {
+  background: #d40000;
+}
+.no-show-badge {
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }

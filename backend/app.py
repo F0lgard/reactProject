@@ -23,6 +23,7 @@ from email.mime.multipart import MIMEMultipart
 import subprocess
 import re
 from flask import jsonify
+from functools import lru_cache
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -177,38 +178,33 @@ def get_price_table():
 def update_price_table():
     try:
         data = request.get_json()
-        if not data or "zone" not in data or "prices" not in data:
+        if not data or "zone" not in data or "originalPrices" not in data:
             return jsonify({"error": "Invalid input"}), 400
 
         zone = data["zone"]
-        prices = data["prices"]
+        original_prices = data["originalPrices"]
         price_table_collection.update_one(
             {"zone": zone},
-            {"$set": {"prices": prices}},
+            {"$set": {"originalPrices": original_prices}},
             upsert=True
         )
-        logger.info(f"Price table updated for zone: {zone}")
-        return jsonify({"message": "Price table updated successfully"}), 200
+        logger.info(f"Original prices updated for zone: {zone}")
+        return jsonify({"message": "Original prices updated successfully"}), 200
     except Exception as e:
         logger.error(f"Error updating price table: {e}")
         return jsonify({"error": "Server error"}), 500
-
-from functools import lru_cache
 
 @lru_cache(maxsize=128)
 def calculate_price(zone, duration, booking_start_time=None):
     try:
         price_entry = price_table_collection.find_one({"zone": zone})
         if not price_entry:
-            logger.error(f"Prices for zone '{zone}' not found")
+            logger.error(f"Original prices for zone '{zone}' not found")
             return 1  # Мін. ціна, щоб уникнути 0
 
-        prices = price_entry["prices"]
-        closest_duration = max([int(d) for d in prices.keys() if int(d) <= duration], default=1)
-        if "originalPrices" in price_entry:
-            base_price = price_entry["originalPrices"].get(str(closest_duration))
-        else:
-            base_price = prices.get(str(closest_duration))  # fallback
+        original_prices = price_entry.get("originalPrices", {})
+        closest_duration = max([int(d) for d in original_prices.keys() if int(d) <= duration], default=1)
+        base_price = original_prices.get(str(closest_duration), 1)  # Використовуємо originalPrices як базову ціну
 
         current_date = kiev_tz.localize(datetime.now())
         if booking_start_time:
@@ -306,18 +302,6 @@ def create_discount():
         db.discounts.insert_one(discount)
         logger.info(f"Discount created for zone {data['zone']} with period {data.get('specificPeriod', 'Весь день')} and dates {start_date_str} - {end_date_str}")
 
-        # Оновлюємо originalPrices, якщо потрібно
-        zones_to_update = [data['zone']] if data['zone'] != "all" else ["Pro", "VIP", "PS"]
-        for zone in zones_to_update:
-            price_entry = price_table_collection.find_one({"zone": zone})
-            if price_entry:
-                if "originalPrices" not in price_entry:
-                    price_table_collection.update_one(
-                        {"zone": zone},
-                        {"$set": {"originalPrices": price_entry["prices"]}}
-                    )
-                    logger.info(f"Original prices saved for zone {zone}")
-
         return jsonify({"message": "Discount created successfully. Prices will be applied dynamically."}), 200
 
     except ValueError:
@@ -326,7 +310,6 @@ def create_discount():
         logger.error(f"Error creating discount: {str(e)}")
         return jsonify({"error": "Server error"}), 500
 
-    
 @app.route('/api/discounts', methods=['GET'])
 def get_discounts():
     # check_admin()
@@ -343,26 +326,13 @@ def delete_discount(discount_id):
         if not discount:
             return jsonify({"error": "Discount not found"}), 404
 
-        zone = discount["zone"]
-        zones_to_restore = [zone] if zone != "all" else ["Pro", "VIP", "PS"]
-        for z in zones_to_restore:
-            price_entry = price_table_collection.find_one({"zone": z})
-            if price_entry and "originalPrices" in price_entry:
-                price_table_collection.update_one(
-                    {"zone": z},
-                    {"$set": {"prices": price_entry["originalPrices"]}}
-                )
-                logger.info(f"Restored original prices for zone {z} after discount deletion")
-
-        result = db.discounts.delete_one({"_id": ObjectId(discount_id)})
-        if result.deleted_count == 0:
-            return jsonify({"error": "Discount not found"}), 404
+        db.discounts.delete_one({"_id": ObjectId(discount_id)})
         logger.info(f"Discount {discount_id} deleted successfully")
         return jsonify({"message": "Discount deleted successfully"}), 200
     except Exception as e:
         logger.error(f"Error deleting discount: {str(e)}")
         return jsonify({"error": "Server error"}), 500
-    
+
 @app.route('/api/price-table/dynamic', methods=['GET'])
 def get_dynamic_price_table():
     try:
@@ -372,11 +342,11 @@ def get_dynamic_price_table():
 
         for zone in zones:
             entry = price_table_collection.find_one({"zone": zone})
-            if not entry or "prices" not in entry:
+            if not entry or "originalPrices" not in entry:
                 continue
 
             prices = {}
-            for dur in entry["prices"]:
+            for dur in entry["originalPrices"]:
                 price = calculate_price(zone, int(dur), booking_start_time=current_time)
                 prices[dur] = round(price, 2)
 
@@ -743,10 +713,15 @@ def get_recommendations_with_filter(user_id):
             return min(durations, key=lambda x: abs(x - target_duration))
 
         for d in filtered_devices:
-            available_durations = [int(duration) for duration in price_table_collection.find_one({"zone": d["zone"]})["prices"].keys()]
-            if available_durations:
-                d["avg_duration"] = get_closest_duration(available_durations, d["avg_duration"])
-                d["avg_price"] = calculate_price(d["zone"], d["avg_duration"])
+            price_entry = price_table_collection.find_one({"zone": d["zone"]})
+            if price_entry and "originalPrices" in price_entry:
+                available_durations = [int(duration) for duration in price_entry["originalPrices"].keys()]
+                if available_durations:
+                    d["avg_duration"] = get_closest_duration(available_durations, d["avg_duration"])
+                    d["avg_price"] = calculate_price(d["zone"], d["avg_duration"])
+                else:
+                    d["avg_duration"] = 1
+                    d["avg_price"] = 0
             else:
                 d["avg_duration"] = 1
                 d["avg_price"] = 0
@@ -1549,8 +1524,7 @@ def check_expired_discounts():
     current_datetime = kiev_tz.localize(datetime.now())
     current_time = current_datetime.time()
     expired_discounts = db.discounts.find({
-        "startDate": {"$lte": current_datetime.isoformat()},
-        "endDate": {"$gte": current_datetime.isoformat()}  # Фільтр для актуальних акцій
+        "endDate": {"$lt": current_datetime.isoformat()}  # Фільтр для закінчених акцій
     })
 
     for discount in expired_discounts:
@@ -1559,7 +1533,6 @@ def check_expired_discounts():
 
         is_expired = end_date < current_datetime
 
-        # Перевірка specificPeriod
         if 'specificPeriod' in discount and discount['specificPeriod'] and current_datetime.date() == end_date.date():
             start_time_str, end_time_str = map(str.strip, discount['specificPeriod'].split('-'))
             start_period = datetime.strptime(start_time_str, "%H:%M").time()
@@ -1569,18 +1542,8 @@ def check_expired_discounts():
                 logger.info(f"Discount for zone {discount['zone']} expired due to specificPeriod {discount['specificPeriod']}")
 
         if is_expired:
-            zone = discount["zone"]
-            zones_to_restore = [zone] if zone != "all" else ["Pro", "VIP", "PS"]
-            for z in zones_to_restore:
-                price_entry = price_table_collection.find_one({"zone": z})
-                if price_entry and "originalPrices" in price_entry:
-                    price_table_collection.update_one(
-                        {"zone": z},
-                        {"$set": {"prices": price_entry["originalPrices"]}}
-                    )
-                    logger.info(f"Restored original prices for zone {z} after discount expired")
             db.discounts.delete_one({"_id": discount["_id"]})
-            logger.info(f"Deleted expired discount for zone {zone}")
+            logger.info(f"Deleted expired discount for zone {discount['zone']}")
 
 # Ініціалізація планувальника
 scheduler = BackgroundScheduler()

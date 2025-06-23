@@ -61,7 +61,7 @@ const Pricing = () => {
       const response = await axios.get("http://localhost:5000/api/price-table");
       const transformed = response.data.map((entry) => ({
         zone: entry.zone,
-        prices: entry.prices,
+        prices: entry.originalPrices || entry.prices, // <-- тут!
       }));
       setPriceTable(transformed);
     } catch (error) {
@@ -168,7 +168,7 @@ const Pricing = () => {
       for (const row of priceTable) {
         await axios.post("http://localhost:5000/api/price-table", {
           zone: row.zone,
-          prices: row.prices,
+          originalPrices: row.prices, // <-- тут важливо!
         });
       }
       fetchDynamicPrices(); // Оновлення після збереження

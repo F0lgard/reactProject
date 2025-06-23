@@ -150,7 +150,19 @@ const StaticAnalytics = ({ loading, setLoading }) => {
     return result;
   };
 
-  const dailyLoadData = calculateDailyBookings();
+  const dailyLoadData = Array.isArray(summary.dailyBookings)
+    ? summary.dailyBookings
+        .map(({ date, count }) => ({
+          day: new Date(date).toLocaleDateString("uk-UA", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "2-digit",
+          }),
+          rawDate: new Date(date),
+          count,
+        }))
+        .sort((a, b) => a.rawDate - b.rawDate)
+    : [];
 
   return (
     <div>
