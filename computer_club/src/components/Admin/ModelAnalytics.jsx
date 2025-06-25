@@ -1189,6 +1189,7 @@ const ModelAnalytics = ({ loading, setLoading }) => {
                   >
                     {loading ? "Надсилання..." : "Надіслати"}
                   </button>
+
                   <button
                     onClick={() => closeModal("activityGroup")}
                     className="close-button"
@@ -1420,7 +1421,13 @@ const ModelAnalytics = ({ loading, setLoading }) => {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={activityTrends}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
+            <XAxis
+              dataKey="date"
+              tickFormatter={(date) => {
+                const [year, month, day] = date.split("-");
+                return `${day}.${month}`;
+              }}
+            />
             <YAxis />
             <Tooltip />
             <Legend />

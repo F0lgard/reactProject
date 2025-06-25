@@ -24,6 +24,7 @@ import subprocess
 import re
 from flask import jsonify
 from functools import lru_cache
+
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -1226,18 +1227,20 @@ def predict_user_activity_all():
             return jsonify({"error": "Users not found"}), 404
 
         features_list = []
-        utc_tz = pytz.timezone("UTC")
-        current_time = datetime.now(utc_tz)
-        current_date = current_time.replace(hour=0, minute=0, second=0, microsecond=0)
+        kiev_tz = pytz.timezone("Europe/Kyiv")
+        current_kiev_time = datetime.now(kiev_tz)
+        naive_kiev_time = current_kiev_time.replace(tzinfo=None)
+        current_date_naive = naive_kiev_time.replace(hour=0, minute=0, second=0, microsecond=0)
 
         for user in users:
             user_id = str(user["_id"])
-            created_at = user.get("createdAt", current_time)
+            created_at = user.get("createdAt", naive_kiev_time)
             if not isinstance(created_at, datetime):
-                created_at = current_time
-            elif created_at.tzinfo is None:
-                created_at = created_at.replace(tzinfo=utc_tz)
-            account_age_days = (current_time - created_at).days
+                created_at = naive_kiev_time
+            elif created_at.tzinfo is not None:
+                created_at = created_at.astimezone(kiev_tz).replace(tzinfo=None)
+
+            account_age_days = (naive_kiev_time - created_at).days
 
             bookings = []
             for device in collection.find({"bookings.userId": user_id}):
@@ -1249,25 +1252,25 @@ def predict_user_activity_all():
             completed_bookings = sum(1 for b in bookings if b["status"] == "completed")
             no_show_count = sum(1 for b in bookings if b["status"] == "noShow")
             cancel_count = sum(1 for b in bookings if b["status"] == "cancelled")
+
             avg_duration = (
                 sum(
                     (b["endTime"] - b["startTime"]).total_seconds() / 3600
                     for b in bookings
                     if isinstance(b["startTime"], datetime) and isinstance(b["endTime"], datetime)
-                ) / total_bookings
-                if total_bookings > 0
-                else 0
+                ) / total_bookings if total_bookings > 0 else 0
             )
+
             completed_ratio = completed_bookings / total_bookings if total_bookings > 0 else 0
             booking_frequency = total_bookings / account_age_days * 30 if account_age_days > 0 else 0
 
             last_booking = max(
                 (b["startTime"] for b in bookings if isinstance(b["startTime"], datetime)),
-                default=current_time - timedelta(days=365)
+                default=naive_kiev_time - timedelta(days=365)
             )
-            if last_booking.tzinfo is None:
-                last_booking = last_booking.replace(tzinfo=utc_tz)
-            days_since_last_booking = (current_time - last_booking).days
+            if last_booking.tzinfo is not None:
+                last_booking = last_booking.astimezone(kiev_tz).replace(tzinfo=None)
+            days_since_last_booking = (naive_kiev_time - last_booking).days
 
             features_list.append({
                 "userId": user_id,
@@ -1286,21 +1289,18 @@ def predict_user_activity_all():
 
         df = pd.DataFrame(features_list)
         feature_columns = [
-            "totalBookings",
-            "noShowCount",
-            "cancelCount",
-            "daysSinceLastBooking",
-            "accountAgeDays",
-            "avgDuration",
-            "completed_ratio",
-            "booking_frequency"
+            "totalBookings", "noShowCount", "cancelCount", "daysSinceLastBooking",
+            "accountAgeDays", "avgDuration", "completed_ratio", "booking_frequency"
         ]
+
         X = df[feature_columns].copy()
-        X["daysSinceLastBooking"] = X["daysSinceLastBooking"].fillna(X["daysSinceLastBooking"].mean())
-        X["accountAgeDays"] = X["accountAgeDays"].fillna(X["accountAgeDays"].mean())
-        X["avgDuration"] = X["avgDuration"].fillna(0)
-        X["completed_ratio"] = X["completed_ratio"].fillna(0)
-        X["booking_frequency"] = X["booking_frequency"].fillna(0)
+        X.fillna({
+            "daysSinceLastBooking": X["daysSinceLastBooking"].mean(),
+            "accountAgeDays": X["accountAgeDays"].mean(),
+            "avgDuration": 0,
+            "completed_ratio": 0,
+            "booking_frequency": 0
+        }, inplace=True)
 
         predictions = model.predict(X)
         activity_counts = {"active": 0, "passive": 0, "new": 0, "at_risk": 0}
@@ -1308,9 +1308,15 @@ def predict_user_activity_all():
             activity_counts[pred] += 1
 
         last_record = activity_history_collection.find_one(
-            {"date": {"$gte": current_date, "$lt": current_date + timedelta(days=1)}},
+            {
+                "date": {
+                    "$gte": current_date_naive,
+                    "$lt": current_date_naive + timedelta(days=1)
+                }
+            },
             sort=[("date", -1)]
         )
+
         should_save = True
         if last_record:
             last_distribution = last_record["distribution"]
@@ -1322,11 +1328,24 @@ def predict_user_activity_all():
             ):
                 logger.info("User activity distribution unchanged, skipping save")
                 should_save = False
+
         if should_save:
-            activity_history_collection.insert_one({
-                "date": current_time,
-                "distribution": activity_counts
-            })
+            activity_history_collection.update_one(
+                {
+                    "date": {
+                        "$gte": current_date_naive,
+                        "$lt": current_date_naive + timedelta(days=1)
+                    }
+                },
+                {
+                    "$set": {
+                        "date": naive_kiev_time,
+                        "distribution": activity_counts
+                    }
+                },
+                upsert=True
+            )
+            logger.info(f"✅ User activity saved at local time: {naive_kiev_time}")
 
         result = [
             {
@@ -1344,10 +1363,12 @@ def predict_user_activity_all():
             }
             for _, row, pred in zip(range(len(df)), df.to_dict("records"), predictions)
         ]
-        logger.info("User activity prediction completed")
+
+        logger.info("✅ User activity prediction completed")
         return jsonify(result)
+
     except Exception as e:
-        logger.error(f"User activity prediction error: {str(e)}")
+        logger.error(f"❌ User activity prediction error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/send-message", methods=["POST", "OPTIONS"])
@@ -1493,28 +1514,35 @@ def get_user_details(user_id):
 @app.route("/api/activity-trends", methods=["GET"])
 def get_activity_trends():
     try:
-        from_date = request.args.get("from", (datetime.now(pytz.UTC) - timedelta(days=30)).isoformat())
-        to_date = request.args.get("to", datetime.now(pytz.UTC).isoformat())
-        trends = list(activity_history_collection.find({
-            "date": {
-                "$gte": datetime.fromisoformat(from_date.replace("Z", "+00:00")),
-                "$lte": datetime.fromisoformat(to_date.replace("Z", "+00:00"))
-            }
+        now = datetime.now(pytz.UTC)
+        from_dt = (now - timedelta(days=15)).replace(hour=0, minute=0, second=0, microsecond=0)
+        to_dt = now.replace(hour=23, minute=59, second=59, microsecond=999999)
+
+        raw_trends = list(activity_history_collection.find({
+            "date": {"$gte": from_dt, "$lte": to_dt}
         }).sort("date", 1))
+
+        trends_by_day = {}
+        for t in raw_trends:
+            day_str = t["date"].strftime("%Y-%m-%d")
+            trends_by_day[day_str] = t  # залишає останній запис цього дня
+
         response = [
             {
-                "date": t["date"].strftime("%Y-%m-%d"),
+                "date": day,
                 "active": t["distribution"]["active"],
                 "passive": t["distribution"]["passive"],
                 "new": t["distribution"]["new"],
                 "at_risk": t["distribution"]["at_risk"]
             }
-            for t in trends
+            for day, t in sorted(trends_by_day.items())
         ]
-        logger.info("Activity trends retrieved successfully")
+
+        logger.info("✅ Activity trends retrieved successfully")
         return jsonify(response)
+
     except Exception as e:
-        logger.error(f"Error retrieving activity trends: {str(e)}")
+        logger.error(f"❌ Error retrieving activity trends: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 

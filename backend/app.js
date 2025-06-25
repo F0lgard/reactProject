@@ -10,6 +10,7 @@ const sendVerificationEmail = require("./utils/sendVerificationEmail");
 const crypto = require("crypto"); // для створення токену
 const sendResetEmail = require("./utils/sendResetEmail");
 const bcrypt = require("bcrypt");
+const sendCancelNotification = require("./utils/sendCancelNotification");
 
 const app = express();
 const port = 3001;
@@ -903,6 +904,7 @@ app.post("/api/cancel-booking", async (req, res) => {
     const now = new Date();
     const bookingStartTime = new Date(startTime); // Отримуємо startTime з фронту (UTC)
     const userRole = req.headers.role || "user"; // Роль із заголовка
+
     console.log("📦 Отримані дані:", {
       deviceId,
       bookingId,
@@ -910,19 +912,24 @@ app.post("/api/cancel-booking", async (req, res) => {
       startTime,
       userRole,
     });
+
     if (!deviceId || !bookingId || !userId || !startTime) {
       throw new Error("Відсутні обов'язкові поля в запиті");
     }
     const device = await Device.findOne({ id: deviceId });
     console.log("Знайдено пристрій:", device ? "Так" : "Ні");
     if (!device) throw new Error("Пристрій не знайдено");
+
     const booking = device.bookings.id(bookingId);
     console.log("Знайдено бронювання:", booking ? "Так" : "Ні");
     if (!booking) throw new Error("Бронювання не знайдено");
+
     const nowUTC = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
     const startUTC = new Date(booking.startTime);
     const endUTC = new Date(booking.endTime);
+
     console.log("Часи:", { nowUTC, startUTC, endUTC });
+
     let status;
     if (nowUTC < startUTC) {
       status = "cancelled";
@@ -968,6 +975,21 @@ app.post("/api/cancel-booking", async (req, res) => {
       }
       await user.save();
       console.log("Користувач збережений:", user._id);
+      if (userRole === "admin" && user.email) {
+        try {
+          await sendCancelNotification(
+            user.email,
+            user.username || "Користувач",
+            booking.startTime
+          );
+          console.log(
+            "📧 Сповіщення про скасування надіслано на пошту:",
+            user.email
+          );
+        } catch (emailError) {
+          console.warn("⚠️ Не вдалося надіслати email:", emailError.message);
+        }
+      }
     }
 
     // Якщо адмін скасовує, зараховуємо noShow автору бронювання

@@ -430,7 +430,7 @@ th {
 }
 
 .user-info {
-  flex: 1;
+  /*flex: 1;*/
 }
 
 .user-info p {
